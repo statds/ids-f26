@@ -1,0 +1,26 @@
+# Quarto
+/_book/
+**/.quarto/
+**/_freeze/
+**/*.quarto_ipynb
+*.html
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[codz]
+.ids/
+.venv/
+venv/
+
+# Local configuration and credentials
+.env
+.envrc
+
+# Editor and operating system files
+.DS_Store
+.vscode/
+
+/.quarto/

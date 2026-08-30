@@ -1,0 +1,27 @@
+project:
+  type: book
+  output-dir: _book
+
+execute:
+  enabled: true
+  freeze: auto
+
+book:
+  title: "Introduction to Data Science"
+  subtitle: "Fall 2026 Collaborative Notes"
+  site-url: https://statds.github.io/ids-f26
+  repo-url: https://github.com/statds/ids-f26
+  repo-actions:
+    - edit
+    - issue
+  chapters:
+    - index.qmd
+    - chapters/data-acquisition.qmd
+    - chapters/data-wrangling-visualization.qmd
+    - chapters/statistical-modeling.qmd
+    - chapters/advanced-methods-ai.qmd
+
+format:
+  html:
+    theme: cosmo
+    html-math-method: mathjax
