@@ -1,0 +1,6 @@
+# Statistical Modeling and Machine Learning
+
+Student presentations in this chapter concern statistical reasoning,
+prediction, dimension reduction, clustering, and supervised learning.
+
+Presentations will be added during the semester.

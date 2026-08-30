@@ -1,29 +1,60 @@
-# Course Collaboration and Logistics {.unnumbered}
+# Introduction {.unnumbered}
 
 <!--
-This file contains semester-dependent material. Move and adapt it for the
-student-contributed notes repository rather than including it in ids-book.
-Replace all bracketed placeholders before publication.
+This file contains semester-dependent material. Replace all bracketed
+placeholders before publication.
 -->
 
 ## Collaborative Notes
 
-The collaborative notes for [semester] supplement the instructor-authored
+The Fall 2026 collaborative notes supplement the instructor-authored
 *Introduction to Data Science* book. They give students practice explaining
 data-science concepts and working through a Git and GitHub review process.
 
-The notes are maintained in the `[semester repository]` repository. Students
-contribute through topic branches and pull requests. A contribution should
-generally include:
+The notes are maintained in the
+[`ids-f26` repository](https://github.com/statds/ids-f26). Students contribute
+through topic branches and pull requests. Each topic contribution consists of:
 
-1. **What:** a concise explanation of the concept.
-2. **Example:** preferably an executable demonstration.
-3. **Interpretation:** an explanation of what the output means.
-4. **Takeaway:** one or two central conclusions.
-5. **Sources:** citations or links for material used.
+1. a RevealJS slide deck in its own directory under `presentations/`; and
+2. a short catalog entry in the relevant topical chapter.
 
-Contributions should link to the relevant part of the instructor book instead
-of duplicating it.
+The slide deck is the substantive contribution. Students are not expected to
+rewrite their slides as a prose chapter. The topical chapters organize and
+link to presentations; they do not duplicate the instructor book.
+
+## Presentation Expectations
+
+A presentation should ordinarily contain:
+
+- a motivating question or explanation of why the topic matters;
+- the main concept, method, or tool;
+- at least one minimal, reproducible example;
+- an interpretation of important output;
+- limitations, common mistakes, or situations where the method is unsuitable;
+- two or three principal takeaways; and
+- sources and image attribution.
+
+Slides should support an oral presentation without becoming a transcript.
+Use readable text, explain displayed code and output, and generate results
+from executable code when practical. Link to relevant material in `ids-book`
+instead of repeating substantial instructor-authored exposition.
+
+The
+[example Quarto presentation](presentations/example-quarto-presentations/)
+demonstrates the expected directory layout and basic slide conventions.
+
+## License
+
+Except where otherwise noted, the original educational content in these notes
+and the linked student presentations is licensed under the
+[Creative Commons Attribution-NonCommercial 4.0 International
+License](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0).
+Users may share and adapt the material for noncommercial purposes with
+appropriate attribution. Third-party material remains subject to its original
+copyright and license; contributors must identify and properly attribute such
+material. See the repository's
+[license file](https://github.com/statds/ids-f26/blob/main/LICENSE.md) for
+details.
 
 ## Goals for the Semester
 
@@ -101,18 +132,18 @@ Use the following workflow:
 
 1. Synchronize your local repository with the shared repository.
 2. Create and switch to a topic branch.
-3. Add or revise the appropriate Quarto source file.
-4. Create and activate the documented Python environment when computation is
-   required.
-5. Render and review your work locally.
-6. Make small commits with informative messages.
-7. Push the branch and open a pull request.
-8. Respond to review and revise the contribution as needed.
+3. Copy and adapt the example presentation directory.
+4. Add a short entry to the appropriate topical chapter.
+5. Activate the course Python environment when computation is required.
+6. Render and review the presentation locally.
+7. Make small commits with informative messages.
+8. Push the branch and open a pull request.
+9. Respond to review and revise the contribution as needed.
 
 Before requesting review, check that the contribution:
 
 - is original and properly attributes all sources;
-- starts at the heading level specified by the repository template;
+- follows the example presentation structure and has a matching chapter entry;
 - follows the repository's file-naming and source-writing conventions;
 - keeps lines reasonably short;
 - uses BibTeX for scholarly references;
@@ -120,6 +151,10 @@ Before requesting review, check that the contribution:
 - uses only images that may legally be redistributed;
 - records any new Python dependencies in the environment specification; and
 - renders successfully on the contributor's computer.
+
+Pull requests contain source files, not rendered output. After a pull request
+is reviewed and merged, the instructor renders the complete notes and all
+accepted presentations and publishes the unified site.
 
 Editorial acceptance and course assessment are separate decisions. Assessment
 emphasizes the contribution process, including meaningful work, appropriate Git

@@ -1,0 +1,134 @@
+---
+title: "Creating Presentations with Quarto"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Example presentation"
+format:
+  revealjs:
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+jupyter: python3
+---
+
+## Why RevealJS?
+
+- Write slides in plain-text Quarto and Markdown.
+- Keep explanation, code, results, and citations together.
+- Produce an interactive HTML presentation.
+- Track and review the source with Git and GitHub.
+
+## Start with Document Metadata
+
+```yaml
+---
+title: "Presentation Title"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Student Name"
+format:
+  revealjs:
+    slide-number: true
+    preview-links: auto
+jupyter: python3
+---
+```
+
+Use `#` for a section slide and `##` for an ordinary slide.
+
+## Prefer a Focused Story
+
+1. Motivate the topic.
+2. Explain the main idea.
+3. Work through a reproducible example.
+4. Interpret the result.
+5. Discuss limitations or common mistakes.
+6. End with two or three takeaways.
+
+## Executable Python
+
+Use an executable code cell when the result matters:
+
+````markdown
+```{python}
+values = [2, 3, 5, 8]
+sum(values) / len(values)
+```
+````
+
+```{python}
+values = [2, 3, 5, 8]
+sum(values) / len(values)
+```
+
+Explain what the output means; do not leave it for the audience to infer.
+
+## Figures from the Same Source
+
+```{python}
+#| label: fig-example
+#| fig-cap: "Four observations used in the example"
+#| fig-align: center
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.bar(range(1, 5), values)
+ax.set(xlabel="Observation", ylabel="Value")
+plt.show()
+```
+
+The source, computation, and resulting figure remain together and can be
+reproduced during review.
+
+## Use Images Responsibly
+
+- Prefer figures generated from your own code.
+- Use relative paths for local images.
+- Include informative alternative text.
+- Verify that external images may be redistributed.
+- Attribute the creator and source.
+
+Do not paste an unattributed image from a search result into the repository.
+
+## Keep Slides Readable
+
+- Use short statements rather than prose paragraphs.
+- Avoid presenting more code than the audience can follow.
+- Label tables, axes, and important quantities.
+- Define unfamiliar notation and abbreviations.
+- Use incremental lists only when they improve the explanation.
+
+## Connect the Deck to the Notes
+
+The slide deck is published separately from the book. Add a short entry to the
+relevant topical chapter containing:
+
+- the presentation title;
+- the presenter's name;
+- a link to the rendered slides; and
+- a two- or three-sentence abstract.
+
+You do not need to rewrite the deck as a prose section.
+
+## Check Before Opening a Pull Request
+
+From an active course Python environment, run:
+
+```bash
+make render-one FILE=presentations/last-name-topic/index.qmd
+```
+
+Then verify the slides in a browser and inspect `git status`. Submit the source
+files, not rendered HTML, caches, or notebook intermediates.
+
+## Takeaways
+
+- A good deck presents one coherent, technically correct story.
+- Executable examples make results inspectable and reproducible.
+- Interpretation and limitations matter as much as code.
+- The pull request is part of the contribution and revision process.
+
+## Sources
+
+- [Quarto presentations](https://quarto.org/docs/presentations/)
+- [RevealJS format options](https://quarto.org/docs/presentations/revealjs/)
+- [Quarto computations with Python](https://quarto.org/docs/computations/python.html)

@@ -1,0 +1,6 @@
+# Data Acquisition and Engineering
+
+Student presentations in this chapter concern obtaining, exchanging, storing,
+and programmatically accessing data.
+
+Presentations will be added during the semester.

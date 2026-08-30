@@ -1,0 +1,13 @@
+# Data Wrangling and Visualization
+
+Student presentations in this chapter concern transforming, summarizing, and
+communicating data through tables and graphics.
+
+## Creating Presentations with Quarto
+
+**Example presentation:**
+[View slides](../presentations/example-quarto-presentations/)
+
+This example introduces RevealJS presentations in Quarto, including slide
+structure, executable Python code, figures, and a pre-submission rendering
+check.

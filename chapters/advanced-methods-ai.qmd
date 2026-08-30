@@ -1,0 +1,6 @@
+# Advanced Methods and Artificial Intelligence
+
+Student presentations in this chapter concern advanced computational methods,
+deep learning, natural-language processing, and artificial intelligence.
+
+Presentations will be added during the semester.
