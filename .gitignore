@@ -4,6 +4,7 @@
 **/_freeze/
 **/*.quarto_ipynb
 *.html
+/presentations/.gitignore
 
 # Jupyter
 .ipynb_checkpoints/
