@@ -1,0 +1,157 @@
+# Course Collaboration and Logistics {.unnumbered}
+
+<!--
+This file contains semester-dependent material. Move and adapt it for the
+student-contributed notes repository rather than including it in ids-book.
+Replace all bracketed placeholders before publication.
+-->
+
+## Collaborative Notes
+
+The collaborative notes for [semester] supplement the instructor-authored
+*Introduction to Data Science* book. They give students practice explaining
+data-science concepts and working through a Git and GitHub review process.
+
+The notes are maintained in the `[semester repository]` repository. Students
+contribute through topic branches and pull requests. A contribution should
+generally include:
+
+1. **What:** a concise explanation of the concept.
+2. **Example:** preferably an executable demonstration.
+3. **Interpretation:** an explanation of what the output means.
+4. **Takeaway:** one or two central conclusions.
+5. **Sources:** citations or links for material used.
+
+Contributions should link to the relevant part of the instructor book instead
+of duplicating it.
+
+## Goals for the Semester
+
+At the start of the semester, each class member may add a short wishlist in
+alphabetical order by last name. For example:
+
+- Yan, Jun
+  - Make practical data-science tools accessible to undergraduates.
+  - Share experience completing real-world data-science projects.
+  - Help students develop reproducible and collaborative working habits.
+
+Add your goals through a pull request and follow the Markdown syntax for nested
+lists.
+
+## Projects
+
+### Midterm [Exam or Project]
+
+[Add the semester's midterm description, dates, deliverables, and assessment
+criteria.]
+
+### Final Project
+
+Begin considering final-project questions early in the semester. A suitable
+project starts with a meaningful question, uses data appropriate to that
+question, and communicates both findings and limitations. Potential sources of
+project ideas include:
+
+- [ASA Data Challenge Expo](https://community.amstat.org/dataexpo/home)
+- [Kaggle](https://www.kaggle.com/)
+- [DrivenData](https://www.drivendata.org/)
+- [openFDA](https://open.fda.gov/)
+- [Score Network](https://scorenetwork.org/)
+- [Paleobiology Database](https://paleobiodb.org/)
+
+[Add current milestones, deliverables, presentation requirements, and links to
+time-sensitive challenges.]
+
+## Topic Presentations
+
+### Selecting a Topic
+
+Discuss your proposed topic with the instructor at least one week before the
+presentation. Topics may have prerequisites; for example, decision trees
+should ordinarily precede random forests and gradient boosting.
+
+Possible topics include data import and export, data manipulation, SQL,
+visualization, spatial data, web scraping, statistical modeling, dimension
+reduction, clustering, machine learning, deep learning, natural-language
+processing, and reproducible communication with Quarto.
+
+### Assessment
+
+[Add the semester's point allocation for topic approval, presentation, and
+follow-up contribution.]
+
+### Schedule
+
+| Date | Presenter | Topic |
+|---|---|---|
+| [date] | [name] | [topic] |
+
+Students may exchange presentation slots by mutual agreement. Update the
+schedule through a pull request and notify the instructor.
+
+### Final Project Presentation Schedule
+
+| Date | Location | Presenter |
+|---|---|---|
+| [date and time] | [location] | [name] |
+
+## Contributing to the Collaborative Notes
+
+Use the following workflow:
+
+1. Synchronize your local repository with the shared repository.
+2. Create and switch to a topic branch.
+3. Add or revise the appropriate Quarto source file.
+4. Create and activate the documented Python environment when computation is
+   required.
+5. Render and review your work locally.
+6. Make small commits with informative messages.
+7. Push the branch and open a pull request.
+8. Respond to review and revise the contribution as needed.
+
+Before requesting review, check that the contribution:
+
+- is original and properly attributes all sources;
+- starts at the heading level specified by the repository template;
+- follows the repository's file-naming and source-writing conventions;
+- keeps lines reasonably short;
+- uses BibTeX for scholarly references;
+- avoids unnecessary external files and large data files;
+- uses only images that may legally be redistributed;
+- records any new Python dependencies in the environment specification; and
+- renders successfully on the contributor's computer.
+
+Editorial acceptance and course assessment are separate decisions. Assessment
+emphasizes the contribution process, including meaningful work, appropriate Git
+usage, responsiveness to review, reproducibility, and constructive feedback to
+classmates.
+
+## Assignment Workflow
+
+Graded work is submitted through the designated Classroom 50 repository, not
+through the instructor book or collaborative-notes repository.
+
+For each assignment:
+
+1. Accept the assignment using the link provided through the course site.
+2. Clone the resulting repository to your computer.
+3. Develop the Quarto source locally and organize the work into meaningful
+   commits.
+4. Push the commits to your assignment repository.
+5. Follow the assignment instructions for submitting rendered output, such as
+   attaching a PDF or standalone HTML document to a GitHub release.
+
+Keep generated files out of the repository unless the assignment explicitly
+requests them. Use Git from the command line rather than GitHub's file-upload
+interface, and never commit credentials or large data files.
+
+## Syllabus Check
+
+[Replace these prompts with questions based on the current syllabus.]
+
+- What is the policy for late work?
+- What communication practices are expected?
+- How are style and reproducibility assessed?
+- What are the major project milestones?
+- What is the course policy on using generative AI?
+- What should a student provide when requesting a reference letter?
