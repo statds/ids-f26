@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Introduction to Data Science",
+    "section": "",
+    "text": "Introduction",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#collaborative-notes",
+    "href": "index.html#collaborative-notes",
+    "title": "Introduction to Data Science",
+    "section": "Collaborative Notes",
+    "text": "Collaborative Notes\nThe Fall 2026 collaborative notes supplement the instructor-authored Introduction to Data Science book. They give students practice explaining data-science concepts and working through a Git and GitHub review process.\nThe notes are maintained in the ids-f26 repository. Students contribute through topic branches and pull requests. Each topic contribution consists of:\n\na RevealJS slide deck in its own directory under presentations/; and\na short catalog entry in the relevant topical chapter.\n\nThe slide deck is the substantive contribution. Students are not expected to rewrite their slides as a prose chapter. The topical chapters organize and link to presentations; they do not duplicate the instructor book.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#presentation-expectations",
+    "href": "index.html#presentation-expectations",
+    "title": "Introduction to Data Science",
+    "section": "Presentation Expectations",
+    "text": "Presentation Expectations\nA presentation should ordinarily contain:\n\na motivating question or explanation of why the topic matters;\nthe main concept, method, or tool;\nat least one minimal, reproducible example;\nan interpretation of important output;\nlimitations, common mistakes, or situations where the method is unsuitable;\ntwo or three principal takeaways; and\nsources and image attribution.\n\nSlides should support an oral presentation without becoming a transcript. Use readable text, explain displayed code and output, and generate results from executable code when practical. Link to relevant material in ids-book instead of repeating substantial instructor-authored exposition.\nThe example Quarto presentation demonstrates the expected directory layout and basic slide conventions.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "Introduction to Data Science",
+    "section": "License",
+    "text": "License\nExcept where otherwise noted, the original educational content in these notes and the linked student presentations is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0). Users may share and adapt the material for noncommercial purposes with appropriate attribution. Third-party material remains subject to its original copyright and license; contributors must identify and properly attribute such material. See the repository’s license file for details.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#wishlist",
+    "href": "index.html#wishlist",
+    "title": "Introduction to Data Science",
+    "section": "Wishlist",
+    "text": "Wishlist\nAt the start of the semester, each class member should add two or three goals for the course beneath their name. Keep the names in alphabetical order by last name and use a nested Markdown list, as in the instructor’s example:\n\nYan, Jun\n\nMake practical data-science tools accessible to undergraduates.\nShare experience completing real-world data-science projects.\nHelp students develop reproducible and collaborative working habits.\n\nAnikeev, Katerina\nBucco, Sadie\nChervonny, Erik\nChok, Isaac\nChoudhury, Ruhama\nDistefano, Cristian\nFontana, Adam\nHartman, Mikaela\nHoran, Elizabeth\nKelly, Daniel\nKiani, Ismail\nMansur, Mahiba\nMaras, Ruveyda\nMettler, Ethan\nMorissette, Carter\nNair, Pardhip\nNg, Yee-Ying\nNoe, Amanda\nOng, Enrico\nParkins, Jack\nParsons, Sonya\nRosen, Seth\nTria, Nicholas\nWang, Chaoyang\nWang, Leo\n\nAdd the goals through a focused pull request. Do not edit anyone else’s entry or include private information.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#projects",
+    "href": "index.html#projects",
+    "title": "Introduction to Data Science",
+    "section": "Projects",
+    "text": "Projects\n\nMidterm [Exam or Project]\n[Add the semester’s midterm description, dates, deliverables, and assessment criteria.]\n\n\nFinal Project\nBegin considering final-project questions early in the semester. A suitable project starts with a meaningful question, uses data appropriate to that question, and communicates both findings and limitations. Potential sources of project ideas include:\n\nASA Data Challenge Expo\nKaggle\nDrivenData\nopenFDA\nScore Network\nPaleobiology Database\n\n[Add current milestones, deliverables, presentation requirements, and links to time-sensitive challenges.]",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#topic-presentations",
+    "href": "index.html#topic-presentations",
+    "title": "Introduction to Data Science",
+    "section": "Topic Presentations",
+    "text": "Topic Presentations\n\nPresentation Order\nThe topic presentation order will be finalized in class. Each student will contribute one digit to the random seed. The current seed produces a provisional order; after the contributed digits replace it, the same seed will reproduce the final order on every render.\n\nimport csv\n\nwith open(\"roster.txt\", newline=\"\") as file:\n    roster = csv.DictReader(file, delimiter=\"\\t\")\n    presenters = [\n        f\"{row['Last Name']}, {row['First Name']}\"\n        for row in roster\n    ]\n\nimport random\n\n## seed jointly set by the class, with one digit from each student\nrandom.seed(0)  # replace 0 with the sum of the contributed digits\nrandom.sample(presenters, len(presenters))\n\n['Maras, Ruveyda',\n 'Mettler, Ethan',\n 'Bucco, Sadie',\n 'Horan, Elizabeth',\n 'Ng, Yee-Ying',\n 'Nair, Pardhip',\n 'Wang, Leo',\n 'Kelly, Daniel',\n 'Parkins, Jack',\n 'Mansur, Mahiba',\n 'Noe, Amanda',\n 'Chok, Isaac',\n 'Rosen, Seth',\n 'Chervonny, Erik',\n 'Choudhury, Ruhama',\n 'Parsons, Sonya',\n 'Tria, Nicholas',\n 'Kiani, Ismail',\n 'Hartman, Mikaela',\n 'Distefano, Cristian',\n 'Fontana, Adam',\n 'Ong, Enrico',\n 'Wang, Chaoyang',\n 'Anikeev, Katerina',\n 'Morissette, Carter']\n\n\nThe displayed order is provisional until the class sets the seed. The final order will establish priority for topic selection and the default sequence for topic presentations. Some topics have prerequisites, so the instructor may adjust the schedule. Students may exchange slots by mutual agreement. Record an approved change through a pull request and notify the instructor.\n\n\nSelecting a Topic\nDiscuss your proposed topic with the instructor at least one week before the presentation. Topics may have prerequisites; for example, decision trees should ordinarily precede random forests and gradient boosting.\n\n\nPresentation Topic Task Board\nTalk to the instructor about the proposed topic at least one week before the scheduled presentation. Topics may be added or refined with approval.\n\nData Acquisition and Engineering\n\nImport and export data\nData formats and Apache Arrow\nDatabase operations with SQL\nAccessing U.S. Census data\nWeb scraping\nWorking with APIs\n\n\n\nData Wrangling and Visualization\n\nData manipulation with pandas\nGrammar of graphics\nInteractive visualization\nVisualizing spatial data\nSpatial data with GeoPandas\nAnimation\nMissing-data methods\n\n\n\nStatistical Modeling and Machine Learning\n\nStatistical analysis for proportions and rates\nLogistic regression and its extensions\nDecision trees\nRandom forests\nGradient boosting\nSupport vector machines\nNaive Bayes\nVariable-importance methods\nK-means clustering\nPrincipal component analysis\nMultidimensional scaling\nt-SNE\nUniform manifold approximation and projection\nFalse-discovery-rate control\n\n\n\nAdvanced Methods and Artificial Intelligence\n\nNeural-network foundations\nDeep learning\nConvolutional and recurrent neural networks\nAutoencoders\nNatural-language processing\nLarge language models\nLLM agents\nAutomatic differentiation\nReinforcement learning\nDeveloping a Python package\n\n\n\nReproducible Communication\n\nMarkdown\nPresentations with Quarto\nEffective data-science communication\nBuilding a personal website with Quarto and GitHub Pages\n\n\n\n\nAssessment\n[Add the semester’s point allocation for topic approval, presentation, and follow-up contribution.]\n\n\nSchedule\nThe dated schedule will be completed after topics and presentation dates are confirmed. The topic title should link to the rendered slides after the student’s contribution is accepted.\n\n\n\nDate\nPresenter\nTopic\n\n\n\n\n[date]\n[name]\n[topic]\n\n\n\n\n\nFinal Project Presentation Schedule\nThe final-project presentation schedule ordinarily follows the same student order. Dates, locations, and any grouping of presenters will be added when the course calendar is finalized.\n\n\n\nDate\nLocation\nPresenter\n\n\n\n\n[date and time]\n[location]\n[name]",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#contributing-to-the-collaborative-notes",
+    "href": "index.html#contributing-to-the-collaborative-notes",
+    "title": "Introduction to Data Science",
+    "section": "Contributing to the Collaborative Notes",
+    "text": "Contributing to the Collaborative Notes\nUse the following workflow:\n\nSynchronize your local repository with the shared repository.\nCreate and switch to a topic branch.\nCopy and adapt the example presentation directory.\nAdd a short entry to the appropriate topical chapter.\nActivate the course Python environment when computation is required.\nRender and review the presentation locally.\nMake small commits with informative messages.\nPush the branch and open a pull request.\nRespond to review and revise the contribution as needed.\n\nBefore requesting review, check that the contribution:\n\nis original and properly attributes all sources;\nfollows the example presentation structure and has a matching chapter entry;\nfollows the repository’s file-naming and source-writing conventions;\nkeeps lines reasonably short;\nuses BibTeX for scholarly references;\navoids unnecessary external files and large data files;\nuses only images that may legally be redistributed;\nrecords any new Python dependencies in the environment specification; and\nrenders successfully on the contributor’s computer.\n\nPull requests contain source files, not rendered output. After a pull request is reviewed and merged, the instructor renders the complete notes and all accepted presentations and publishes the unified site.\nEditorial acceptance and course assessment are separate decisions. Assessment emphasizes the contribution process, including meaningful work, appropriate Git usage, responsiveness to review, reproducibility, and constructive feedback to classmates.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#assignment-workflow",
+    "href": "index.html#assignment-workflow",
+    "title": "Introduction to Data Science",
+    "section": "Assignment Workflow",
+    "text": "Assignment Workflow\nGraded work is submitted through the designated Classroom 50 repository, not through the instructor book or collaborative-notes repository.\nFor each assignment:\n\nAccept the assignment using the link provided through the course site.\nClone the resulting repository to your computer.\nDevelop the Quarto source locally and organize the work into meaningful commits.\nPush the commits to your assignment repository.\nFollow the assignment instructions for submitting rendered output, such as attaching a PDF or standalone HTML document to a GitHub release.\n\nKeep generated files out of the repository unless the assignment explicitly requests them. Use Git from the command line rather than GitHub’s file-upload interface, and never commit credentials or large data files.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#syllabus-check",
+    "href": "index.html#syllabus-check",
+    "title": "Introduction to Data Science",
+    "section": "Syllabus Check",
+    "text": "Syllabus Check\n[Replace these prompts with questions based on the current syllabus.]\n\nWhat is the policy for late work?\nWhat communication practices are expected?\nHow are style and reproducibility assessed?\nWhat are the major project milestones?\nWhat is the course policy on using generative AI?\nWhat should a student provide when requesting a reference letter?",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "chapters/data-acquisition.html",
+    "href": "chapters/data-acquisition.html",
+    "title": "1  Data Acquisition and Engineering",
+    "section": "",
+    "text": "Student presentations in this chapter concern obtaining, exchanging, storing, and programmatically accessing data.\nPresentations will be added during the semester.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Data Acquisition and Engineering</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/data-wrangling-visualization.html",
+    "href": "chapters/data-wrangling-visualization.html",
+    "title": "2  Data Wrangling and Visualization",
+    "section": "",
+    "text": "2.1 Creating Presentations with Quarto\nStudent presentations in this chapter concern transforming, summarizing, and communicating data through tables and graphics.\nExample presentation: View slides\nThis example introduces RevealJS presentations in Quarto, including slide structure, executable Python code, figures, and a pre-submission rendering check.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data Wrangling and Visualization</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/statistical-modeling.html",
+    "href": "chapters/statistical-modeling.html",
+    "title": "3  Statistical Modeling and Machine Learning",
+    "section": "",
+    "text": "Student presentations in this chapter concern statistical reasoning, prediction, dimension reduction, clustering, and supervised learning.\nPresentations will be added during the semester.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Statistical Modeling and Machine Learning</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/advanced-methods-ai.html",
+    "href": "chapters/advanced-methods-ai.html",
+    "title": "4  Advanced Methods and Artificial Intelligence",
+    "section": "",
+    "text": "Student presentations in this chapter concern advanced computational methods, deep learning, natural-language processing, and artificial intelligence.\nPresentations will be added during the semester.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Advanced Methods and Artificial Intelligence</span>"
+    ]
+  }
+]
