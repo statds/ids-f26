@@ -1,0 +1,259 @@
+\documentclass{article}
+\usepackage[hmargin={0.5in, 0.5in}, vmargin={0.8in, 0.8in}]{geometry}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage[anythingbreaks]{breakurl}
+\usepackage{multicol}
+\usepackage[compact]{titlesec}
+
+\newcommand{\pkg}[1]{{\normalfont\fontseries{b}\selectfont #1}}
+\let\proglang=\textsf
+\let\code=\texttt
+
+\usepackage{enumitem}
+\setlist{parsep=0pt, leftmargin=4mm, topsep=0pt, itemsep=6pt}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lhead{\sf STAT 5255/3255}
+\rhead{Fall 2026}
+\lfoot{\sf jun.yan@uconn.edu}
+\rfoot{\url{https://statcomp.org/}}
+
+\begin{document}
+
+\title{STAT 5255/3255: Introduction to Data Science}
+\date{August 31, 2026}
+\maketitle
+
+\thispagestyle{fancy}
+
+\begin{multicols}{2}
+\begin{description}
+\item[Instructor:]
+  Jun Yan\\
+  AUST 328\\
+  jun.yan@uconn.edu
+
+\item[Lectures:]
+  TuTh: 3:30--4:45 pm\\
+  AUST 105
+
+\item[Office Hours:]
+  TuTh: 11:00 am--12:00 pm
+  or by appointment.
+
+\item[Email Etiquette:]
+  Learn the basics of professional email etiquette when writing to
+  professors:
+  \href{https://marktomforde.com/academic/undergraduates/Email-Etiquette.html}{Guidelines for Writing to Your Professors}.
+  Use email rather than HuskyCT messages to contact the instructor.
+
+\item[Prerequisites:] \hspace{0pt}
+
+  STAT 5255: Open to graduate students in Statistics and to others with
+  permission. Not open for credit to students who have passed STAT 3255.
+
+  STAT 3255: STAT 2255 and STAT 3115Q (or 3215Q), or instructor consent.
+
+  Prior experience with Python and regression is assumed.
+
+\item[Course Description:]
+  Introduction to data science for effectively storing, processing,
+  analyzing, and making inferences from data. Topics include project
+  management, data preparation, data visualization, statistical models,
+  machine learning, distributed computing, and ethics.
+
+\item[Course Materials:]
+  Lecture notes, assignments, sample code, datasets, and other private course
+  material will be posted on HuskyCT at \url{https://lms.uconn.edu/}.
+  Students are responsible for checking HuskyCT regularly.
+
+\item[Recommended Texts:]\hspace{0pt}
+  \begin{enumerate}
+  \item
+    ``Python Data Science Handbook: Essential Tools for Working with Data,''
+    First Edition, by Jake VanderPlas, O'Reilly Media, 2016.
+    \url{https://jakevdp.github.io/PythonDataScienceHandbook/}.
+  \item
+    ``Python for Data Analysis: Data Wrangling with Pandas, NumPy, and
+    IPython,'' Third Edition, by Wes McKinney, O'Reilly Media, 2022.
+    \url{https://wesmckinney.com/book/}.
+  \item
+    ``Veridical Data Science: The Practice of Responsible Data Analysis and
+    Decision Making,'' by Bin Yu and Rebecca L. Barter, MIT Press, 2024.
+    \url{https://vdsbook.com}.
+  \item
+    \href{https://www.practicaldatascience.org}{``Practical Data Science in
+    Python''} by Kyle Bradbury and Nick Eubank.
+  \end{enumerate}
+
+\item[Computing:]
+  \proglang{Python} will be the primary computing environment. Students may
+  choose an interactive development environment such as Jupyter, VS Code, or
+  Emacs. Follow the
+  \href{https://peps.python.org/pep-0008/}{Python Code Style Guide}.
+
+  \proglang{Git} will be used for project management and collaboration, and
+  GitHub Classroom will be used for homework submission and grading. Practice
+  Git with the \href{https://gitexercises.fracz.com}{online exercises}.
+
+  Command-line operation is essential for reproducibility and automation.
+  Learn the basics from a suitable tutorial, such as the
+  \href{https://ubuntu.com/tutorials/command-line-for-beginners}{Ubuntu
+  command-line tutorial}.
+
+  \proglang{Quarto} will be used for student presentation contributions,
+  homework assignments, and projects. Always be ready to learn new tools.
+
+\item[Course Notes:]
+  The instructor-authored
+  \href{https://statds.github.io/ids-book/}{Introduction to Data Science book}
+  contains the permanent course notes. The Fall 2026
+  \href{https://statds.github.io/ids-f26/}{collaborative notes site}
+  organizes student-created RevealJS presentations. Its source is publicly
+  available in the
+  \href{https://github.com/statds/ids-f26}{Fall 2026 GitHub repository}.
+
+  Earlier collaborative notes include
+  \href{https://statds.github.io/ids-s26}{Spring 2026},
+  \href{https://statds.github.io/ids-f25}{Fall 2025},
+  \href{https://statds.github.io/ids-s25}{Spring 2025}, and
+  \href{https://statds.github.io/ids-f24}{Fall 2024}.
+
+\item[Fall 2026 Calendar:]
+  The semester begins Monday, August 31. Labor Day, Monday, September 7, has
+  no classes. Thanksgiving recess runs Sunday, November 22, through Sunday,
+  November 29. The final two instructional weeks, Monday, November 30,
+  through Friday, December 11, are reserved for final-project presentations.
+  Friday, December 11, is the last day of classes. Final examinations run
+  Monday, December 14, through Sunday, December 20.
+
+\item[Grading:]
+The grade for this course will be based on:
+\begin{center}
+  \rowcolors{2}{blue!20}{gray!20}
+  \begin{tabular}{lrr}
+    \toprule
+    Category              & 3255  & 5255\\
+    \midrule
+    Style                 & 5\%  & 5\%\\
+    Participation         & 5\%  & 5\%\\
+    Homework              & 20\% & 20\%\\
+    Topic Presentations   & 20\% & 20\%\\
+    Midterm Project       & 20\% & 20\%\\
+    Final Presentation    & 30\% & 0\%\\
+    Final Report          & 0\%  & 30\%\\
+    \bottomrule
+  \end{tabular}
+\end{center}
+
+\item[Style: 5 points]
+  Homework and midterm submissions should clearly identify the problem being
+  addressed or quote the question. A submission should present a clear train
+  of thought. One style point may be deducted for each occurrence of
+  illegible, ambiguous, incoherent, or explicitly nonconforming work until the
+  five style points are exhausted.
+
+\item[Participation: 5 points]
+  Attendance and participation during final presentations from November 30
+  through December 11 are required. Missing this part of the course forfeits
+  the five participation points. Each student is expected to ask at least two
+  substantive questions during the presentation period.
+
+\item[Homework: 20 points]\hspace{0pt}
+\begin{itemize}
+\item Homework will be assigned roughly weekly during the first two-thirds of
+  the semester. Students may consult one another or the instructor, but each
+  student must submit independent work.
+\item Project-completion instructions must be followed closely.
+\item Work is due at the stated date and time unless additional flexibility is
+  announced. Work submitted within 48 hours after the deadline receives a
+  linearly decreasing maximum score from 95\% to 50\%. Work submitted more
+  than 48 hours late will not be graded.
+\item Submitted work that duplicates or copies another solution receives no
+  credit.
+\end{itemize}
+
+\item[Topic Presentations: 20 points]
+  Students select topics from the public task board, obtain approval, prepare
+  a RevealJS slide deck, and present it to the class. The presentation must be
+  submitted for preview at least one week before the scheduled presentation;
+  approval and timely preview account for 4 points. The oral presentation
+  accounts for 10 points. Successful completion of a pull request containing
+  the revised slide source and topical catalog entry within two weeks after
+  the presentation accounts for the remaining 6 points.
+
+\item[Midterm Project: 20 points]
+  The midterm project will be assigned and will require completion of the
+  analysis component of a full data-science project. Details, dates, and
+  deliverables will be posted on HuskyCT.
+
+\item[Final Project: 30 points]
+  The final-project topic is chosen by the student and should demonstrate the
+  complete cycle of a real data-science project. Data-science competition
+  sites such as \url{https://kaggle.com} may provide suitable ideas.
+
+\begin{itemize}
+\item Undergraduate students in STAT 3255 will give 15-minute presentations during
+  the final two instructional weeks, November 30--December 11. The order will
+  be derived from the random order determined by the class.
+
+\item Graduate students in STAT 5255 will submit a final written report by
+  11:59 pm on Friday, December 11, 2026.
+
+\item A one-page proposal is due by 11:59 pm on Friday, October 23. The proposal
+  accounts for 5 of the 30 final-project points. A proposal submitted during
+  the following 24-hour grace period can receive at most 50\% of the proposal
+  credit. A proposal submitted after the grace period receives no proposal
+  credit but must still be completed.
+
+\item By 11:59 pm on Friday, October 30, each student must arrange a meeting with
+  the instructor about the project, with the meeting to occur by Friday,
+  November 6. The meeting accounts for 5 points. Failure to arrange or attend
+  the meeting results in loss of the corresponding credit.
+\end{itemize}
+
+\item[Generative Artificial Intelligence:]
+  Students are encouraged to use AI tools to help set up their computing
+  environments, learn data-science operations and workflows, and brainstorm
+  ideas. Homework, topic presentations, the midterm project, and final projects
+  must be completed through the student's own work. Any AI use related to
+  submitted work must be disclosed. Students remain responsible for verifying
+  all code, claims, citations, and results and for being able to explain and
+  defend their work.
+
+\item[Avoiding Plagiarism:]
+  Students are responsible for avoiding plagiarism and meeting University
+  expectations for academic integrity. Consult the UConn Library resources on
+  \href{https://guides.lib.uconn.edu/plagiarism}{understanding plagiarism} and
+  \href{https://guides.lib.uconn.edu/citing}{citing sources}.
+
+\item[University Policies and Academic Integrity:]
+  This course adheres to the UConn
+  \href{https://policy.uconn.edu/2023/07/11/academic-scholarly-and-professional-integrity-and-misconduct-aspim-policy-on/}{Academic,
+  Scholarly, and Professional Integrity and Misconduct policy}.
+
+\item[Copyright:]
+  Copyrighted course materials are provided only for use by students enrolled
+  in the course and may not be retained or redistributed except as authorized.
+  Public collaborative materials are governed by the license stated in their
+  repository.
+
+\item[Recommendation Letters:]
+  A useful recommendation letter evaluates attributes such as motivation,
+  academic preparation, research or teaching potential, teamwork,
+  communication, and maturity. Students seeking a letter should demonstrate
+  those attributes through their work and interactions with the instructor.
+
+\item[Disclaimer:]
+  The instructor reserves the right to change the syllabus when circumstances
+  require it. Changes will be communicated to the class.
+\end{description}
+\end{multicols}
+
+\end{document}
