@@ -5,6 +5,19 @@ This file contains semester-dependent material. Replace all bracketed
 placeholders before publication.
 -->
 
+## License
+
+Except where otherwise noted, the original educational content in these notes
+and the linked student presentations is licensed under the
+[Creative Commons Attribution-NonCommercial 4.0 International
+License](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0).
+Users may share and adapt the material for noncommercial purposes with
+appropriate attribution. Third-party material remains subject to its original
+copyright and license; contributors must identify and properly attribute such
+material. See the repository's
+[license file](https://github.com/statds/ids-f26/blob/main/LICENSE.md) for
+details.
+
 ## Collaborative Notes
 
 The Fall 2026 collaborative notes supplement the instructor-authored
@@ -43,38 +56,51 @@ The
 [example Quarto presentation](presentations/example-quarto-presentations/)
 demonstrates the expected directory layout and basic slide conventions.
 
-## License
+## Wishlist
 
-Except where otherwise noted, the original educational content in these notes
-and the linked student presentations is licensed under the
-[Creative Commons Attribution-NonCommercial 4.0 International
-License](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0).
-Users may share and adapt the material for noncommercial purposes with
-appropriate attribution. Third-party material remains subject to its original
-copyright and license; contributors must identify and properly attribute such
-material. See the repository's
-[license file](https://github.com/statds/ids-f26/blob/main/LICENSE.md) for
-details.
-
-## Goals for the Semester
-
-At the start of the semester, each class member may add a short wishlist in
-alphabetical order by last name. For example:
+At the start of the semester, each class member should add two or three goals
+for the course beneath their name. Keep the names in alphabetical order by
+last name and use a nested Markdown list, as in the instructor's example:
 
 - Yan, Jun
   - Make practical data-science tools accessible to undergraduates.
   - Share experience completing real-world data-science projects.
   - Help students develop reproducible and collaborative working habits.
+- Anikeev, Katerina
+- Bucco, Sadie
+- Chervonny, Erik
+- Chok, Isaac
+- Choudhury, Ruhama
+- Distefano, Cristian
+- Fontana, Adam
+- Hartman, Mikaela
+- Horan, Elizabeth
+- Kelly, Daniel
+- Kiani, Ismail
+- Mansur, Mahiba
+- Maras, Ruveyda
+- Mettler, Ethan
+- Morissette, Carter
+- Nair, Pardhip
+- Ng, Yee-Ying
+- Noe, Amanda
+- Ong, Enrico
+- Parkins, Jack
+- Parsons, Sonya
+- Rosen, Seth
+- Tria, Nicholas
+- Wang, Chaoyang
+- Wang, Leo
 
-Add your goals through a pull request and follow the Markdown syntax for nested
-lists.
+Add the goals through a focused pull request. Do not edit anyone else's entry
+or include private information.
 
 ## Projects
 
-### Midterm [Exam or Project]
+### Midterm
 
-[Add the semester's midterm description, dates, deliverables, and assessment
-criteria.]
+The midterm format, dates, and deliverables will be added after they are
+finalized.
 
 ### Final Project
 
@@ -95,32 +121,121 @@ time-sensitive challenges.]
 
 ## Topic Presentations
 
-### Selecting a Topic
+The private course syllabus contains the assessment policies for topic
+presentations. This public chapter documents the presentation order, topic
+options, schedule, and contribution workflow without reproducing grading
+details.
+
+### Presentation Order
+
+The topic presentation order will be finalized in class. Each student will
+contribute one digit to the random seed. The current seed produces a
+provisional order; after the contributed digits replace it, the same seed will
+reproduce the final order on every render.
+
+```{python}
+#| eval: true
+#| echo: true
+import csv
+
+with open("roster.txt", newline="") as file:
+    roster = csv.DictReader(file, delimiter="\t")
+    presenters = [
+        f"{row['Last Name']}, {row['First Name']}"
+        for row in roster
+    ]
+
+import random
+
+## seed jointly set by the class, with one digit from each student
+random.seed(0)  # replace 0 with the sum of the contributed digits
+random.sample(presenters, len(presenters))
+```
+
+The displayed order is provisional until the class sets the seed. The final
+order will establish priority for topic selection and the default sequence for
+topic presentations. Some topics have prerequisites, so the instructor may
+adjust the schedule. Students may exchange slots by mutual agreement. Record
+an approved change through a pull request and notify the instructor.
+
+### Selecting a Topic and Task Board
 
 Discuss your proposed topic with the instructor at least one week before the
 presentation. Topics may have prerequisites; for example, decision trees
-should ordinarily precede random forests and gradient boosting.
+should ordinarily precede random forests and gradient boosting. The task board
+provides possible topics; other topics may be added or refined with approval.
 
-Possible topics include data import and export, data manipulation, SQL,
-visualization, spatial data, web scraping, statistical modeling, dimension
-reduction, clustering, machine learning, deep learning, natural-language
-processing, and reproducible communication with Quarto.
+#### Data Acquisition and Engineering
 
-### Assessment
+- Import and export data
+- Data formats and Apache Arrow
+- Database operations with SQL
+- Accessing U.S. Census data
+- Web scraping
+- Working with APIs
 
-[Add the semester's point allocation for topic approval, presentation, and
-follow-up contribution.]
+#### Data Wrangling and Visualization
+
+- Data manipulation with pandas
+- Grammar of graphics
+- Interactive visualization
+- Visualizing spatial data
+- Spatial data with GeoPandas
+- Animation
+- Missing-data methods
+
+#### Statistical Modeling and Machine Learning
+
+- Statistical analysis for proportions and rates
+- Logistic regression and its extensions
+- Decision trees
+- Random forests
+- Gradient boosting
+- Support vector machines
+- Naive Bayes
+- Variable-importance methods
+- K-means clustering
+- Principal component analysis
+- Multidimensional scaling
+- t-SNE
+- Uniform manifold approximation and projection
+- False-discovery-rate control
+
+#### Advanced Methods and Artificial Intelligence
+
+- Neural-network foundations
+- Deep learning
+- Convolutional and recurrent neural networks
+- Autoencoders
+- Natural-language processing
+- Large language models
+- LLM agents
+- Automatic differentiation
+- Reinforcement learning
+- Developing a Python package
+
+#### Reproducible Communication
+
+- Markdown
+- Presentations with Quarto
+- Effective data-science communication
+- Building a personal website with Quarto and GitHub Pages
 
 ### Schedule
+
+The dated schedule will be completed after topics and presentation dates are
+confirmed. The topic title should link to the rendered slides after the
+student's contribution is accepted.
 
 | Date | Presenter | Topic |
 |---|---|---|
 | [date] | [name] | [topic] |
 
-Students may exchange presentation slots by mutual agreement. Update the
-schedule through a pull request and notify the instructor.
-
 ### Final Project Presentation Schedule
+
+The final-project presentation schedule ordinarily follows the same student
+order. Dates, locations, and any grouping of presenters will be added when the
+course calendar is finalized.
 
 | Date | Location | Presenter |
 |---|---|---|
