@@ -281,15 +281,23 @@ classmates.
 Graded work is submitted through the designated Classroom 50 repository, not
 through the instructor book or collaborative-notes repository.
 
+Each assignment submission must use one `.qmd` source file that solves all
+assigned problems. Label every problem clearly inside that file so that the
+source and rendered PDF are easy to navigate. Use the
+[homework template](https://github.com/statds/hw-template) as the starting
+point for the required structure.
+
 For each assignment:
 
 1. Accept the assignment using the link provided through the course site.
 2. Clone the resulting repository to your computer.
-3. Develop the Quarto source locally and organize the work into meaningful
-   commits.
-4. Push the commits to your assignment repository.
-5. Follow the assignment instructions for submitting rendered output, such as
-   attaching a PDF or standalone HTML document to a GitHub release.
+3. Develop the single Quarto source file locally, solve every assigned
+   problem, and organize the work into meaningful commits.
+4. Push all source files and their complete commit history to your assignment
+   repository. A final snapshot without the development history is not a
+   complete submission.
+5. Render the assignment and submit the PDF for ease of grading, following the
+   assignment instructions for where to attach it.
 
 Keep generated files out of the repository unless the assignment explicitly
 requests them. Use Git from the command line rather than GitHub's file-upload
