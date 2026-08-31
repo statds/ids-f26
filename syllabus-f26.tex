@@ -3,6 +3,11 @@
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
 \usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
+}
 \usepackage[anythingbreaks]{breakurl}
 \usepackage{multicol}
 \usepackage[compact]{titlesec}
@@ -12,7 +17,7 @@
 \let\code=\texttt
 
 \usepackage{enumitem}
-\setlist{parsep=0pt, leftmargin=4mm, topsep=0pt, itemsep=6pt}
+\setlist{parsep=0pt, leftmargin=4mm, topsep=0pt, itemsep=5pt}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -40,11 +45,11 @@
   jun.yan@uconn.edu
 
 \item[Lectures:]
-  TuTh: 3:30--4:45 pm\\
-  AUST 105
+  MoWe 8:40AM--9:55AM\\
+  AUST 103
 
 \item[Office Hours:]
-  TuTh: 11:00 am--12:00 pm
+  MoTh: 12:00--1:00 pm
   or by appointment.
 
 \item[Email Etiquette:]
@@ -63,14 +68,14 @@
   Prior experience with Python and regression is assumed.
 
 \item[Course Description:]
-  Introduction to data science for effectively storing, processing,
-  analyzing, and making inferences from data. Topics include project
-  management, data preparation, data visualization, statistical models,
-  machine learning, distributed computing, and ethics.
+  This course introduces data science methods for storing, processing, and
+  analyzing data effectively and drawing inferences. Topics
+  include project management, data preparation, data visualization,
+  statistical models, machine learning, distributed computing, and ethics.
 
 \item[Course Materials:]
   Lecture notes, assignments, sample code, datasets, and other private course
-  material will be posted on HuskyCT at \url{https://lms.uconn.edu/}.
+  materials will be posted on HuskyCT at \url{https://lms.uconn.edu/}.
   Students are responsible for checking HuskyCT regularly.
 
 \item[Recommended Texts:]\hspace{0pt}
@@ -99,7 +104,8 @@
   \href{https://peps.python.org/pep-0008/}{Python Code Style Guide}.
 
   \proglang{Git} will be used for project management and collaboration, and
-  GitHub Classroom will be used for homework submission and grading. Practice
+  Classroom 50, an open-source replacement for the retired GitHub Classroom,
+  will be used for homework submission and grading. Practice
   Git with the \href{https://gitexercises.fracz.com}{online exercises}.
 
   Command-line operation is essential for reproducibility and automation.
@@ -110,31 +116,43 @@
   \proglang{Quarto} will be used for student presentation contributions,
   homework assignments, and projects. Always be ready to learn new tools.
 
-\item[Course Notes:]
-  The instructor-authored
+\item[Class Notes:]
+  The course uses two collections of notes. The instructor-authored
   \href{https://statds.github.io/ids-book/}{Introduction to Data Science book}
-  contains the permanent course notes. The Fall 2026
-  \href{https://statds.github.io/ids-f26/}{collaborative notes site}
-  organizes student-created RevealJS presentations. Its source is publicly
-  available in the
+  contains the permanent course notes. The
+  \href{https://statds.github.io/ids-f26/}{Fall 2026 class notes}
+  organize and link the student-created RevealJS presentations whose sources
+  have been accepted into the
   \href{https://github.com/statds/ids-f26}{Fall 2026 GitHub repository}.
 
-  Earlier collaborative notes include
-  \href{https://statds.github.io/ids-s26}{Spring 2026},
-  \href{https://statds.github.io/ids-f25}{Fall 2025},
-  \href{https://statds.github.io/ids-s25}{Spring 2025}, and
-  \href{https://statds.github.io/ids-f24}{Fall 2024}.
+  Past class notes are available for
+  \href{https://statds.github.io/ids-f25}{Fall 2025} and
+  \href{https://statds.github.io/ids-s26}{Spring 2026}.
 
 \item[Fall 2026 Calendar:]
-  The semester begins Monday, August 31. Labor Day, Monday, September 7, has
-  no classes. Thanksgiving recess runs Sunday, November 22, through Sunday,
-  November 29. The final two instructional weeks, Monday, November 30,
+  The semester begins Monday, August 31. Classes do not meet on Labor Day,
+  Monday, September 7. Thanksgiving recess runs Sunday, November 22, through
+  Sunday, November 29. The final two instructional weeks, Monday, November 30,
   through Friday, December 11, are reserved for final-project presentations.
   Friday, December 11, is the last day of classes. Final examinations run
   Monday, December 14, through Sunday, December 20.
 
+\item[The First Two Weeks:]
+  The first two weeks are intentionally demanding because students must learn
+  the computing and submission workflow under real deadlines. The first two
+  assignments are therefore substantial, and by the end of the second week
+  every student is expected to be able to set up the required environment,
+  complete the work, and submit it correctly through Classroom 50. Seek
+  help immediately when a setup or submission problem arises; not knowing how
+  to submit work by midsemester is not acceptable.
+
+  Use these two weeks to make an honest decision about whether you have the
+  time and commitment required for the course. Students who cannot meet these
+  early expectations should drop the course by the applicable deadline. Do
+  not assume that this warning applies only to other students.
+
 \item[Grading:]
-The grade for this course will be based on:
+The course grade will be based on the following components:
 \begin{center}
   \rowcolors{2}{blue!20}{gray!20}
   \begin{tabular}{lrr}
@@ -175,16 +193,15 @@ The grade for this course will be based on:
   announced. Work submitted within 48 hours after the deadline receives a
   linearly decreasing maximum score from 95\% to 50\%. Work submitted more
   than 48 hours late will not be graded.
-\item Submitted work that duplicates or copies another solution receives no
-  credit.
+\item Submitted work that duplicates another solution receives no credit.
 \end{itemize}
 
 \item[Topic Presentations: 20 points]
-  Students select topics from the public task board, obtain approval, prepare
-  a RevealJS slide deck, and present it to the class. The presentation must be
-  submitted for preview at least one week before the scheduled presentation;
-  approval and timely preview account for 4 points. The oral presentation
-  accounts for 10 points. Successful completion of a pull request containing
+  Each student selects a topic from the public task board, obtains approval,
+  prepares a RevealJS slide deck, and presents it to the class. The
+  presentation must be submitted for preview at least one week before the
+  scheduled presentation; approval and timely preview account for 4 points.
+  The oral presentation accounts for 10 points. Successful completion of a pull request containing
   the revised slide source and topical catalog entry within two weeks after
   the presentation accounts for the remaining 6 points.
 
@@ -221,9 +238,9 @@ The grade for this course will be based on:
 \item[Generative Artificial Intelligence:]
   Students are encouraged to use AI tools to help set up their computing
   environments, learn data-science operations and workflows, and brainstorm
-  ideas. Homework, topic presentations, the midterm project, and final projects
-  must be completed through the student's own work. Any AI use related to
-  submitted work must be disclosed. Students remain responsible for verifying
+  ideas. Each student must complete their own homework, topic presentation,
+  midterm project, and final project. Any AI use related to submitted work
+  must be disclosed. Students remain responsible for verifying
   all code, claims, citations, and results and for being able to explain and
   defend their work.
 
