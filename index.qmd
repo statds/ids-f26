@@ -297,11 +297,56 @@ interface, and never commit credentials or large data files.
 
 ## Syllabus Check
 
-[Replace these prompts with questions based on the current syllabus.]
+Use the syllabus and its linked resources to answer the following questions.
+The questions are intended to clarify course expectations rather than reward
+memorization; consult the relevant source when uncertain.
 
-- What is the policy for late work?
-- What communication practices are expected?
-- How are style and reproducibility assessed?
-- What are the major project milestones?
-- What is the course policy on using generative AI?
-- What should a student provide when requesting a reference letter?
+1. Where should you look for private course materials, permanent instructor
+   notes, and Fall 2026 student presentations?
+2. What percentage of the grade comes from style, participation, homework,
+   topic presentations, the midterm project, and the final project? How does
+   the final-project requirement differ between STAT 3255 and STAT 5255?
+3. How are the 20 topic-presentation points divided among approval and preview,
+   the oral presentation, and the pull request? When is each component due?
+4. What must a topic-presentation pull request contain?
+5. When are the final two instructional weeks, and what attendance and
+   participation are required during them?
+6. What are the proposal, instructor-meeting, presentation, and final-report
+   deadlines for the final project?
+7. How does the maximum available homework credit change during the 48 hours
+   after a deadline? What happens after 48 hours?
+8. What kinds of AI use are encouraged? Which graded components must be
+   completed independently, and when must AI use be disclosed?
+9. According to the linked
+   [email-etiquette guide](https://marktomforde.com/academic/undergraduates/Email-Etiquette.html),
+   what greeting, subject line, closing, and identifying information should a
+   professional email contain?
+10. What should you check before emailing a question whose answer may already
+    appear in the syllabus, assignment instructions, or course notes?
+11. How long should you ordinarily allow for an email response, and which
+    conversations are better handled during office hours?
+12. According to [PEP 8](https://peps.python.org/pep-0008/), how many spaces
+    should each indentation level use, what line lengths are recommended, and
+    where should imports appear?
+13. What skills can you practice with
+    [Git Exercises](https://gitexercises.fracz.com/), and why are small,
+    meaningful commits preferable to one large final commit?
+14. What is the difference between collaboration and copying when completing
+    homework or a project?
+15. Using the UConn Library guides on
+    [avoiding plagiarism](https://guides.lib.uconn.edu/plagiarism) and
+    [citing sources](https://guides.lib.uconn.edu/citing), what material must
+    be quoted, paraphrased, cited, or otherwise attributed?
+16. Under UConn's
+    [academic-integrity policy](https://policy.uconn.edu/2023/07/11/academic-scholarly-and-professional-integrity-and-misconduct-aspim-policy-on/),
+    why are students expected to ask before using an outside resource when an
+    assignment does not explicitly authorize it?
+17. Read UConn's [Student Code](https://community.uconn.edu/the-student-code/)
+    and its
+    [academic-integrity appendix](https://community.uconn.edu/the-student-code/the-student-code-appendix-a/).
+    What responsibilities do students have for their own work, proper
+    attribution, and avoiding an unfair advantage?
+18. Why are command-line operation, Git, reproducible code, and Quarto treated
+    as data-science skills rather than merely software preferences?
+19. What information and demonstrated qualities would help the instructor
+    write a useful recommendation letter?
