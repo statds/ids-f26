@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jun Yan and Students in Fall 2026">
-<meta name="dcterms.date" content="2026-08-31">
+<meta name="dcterms.date" content="2026-09-09">
 
 <title>Introduction to Data Science</title>
 <style>
@@ -27,41 +27,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -237,7 +202,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 31, 2026</p>
+      <p class="date">September 9, 2026</p>
     </div>
   </div>
   
@@ -302,19 +267,19 @@ placeholders before publication.
 <li>Distefano, Cristian</li>
 <li>Fontana, Adam</li>
 <li>Hartman, Mikaela</li>
+<li>Hilmi, Sofiane</li>
 <li>Horan, Elizabeth</li>
 <li>Kelly, Daniel</li>
 <li>Kiani, Ismail</li>
+<li>Liu, Ethan</li>
 <li>Mansur, Mahiba</li>
 <li>Maras, Ruveyda</li>
 <li>Mettler, Ethan</li>
 <li>Morissette, Carter</li>
 <li>Nair, Pardhip</li>
-<li>Ng, Yee-Ying</li>
 <li>Noe, Amanda</li>
 <li>Ong, Enrico</li>
 <li>Parkins, Jack</li>
-<li>Parsons, Sonya</li>
 <li>Rosen, Seth</li>
 <li>Tria, Nicholas</li>
 <li>Wang, Chaoyang</li>
@@ -348,49 +313,22 @@ placeholders before publication.
 <section id="presentation-order" class="level3">
 <h3 class="anchored" data-anchor-id="presentation-order">Presentation Order</h3>
 <p>The topic presentation order will be finalized in class. Each student will contribute one digit to the random seed. The current seed produces a provisional order; after the contributed digits replace it, the same seed will reproduce the final order on every render.</p>
-<div id="8656c5b3" class="cell" data-execution_count="1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"roster.txt"</span>, newline<span class="op">=</span><span class="st">""</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    roster <span class="op">=</span> csv.DictReader(<span class="bu">file</span>, delimiter<span class="op">=</span><span class="st">"</span><span class="ch">\t</span><span class="st">"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    presenters <span class="op">=</span> [</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'Last Name'</span>]<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>row[<span class="st">'First Name'</span>]<span class="sc">}</span><span class="ss">"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> row <span class="kw">in</span> roster</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">## seed jointly set by the class, with one digit from each student</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">0</span>)  <span class="co"># replace 0 with the sum of the contributed digits</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>random.sample(presenters, <span class="bu">len</span>(presenters))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>['Maras, Ruveyda',
- 'Mettler, Ethan',
- 'Bucco, Sadie',
- 'Horan, Elizabeth',
- 'Ng, Yee-Ying',
- 'Nair, Pardhip',
- 'Wang, Leo',
- 'Kelly, Daniel',
- 'Parkins, Jack',
- 'Mansur, Mahiba',
- 'Noe, Amanda',
- 'Chok, Isaac',
- 'Rosen, Seth',
- 'Chervonny, Erik',
- 'Choudhury, Ruhama',
- 'Parsons, Sonya',
- 'Tria, Nicholas',
- 'Kiani, Ismail',
- 'Hartman, Mikaela',
- 'Distefano, Cristian',
- 'Fontana, Adam',
- 'Ong, Enrico',
- 'Wang, Chaoyang',
- 'Anikeev, Katerina',
- 'Morissette, Carter']</code></pre>
-</div>
-</div>
+<pre><code>#| eval: true
+#| echo: true
+import csv
+
+with open("roster.txt", newline="") as file:
+    roster = csv.DictReader(file, delimiter="\t")
+    presenters = [
+        f"{row['Last Name']}, {row['First Name']}"
+        for row in roster
+    ]
+
+import random
+
+## seed jointly set by the class, with one digit from each student
+random.seed(0)  # replace 0 with the sum of the contributed digits
+random.sample(presenters, len(presenters))</code></pre>
 <p>The displayed order is provisional until the class sets the seed. The final order will establish priority for topic selection and the default sequence for topic presentations. Some topics have prerequisites, so the instructor may adjust the schedule. Students may exchange slots by mutual agreement. Record an approved change through a pull request and notify the instructor.</p>
 </section>
 <section id="selecting-a-topic-and-task-board" class="level3">
