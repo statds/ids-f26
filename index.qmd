@@ -133,7 +133,7 @@ contribute one digit to the random seed. The current seed produces a
 provisional order; after the contributed digits replace it, the same seed will
 reproduce the final order on every render.
 
-```{python}
+```
 #| eval: true
 #| echo: true
 import csv
