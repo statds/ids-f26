@@ -69,6 +69,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Anikeev, Katerina
 - Bucco, Sadie
 - Chervonny, Erik
+  - Improve my practical problem solving.
+  - Transfer skills to other courses.
+  - Leverage what I learn to find a job.
 - Chok, Isaac
 - Choudhury, Ruhama
 - Distefano, Cristian
