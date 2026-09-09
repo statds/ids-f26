@@ -90,6 +90,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Rosen, Seth
 - Tria, Nicholas
 - Wang, Chaoyang
+    - Develop practical skills with Git and Github
+    - Be more familiar with Python programming
+    - Learn how to deliver the final results with Quarto
 - Wang, Leo
 
 Add the goals through a focused pull request. Do not edit anyone else's entry
