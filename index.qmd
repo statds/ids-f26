@@ -68,6 +68,9 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Help students develop reproducible and collaborative working habits.
 - Anikeev, Katerina
 - Bucco, Sadie
+  - Become proficient using GitHub and git commands
+  - Become a better collaborator - improve my use of GitHub for collaborative projects and work on writing clear and reproducible code
+  - Get more comfortable using keyboard shortcuts instead of relying on my mouse
 - Chervonny, Erik 
 - Chok, Isaac
 - Choudhury, Ruhama
