@@ -343,9 +343,9 @@ memorization; consult the relevant source when uncertain.
     meaningful commits preferable to one large final commit?
 14. What is the difference between collaboration and copying when completing
     homework or a project?
-15. Using the UConn Library guides on
-    [avoiding plagiarism](https://guides.lib.uconn.edu/plagiarism) and
-    [citing sources](https://guides.lib.uconn.edu/citing), what material must
+15. Using the UConn Library resources on
+    [avoiding plagiarism](https://lib.uconn.edu/services/ask/get-help/writing/plagiarism-resources/)
+    and [citing sources](https://guides.lib.uconn.edu/quickstart), what material must
     be quoted, paraphrased, cited, or otherwise attributed?
 16. Under UConn's
     [academic-integrity policy](https://policy.uconn.edu/2023/07/11/academic-scholarly-and-professional-integrity-and-misconduct-aspim-policy-on/),
