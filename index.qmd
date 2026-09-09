@@ -68,7 +68,7 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Help students develop reproducible and collaborative working habits.
 - Anikeev, Katerina
 - Bucco, Sadie
-- Chervonny, Erik
+- Chervonny, Erik 
 - Chok, Isaac
 - Choudhury, Ruhama
 - Distefano, Cristian
@@ -77,7 +77,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Hilmi, Sofiane
 - Horan, Elizabeth
 - Kelly, Daniel
-- Kiani, Ismail
+- Kiani, Ismail 
+  - i want to get fimilarise ith git hub. 
+  
 - Liu, Ethan
 - Mansur, Mahiba
 - Maras, Ruveyda
