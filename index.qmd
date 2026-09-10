@@ -77,7 +77,7 @@ last name and use a nested Markdown list, as in the instructor's example:
     - Learn which models to use and when, including which models are 
     best suited for different datasets and purposes
     - Develop stronger skills in interpreting and evaluating 
-    black box models, such as XGBoosts.
+    black box models, such as XGBoost models.
 - Hartman, Mikaela
 - Hilmi, Sofiane
 - Horan, Elizabeth
