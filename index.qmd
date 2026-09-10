@@ -91,6 +91,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Parkins, Jack
 - Rosen, Seth
 - Tria, Nicholas
+  - Get comfortable using Git and Github for future projects
+  - Gain more valuable experience coding in Python
+  - Learn more about data science and data science projects
 - Wang, Chaoyang
 - Wang, Leo
 
