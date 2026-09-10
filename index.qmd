@@ -76,8 +76,8 @@ last name and use a nested Markdown list, as in the instructor's example:
     - Become proficient in Git and GitHub workflows
     - Learn which models to use and when, including which models are 
     best suited for different datasets and purposes
-    - Acquire more skills in interpretation and evaluation of black box 
-    models (like XGBoost)
+    - Develop stronger skills in interpreting and evaluating 
+    black-box models, such as XGBoost.
 - Hartman, Mikaela
 - Hilmi, Sofiane
 - Horan, Elizabeth
