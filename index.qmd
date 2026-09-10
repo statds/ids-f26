@@ -93,7 +93,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Tria, Nicholas
 - Wang, Chaoyang
 - Wang, Leo
-  - Learn from Professor Yan and classmates.
+  - Learn from Professor Yan and classmates through projects.
   - Develop my own understanding and practical skills in data science.
   - Explore applications of data science in cognitive science.
 
