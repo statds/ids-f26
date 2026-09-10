@@ -93,7 +93,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Tria, Nicholas
   - Get more comfortable using Git and Github to improve efficiency
   - Gain valuable experience using Python to visualize and interpret data
-  - Learn more about data science as a discipline
+  - Learn more about Data Science as a discipline and its importance
 - Wang, Chaoyang
 - Wang, Leo
 
