@@ -68,25 +68,27 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Help students develop reproducible and collaborative working habits.
 - Anikeev, Katerina
 - Bucco, Sadie
-- Chervonny, Erik
+- Chervonny, Erik 
 - Chok, Isaac
 - Choudhury, Ruhama
 - Distefano, Cristian
 - Fontana, Adam
 - Hartman, Mikaela
+- Hilmi, Sofiane
 - Horan, Elizabeth
 - Kelly, Daniel
-- Kiani, Ismail
+- Kiani, Ismail 
+  - i want to get fimilarise ith git hub. 
+  
+- Liu, Ethan
 - Mansur, Mahiba
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
 - Nair, Pardhip
-- Ng, Yee-Ying
 - Noe, Amanda
 - Ong, Enrico
 - Parkins, Jack
-- Parsons, Sonya
 - Rosen, Seth
 - Tria, Nicholas
 - Wang, Chaoyang
@@ -136,7 +138,7 @@ contribute one digit to the random seed. The current seed produces a
 provisional order; after the contributed digits replace it, the same seed will
 reproduce the final order on every render.
 
-```{python}
+```
 #| eval: true
 #| echo: true
 import csv
@@ -344,9 +346,9 @@ memorization; consult the relevant source when uncertain.
     meaningful commits preferable to one large final commit?
 14. What is the difference between collaboration and copying when completing
     homework or a project?
-15. Using the UConn Library guides on
-    [avoiding plagiarism](https://guides.lib.uconn.edu/plagiarism) and
-    [citing sources](https://guides.lib.uconn.edu/citing), what material must
+15. Using the UConn Library resources on
+    [avoiding plagiarism](https://lib.uconn.edu/services/ask/get-help/writing/plagiarism-resources/)
+    and [citing sources](https://guides.lib.uconn.edu/quickstart), what material must
     be quoted, paraphrased, cited, or otherwise attributed?
 16. Under UConn's
     [academic-integrity policy](https://policy.uconn.edu/2023/07/11/academic-scholarly-and-professional-integrity-and-misconduct-aspim-policy-on/),
