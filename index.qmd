@@ -75,7 +75,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Fontana, Adam
     - Become proficient in Git and GitHub workflows
     - Learn about what model to use when; which models are good for which datasets/for what purposes
-
+    - Acquire more skills in interpretation and evaluation of black box models (like XGBoost)
 - Hartman, Mikaela
 - Hilmi, Sofiane
 - Horan, Elizabeth
