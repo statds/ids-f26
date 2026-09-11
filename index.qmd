@@ -83,6 +83,7 @@ last name and use a nested Markdown list, as in the instructor's example:
     conclusions.
     Keep the cleaning steps in a script so I can repeat the analysis.
   - Make clear charts that help explain my results.
+    Choose a chart that fits the question and label the axes and units.
 - Horan, Elizabeth
 - Kelly, Daniel
 - Kiani, Ismail 
