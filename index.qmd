@@ -85,6 +85,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
+  - Get comfortable with git and the command line.n 
+
+
 - Nair, Pardhip
 - Noe, Amanda
 - Ong, Enrico
