@@ -71,6 +71,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chervonny, Erik 
 - Chok, Isaac
   - Get familiar and comfortable with git and the command line.
+  - Build experience in data wrangling and visualization.
 - Choudhury, Ruhama
 - Distefano, Cristian
 - Fontana, Adam
