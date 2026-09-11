@@ -85,8 +85,8 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
-  - Get comfortable with git and the command line.n 
-
+  - Get comfortable using git and the command line for coursework.
+  - Rely less on AI assistants for coding as the semester progresses.
 
 - Nair, Pardhip
 - Noe, Amanda
