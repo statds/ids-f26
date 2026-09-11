@@ -72,7 +72,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chok, Isaac
 - Choudhury, Ruhama
   - Become proficient in coding in Python and using GitHub and VSCode.
-  - Master the workflow and using the command line.
+  - Become a more efficient coder through learning how to best use the command-line.
   - Apply data science and statistics to real-world problems. 
 - Distefano, Cristian
 - Fontana, Adam
