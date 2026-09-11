@@ -90,7 +90,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Rosen, Seth
 - Tria, Nicholas
 - Wang, Chaoyang
-  - Develop practical skills with Git and GitHub workflows, including commit, push, add, diff, etc commands.
+  - Develop practical skills with Git and GitHub workflows, including git add, git diff, git status, git commit, and git push.
   - Strengthen my ability to use Python for data science application. 
   - Learn how to communicate reproducible results efficiently with Quarto.
 - Wang, Leo
