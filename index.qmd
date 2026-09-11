@@ -93,7 +93,6 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Tria, Nicholas
 - Wang, Chaoyang
 - Wang, Leo
-  - Learn to complete a reproducible data science project.
   - Learn to create clear and informative data visualizations.
   - Learn to fit statistical models and interpret their results.
 
