@@ -79,7 +79,8 @@ last name and use a nested Markdown list, as in the instructor's example:
     Practice making changes on branches and opening pull requests.
     Use review feedback to improve my work.
   - Learn to clean and analyze data with Python.
-    Check for missing values before drawing conclusions.
+    Check for missing values and duplicate records before drawing
+    conclusions.
   - Make clear charts that help explain my results.
 - Horan, Elizabeth
 - Kelly, Daniel
