@@ -86,7 +86,8 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Mettler, Ethan
 - Morissette, Carter
   - Depend less on AI help while coding as the semester progresses, especially for debugging.
-  - Build real comfort with git and the command line, not just copy-pasted commands.
+  - Build genuine comfort with git and the command line, not just copy-pasted commands.
+  
 - Nair, Pardhip
 - Noe, Amanda
 - Ong, Enrico
