@@ -85,7 +85,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
-  - Depend less on AI assistance for coding as the semester progresses.
+  - Depend less on AI assistance for coding as the semester progresses, especially for debugging.
   - Build real comfort with git and the command line for coursework.
 
 - Nair, Pardhip
