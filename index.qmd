@@ -83,7 +83,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Liu, Ethan
 - Mansur, Mahiba
 - Maras, Ruveyda
-    - Learn how to use Git.
+    - My goal in this course is to learn how to use Git.
 - Mettler, Ethan
 - Morissette, Carter
 - Nair, Pardhip
