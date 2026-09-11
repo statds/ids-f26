@@ -71,6 +71,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chervonny, Erik 
 - Chok, Isaac
 - Choudhury, Ruhama
+  - Become proficient in coding in Python and using GitHub and VSCode.
+  - Become a more efficient coder through learning how to best use the command-line.
+  - Apply data science to real-world statistical problems like financial analysis and sports analytics.
 - Distefano, Cristian
 - Fontana, Adam
 - Hartman, Mikaela
