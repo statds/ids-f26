@@ -87,6 +87,10 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Morissette, Carter
 - Nair, Pardhip
 - Noe, Amanda
+  - I want to become proficient in keeping an organized workflow on GitHub.
+  - I want to become more confident in my python coding skills.
+  - I want to bolster my understand of technical data science and computer 
+  terms.
 - Ong, Enrico
 - Parkins, Jack
 - Rosen, Seth
