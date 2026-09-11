@@ -70,6 +70,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Bucco, Sadie
 - Chervonny, Erik 
 - Chok, Isaac
+  - Get familiar and comfortable with git and the command line.
 - Choudhury, Ruhama
 - Distefano, Cristian
 - Fontana, Adam
