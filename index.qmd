@@ -82,6 +82,7 @@ last name and use a nested Markdown list, as in the instructor's example:
   
 - Liu, Ethan
 - Mansur, Mahiba
+  - I want to get more comfortable using GitHub.
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
