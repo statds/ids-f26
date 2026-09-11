@@ -93,7 +93,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Tria, Nicholas
 - Wang, Chaoyang
 - Wang, Leo
-  - Learn from Professor Yan and classmates through projects.
+  - Learn to complete a reproducible data science project.
   - Develop practical skills in data visualization and statistical
     modeling with Python.
   - Explore applications of data science in cognitive science.
