@@ -78,7 +78,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Horan, Elizabeth
 - Kelly, Daniel
     - Get more comfortable using Python and Terminal
-    - Learn how to use Git and Github confidently
+    - Learn how to use Git and GitHub confidently
     - Get better at working with real world data
 - Kiani, Ismail 
   - i want to get fimilarise ith git hub. 
