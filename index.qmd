@@ -73,7 +73,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Choudhury, Ruhama
   - Become proficient in coding in Python and using GitHub and VSCode.
   - Become a more efficient coder through learning how to best use the command-line.
-  - Apply data science and statistics to real-world problems. 
+  - Apply data science to real-world statistical problems.
 - Distefano, Cristian
 - Fontana, Adam
 - Hartman, Mikaela
