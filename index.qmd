@@ -72,6 +72,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chok, Isaac
 - Choudhury, Ruhama
 - Distefano, Cristian
+  - Become more confident using Git and GitHub for collaborative projects.
+  - Strengthen my Data Science skills through practice and projects.
+  - Learn how to communicate data-driven/derived results clearly.
 - Fontana, Adam
 - Hartman, Mikaela
 - Hilmi, Sofiane
