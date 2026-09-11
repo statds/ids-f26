@@ -75,6 +75,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Fontana, Adam
 - Hartman, Mikaela
 - Hilmi, Sofiane
+  - Learn to use Git for class projects.
 - Horan, Elizabeth
 - Kelly, Daniel
 - Kiani, Ismail 
