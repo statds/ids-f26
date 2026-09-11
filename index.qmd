@@ -83,6 +83,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Liu, Ethan
 - Mansur, Mahiba
   - I want to get more comfortable using GitHub.
+  - I want to gain more hands on experience with different machine learning models.
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
