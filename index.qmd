@@ -91,7 +91,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Parkins, Jack
   - Learn to present a model to a non-technical audience
   - Get fluent with pandas and scikit-learn for exploratory work.
-  - Familarize myself with github and gitbash.
+  - fimilarise myself with github and gitbash.
 - Rosen, Seth
 - Tria, Nicholas
 - Wang, Chaoyang
