@@ -95,7 +95,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Wang, Leo
   - Learn to complete a reproducible data science project.
   - Learn to create clear and informative data visualizations.
-  - Learn to build and evaluate statistical models.
+  - Learn to fit statistical models and interpret their results.
 
 Add the goals through a focused pull request. Do not edit anyone else's entry
 or include private information.
