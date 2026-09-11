@@ -72,6 +72,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chok, Isaac
 - Choudhury, Ruhama
   - Get comfortable using GitHub and the command-line.
+  - Develop a better understanding of data science and the workflow. 
 - Distefano, Cristian
 - Fontana, Adam
 - Hartman, Mikaela
