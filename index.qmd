@@ -74,7 +74,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Distefano, Cristian
 - Fontana, Adam
 - Hartman, Mikaela
-  - Become more familiar with critical software like GitHub, Git, and VSCodium.
+  - Become more comfortable using critical software like GitHub, Git, and VSCodium.
   - Expand my knowledge of Python and improve my general coding skills.
   - Gain real-world data-science skills that are applicable in a work setting.
 - Hilmi, Sofiane
