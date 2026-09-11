@@ -90,7 +90,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Ong, Enrico
    - Build fluency with the command line for everyday data-science work.
    - Practice core Git operations: cloning, pushing, and pulling changes.
-   - get comfortable creating and managing branches for real projects
+   - Get comfortable creating and managing branches for real projects.
   - Build fluency with the command line for everyday data-science work.
   - Practice core Git operations: cloning, pushing, and pulling changes.
   - Get comfortable creating and managing branches for real projects.
