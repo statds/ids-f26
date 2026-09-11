@@ -94,8 +94,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Wang, Chaoyang
 - Wang, Leo
   - Learn to complete a reproducible data science project.
-  - Develop practical skills in data visualization and statistical
-    modeling with Python.
+  - Develop practical skills in data visualization.
   - Explore applications of data science in cognitive science.
 
 Add the goals through a focused pull request. Do not edit anyone else's entry
