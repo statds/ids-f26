@@ -76,6 +76,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Hartman, Mikaela
 - Hilmi, Sofiane
   - Learn to use Git for class projects.
+  - Learn to clean and analyze data with Python.
 - Horan, Elizabeth
 - Kelly, Daniel
 - Kiani, Ismail 
