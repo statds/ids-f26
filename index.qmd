@@ -91,9 +91,6 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Build fluency with the command line for everyday data-science tasks.
   - Practice core Git operations: cloning, pushing, and pulling changes.
   - Get comfortable creating and managing branches for real projects.
-  - Build fluency with the command line for everyday data-science tasks.
-  - Practice core Git operations: cloning, pushing, and pulling changes.
-  - Get comfortable creating and managing branches for real projects.
 - Parkins, Jack
 - Rosen, Seth
 - Tria, Nicholas
