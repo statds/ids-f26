@@ -74,7 +74,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Distefano, Cristian
 - Fontana, Adam
 - Hartman, Mikaela
-  -
+  - Become more familiar using software like GitHub.
   -
   - 
 - Hilmi, Sofiane
