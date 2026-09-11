@@ -81,6 +81,7 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Learn to clean and analyze data with Python.
     Check for missing values and duplicate records before drawing
     conclusions.
+    Keep the cleaning steps in a script so I can repeat the analysis.
   - Make clear charts that help explain my results.
 - Horan, Elizabeth
 - Kelly, Daniel
