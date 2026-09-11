@@ -84,6 +84,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Mansur, Mahiba
   - I want to get more comfortable using GitHub.
   - I want to gain more hands on experience with different machine learning models.
+  - Create projects that help gain real life data science experience.
 - Maras, Ruveyda
 - Mettler, Ethan
 - Morissette, Carter
