@@ -78,8 +78,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Horan, Elizabeth
 - Kelly, Daniel
 - Kiani, Ismail 
-  - i want to get fimilarise ith git hub. 
-  
+  - I want to become familiar with GitHub.  
 - Liu, Ethan
 - Mansur, Mahiba
 - Maras, Ruveyda
