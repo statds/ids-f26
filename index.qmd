@@ -71,7 +71,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chervonny, Erik
   - Improve my practical problem solving through data science projects.
   - Transfer skills in using data science tools to other STEM courses, by developing a consistent workflow.
-  - Leverage data science methods I learn in the class to build a career.
+  - Leverage data science methods I learn in the class to build a career in the STEM field.
 - Chok, Isaac
 - Choudhury, Ruhama
 - Distefano, Cristian
