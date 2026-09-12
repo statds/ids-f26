@@ -71,7 +71,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Chervonny, Erik
   - Improve my practical problem solving.
   - Transfer skills to other courses.
-  - Leverage what I learn to find a job.
+  - Leverage what I learn to build a career.
 - Chok, Isaac
 - Choudhury, Ruhama
 - Distefano, Cristian
