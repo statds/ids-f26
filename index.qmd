@@ -83,6 +83,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Liu, Ethan
 - Mansur, Mahiba
 - Maras, Ruveyda
+    - My goal in this course is to learn how to use Git.
+    - My second goal is to strengthen the reproducibility of my work.
+    - My third goal is to strengthen my data storytelling skills.
 - Mettler, Ethan
 - Morissette, Carter
 - Nair, Pardhip
