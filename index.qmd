@@ -78,8 +78,9 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Horan, Elizabeth
 - Kelly, Daniel
 - Kiani, Ismail 
-  - i want to get fimilarise ith git hub. 
-  
+  - I want to become more familiar with GitHub and its branch-based workflow.
+  - I want to improve my Git command-line skills for managing version-controlled projects.
+  - I want to learn how to collaborate effectively on team projects using GitHub.  
 - Liu, Ethan
 - Mansur, Mahiba
 - Maras, Ruveyda
