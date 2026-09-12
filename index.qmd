@@ -79,7 +79,7 @@ last name and use a nested Markdown list, as in the instructor's example:
 - Kelly, Daniel
 - Kiani, Ismail 
   - I want to become more familiar with GitHub and its workflow.
-  - I want to improve my Git command-line skills.
+  - I want to improve my Git command-line skills for managing projects.
   - I want to learn how to collaborate on projects using GitHub.  
 - Liu, Ethan
 - Mansur, Mahiba
