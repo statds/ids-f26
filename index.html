@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jun Yan and Students in Fall 2026">
-<meta name="dcterms.date" content="2026-09-09">
+<meta name="dcterms.date" content="2026-09-14">
 
 <title>Introduction to Data Science</title>
 <style>
@@ -27,6 +27,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -158,6 +193,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
   <li><a href="#collaborative-notes" id="toc-collaborative-notes" class="nav-link" data-scroll-target="#collaborative-notes">Collaborative Notes</a></li>
+  <li><a href="#clone-and-render-the-notes-locally" id="toc-clone-and-render-the-notes-locally" class="nav-link" data-scroll-target="#clone-and-render-the-notes-locally">Clone and Render the Notes Locally</a></li>
   <li><a href="#presentation-expectations" id="toc-presentation-expectations" class="nav-link" data-scroll-target="#presentation-expectations">Presentation Expectations</a></li>
   <li><a href="#wishlist" id="toc-wishlist" class="nav-link" data-scroll-target="#wishlist">Wishlist</a></li>
   <li><a href="#projects" id="toc-projects" class="nav-link" data-scroll-target="#projects">Projects</a>
@@ -202,7 +238,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 9, 2026</p>
+      <p class="date">September 14, 2026</p>
     </div>
   </div>
   
@@ -233,6 +269,34 @@ placeholders before publication.
 <li>a short catalog entry in the relevant topical chapter.</li>
 </ol>
 <p>The slide deck is the substantive contribution. Students are not expected to rewrite their slides as a prose chapter. The topical chapters organize and link to presentations; they do not duplicate the instructor book.</p>
+</section>
+<section id="clone-and-render-the-notes-locally" class="level2">
+<h2 class="anchored" data-anchor-id="clone-and-render-the-notes-locally">Clone and Render the Notes Locally</h2>
+<p>Keep a local copy of these notes so that you can render presentations before opening a pull request. Place the <code>ids-book</code> and <code>ids-f26</code> repositories in the same parent folder. If you plan to contribute, fork <a href="https://github.com/statds/ids-f26"><code>statds/ids-f26</code></a> on GitHub first, then clone your fork. Replace <code>GitHub_Username</code> below with your GitHub username:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> path-to-your-course-work</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/GitHub_Username/ids-f26.git</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ids-f26</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add upstream https://github.com/statds/ids-f26.git</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you only want a local copy for reading and rendering, clone the shared repository directly instead:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/statds/ids-f26.git</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ids-f26</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Use the course Python environment that you already created while working through the instructor book. Do <strong>not</strong> create another virtual environment or install packages inside <code>ids-f26</code>. From the <code>ids-f26</code> repository, activate the environment in the sibling <code>ids-book</code> checkout:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS or Linux</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ../ids-book/.ids/bin/activate</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows with Git Bash</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ../ids-book/.ids/Scripts/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If your repositories are not siblings, replace <code>../ids-book</code> with the path to your <code>ids-book</code> checkout. Confirm that the selected interpreter is the course environment before rendering:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> check-tools</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Render the notes and all accepted presentations with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Quarto writes the local site to <code>_book/index.html</code>. Open that file in a browser and inspect the page or slides before requesting review. While developing one presentation, render only that source file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> render-one FILE=presentations/last-name-topic/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>_book/</code> directory is generated output and must stay out of commits. If a render fails because a package is missing, first verify the active interpreter and ask the instructor before adding a dependency to the shared course environment.</p>
 </section>
 <section id="presentation-expectations" class="level2">
 <h2 class="anchored" data-anchor-id="presentation-expectations">Presentation Expectations</h2>
