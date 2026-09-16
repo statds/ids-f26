@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jun Yan and Students in Fall 2026">
-<meta name="dcterms.date" content="2026-09-14">
+<meta name="dcterms.date" content="2026-09-16">
 
 <title>Introduction to Data Science</title>
 <style>
@@ -179,6 +179,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced Methods and Artificial Intelligence</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/final-project-presentations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Final Project Presentations</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -238,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 14, 2026</p>
+      <p class="date">September 16, 2026</p>
     </div>
   </div>
   
@@ -263,12 +269,9 @@ placeholders before publication.
 <section id="collaborative-notes" class="level2">
 <h2 class="anchored" data-anchor-id="collaborative-notes">Collaborative Notes</h2>
 <p>The Fall 2026 collaborative notes supplement the instructor-authored <em>Introduction to Data Science</em> book. They give students practice explaining data-science concepts and working through a Git and GitHub review process.</p>
-<p>The notes are maintained in the <a href="https://github.com/statds/ids-f26"><code>ids-f26</code> repository</a>. Students contribute through topic branches and pull requests. Each topic contribution consists of:</p>
-<ol type="1">
-<li>a RevealJS slide deck in its own directory under <code>presentations/</code>; and</li>
-<li>a short catalog entry in the relevant topical chapter.</li>
-</ol>
-<p>The slide deck is the substantive contribution. Students are not expected to rewrite their slides as a prose chapter. The topical chapters organize and link to presentations; they do not duplicate the instructor book.</p>
+<p>The notes are maintained in the <a href="https://github.com/statds/ids-f26"><code>ids-f26</code> repository</a>. Students contribute through topic branches and pull requests. The repository contains two kinds of presentation. A topic presentation explains a method or idea and belongs under <code>topic/</code>; a final-project presentation reports an original project and belongs under <code>final/</code>.</p>
+<p>Each topic presentation needs a short catalog entry in its relevant topical chapter. Final-project presentations are collected in the Final Project Presentations chapter. In both cases, the slide deck is the substantive contribution; contributors do not need to rewrite slides as prose.</p>
+<p>The topical chapters and final-project chapter organize and link to presentations; they do not duplicate the instructor book.</p>
 </section>
 <section id="clone-and-render-the-notes-locally" class="level2">
 <h2 class="anchored" data-anchor-id="clone-and-render-the-notes-locally">Clone and Render the Notes Locally</h2>
@@ -297,7 +300,7 @@ placeholders before publication.
 <p>Render the notes and all accepted presentations with:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Quarto writes the local site to <code>_book/index.html</code>. Open that file in a browser and inspect the page or slides before requesting review. While developing one presentation, render only that source file:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> render-one FILE=presentations/last-name-topic/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> render-one FILE=topic/last-name-topic/index.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>_book/</code> directory is generated output and must stay out of commits. If a render fails because a package is missing, first verify the active interpreter and ask the instructor before adding a dependency to the shared course environment.</p>
 </section>
 <section id="presentation-expectations" class="level2">
@@ -313,7 +316,7 @@ placeholders before publication.
 <li>sources and image attribution.</li>
 </ul>
 <p>Slides should support an oral presentation without becoming a transcript. Use readable text, explain displayed code and output, and generate results from executable code when practical. Link to relevant material in <code>ids-book</code> instead of repeating substantial instructor-authored exposition.</p>
-<p>The <a href="presentations/example-quarto-presentations/">example Quarto presentation</a> demonstrates the expected directory layout and basic slide conventions.</p>
+<p>The <a href="topic/example-quarto-presentations/">example Quarto presentation</a> demonstrates the expected directory layout and basic slide conventions.</p>
 </section>
 <section id="wishlist" class="level2">
 <h2 class="anchored" data-anchor-id="wishlist">Wishlist</h2>
@@ -492,7 +495,7 @@ random.sample(presenters, len(presenters))</code></pre>
 </section>
 <section id="final-project-presentation-schedule" class="level3">
 <h3 class="anchored" data-anchor-id="final-project-presentation-schedule">Final Project Presentation Schedule</h3>
-<p>The final-project presentation schedule ordinarily follows the same student order. Dates, locations, and any grouping of presenters will be added when the course calendar is finalized.</p>
+<p>The final-project presentation schedule ordinarily follows the same student order. The <a href="./chapters/final-project-presentations.html">Final Project Presentations</a> chapter collects links to the rendered decks. Dates, locations, and any grouping of presenters will be added when the course calendar is finalized.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -517,8 +520,8 @@ random.sample(presenters, len(presenters))</code></pre>
 <ol type="1">
 <li>Synchronize your local repository with the shared repository.</li>
 <li>Create and switch to a topic branch.</li>
-<li>Copy and adapt the example presentation directory.</li>
-<li>Add a short entry to the appropriate topical chapter.</li>
+<li>Copy and adapt the example directory into <code>topic/</code> or <code>final/</code>, according to the kind of presentation.</li>
+<li>Add a short entry to the appropriate topical chapter, or add the final project to the Final Project Presentations chapter.</li>
 <li>Activate the course Python environment when computation is required.</li>
 <li>Render and review the presentation locally.</li>
 <li>Make small commits with informative messages.</li>
