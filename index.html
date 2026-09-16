@@ -206,9 +206,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#midterm" id="toc-midterm" class="nav-link" data-scroll-target="#midterm">Midterm</a></li>
   <li><a href="#final-project" id="toc-final-project" class="nav-link" data-scroll-target="#final-project">Final Project</a></li>
+  <li><a href="#final-presentation-peer-evaluation" id="toc-final-presentation-peer-evaluation" class="nav-link" data-scroll-target="#final-presentation-peer-evaluation">Final Presentation Peer Evaluation</a></li>
   </ul></li>
   <li><a href="#topic-presentations" id="toc-topic-presentations" class="nav-link" data-scroll-target="#topic-presentations">Topic Presentations</a>
   <ul class="collapse">
+  <li><a href="#topic-presentation-rubric" id="toc-topic-presentation-rubric" class="nav-link" data-scroll-target="#topic-presentation-rubric">Topic Presentation Rubric</a></li>
   <li><a href="#presentation-order" id="toc-presentation-order" class="nav-link" data-scroll-target="#presentation-order">Presentation Order</a></li>
   <li><a href="#selecting-a-topic-and-task-board" id="toc-selecting-a-topic-and-task-board" class="nav-link" data-scroll-target="#selecting-a-topic-and-task-board">Selecting a Topic and Task Board</a></li>
   <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a></li>
@@ -378,14 +380,38 @@ placeholders before publication.
 </ul>
 <p>[Add current milestones, deliverables, presentation requirements, and links to time-sensitive challenges.]</p>
 </section>
+<section id="final-presentation-peer-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="final-presentation-peer-evaluation">Final Presentation Peer Evaluation</h3>
+<p>Each student evaluates every other presenter using the same three criteria. Rate each criterion on a 5–1 scale, where 5 means excellent and 1 means poor. Do not evaluate your own presentation. Base each rating on evidence from the presentation and add a brief comment explaining the rating.</p>
+<p>Use the following general scale:</p>
+<ul>
+<li><p><strong>5 – Excellent:</strong> exceptional, complete, and convincing;</p></li>
+<li><p><strong>4 – Strong:</strong> clear and effective, with only minor weaknesses;</p></li>
+<li><p><strong>3 – Adequate:</strong> generally satisfactory, but with noticeable gaps;</p></li>
+<li><p><strong>2 – Limited:</strong> partially successful, but with substantial weaknesses; and</p></li>
+<li><p><strong>1 – Poor:</strong> missing, seriously flawed, or not understandable.</p></li>
+<li><p><strong>Domain:</strong> Does the presentation motivate the work adequately? Does it explain what the project is for and why it matters? Does it place the project in context by reviewing relevant existing work appropriately?</p></li>
+<li><p><strong>Methods:</strong> Are the variables meaningfully constructed? Are the methods appropriate for the problem, and are they adapted effectively to the application? Are the computational methods used appropriately? Does the presentation acknowledge important limitations?</p></li>
+<li><p><strong>Presentation:</strong> Is the presentation clear, professional, and informative for a general audience? Are the findings interpreted effectively in nontechnical language? Do the tables and figures communicate the intended information clearly?</p></li>
+</ul>
+</section>
 </section>
 <section id="topic-presentations" class="level2">
 <h2 class="anchored" data-anchor-id="topic-presentations">Topic Presentations</h2>
-<p>The private course syllabus contains the assessment policies for topic presentations. This public chapter documents the presentation order, topic options, schedule, and contribution workflow without reproducing grading details.</p>
+<p>The private course syllabus contains the official assessment policies for topic presentations. This public chapter also provides the working rubric so that contributors understand what makes a strong presentation, pull request, and revision.</p>
+<section id="topic-presentation-rubric" class="level3">
+<h3 class="anchored" data-anchor-id="topic-presentation-rubric">Topic Presentation Rubric</h3>
+<p>Topic presentations are worth 20 points. A topic presentation is a focused teaching contribution, not a final research project; original data, advanced methods, and novel findings are not required.</p>
+<ul>
+<li><strong>Approval and preview: 4 points.</strong> The topic is focused and appropriate, the proposed approach is approved, the preview is submitted on time, and the deck is sufficiently complete to review. Sources should be identified, and examples should run when computation is part of the presentation.</li>
+<li><strong>Oral presentation: 10 points.</strong> The presentation motivates the topic and explains its main idea accurately (3 points), develops a useful example and interprets its output correctly (3 points), discusses limitations, common mistakes, and specific takeaways (2 points), and uses readable slides with clear, organized, and engaging delivery (2 points).</li>
+<li><strong>Pull request and revision: 6 points.</strong> The source is organized, reproducible, and properly attributed (2 points); the contributor responds to review with a meaningful revision and maintains a focused pull request (2 points); and the final source and topical catalog entry are complete and correctly linked (2 points).</li>
+</ul>
+</section>
 <section id="presentation-order" class="level3">
 <h3 class="anchored" data-anchor-id="presentation-order">Presentation Order</h3>
 <p>The topic presentation order will be finalized in class. Each student will contribute one digit to the random seed. The current seed produces a provisional order; after the contributed digits replace it, the same seed will reproduce the final order on every render.</p>
-<div id="ad352cd1" class="cell" data-execution_count="1">
+<div id="ca92ad86" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"roster.txt"</span>, newline<span class="op">=</span><span class="st">""</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
