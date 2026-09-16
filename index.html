@@ -547,14 +547,16 @@ random.sample(presenters, len(presenters))</code></pre>
 <h2 class="anchored" data-anchor-id="assignment-workflow">Assignment Workflow</h2>
 <p>Graded work is submitted through the designated Classroom 50 repository, not through the instructor book or collaborative-notes repository.</p>
 <p>Each assignment submission must use one <code>.qmd</code> source file that solves all assigned problems. Label every problem clearly inside that file so that the source and rendered PDF are easy to navigate. Use the <a href="https://github.com/statds/hw-template">homework template</a> as the starting point for the required structure.</p>
-<p>For each assignment:</p>
+<p>Follow the detailed Git workflow in <a href="https://statds.github.io/ids-book/02-git.html#exr-git-wishlist">Project Management, especially Exercise 2.7</a>. That workflow explains how to inspect a repository, create a branch, stage named files, review diffs, write meaningful commits, inspect history, and preserve evidence of the work.</p>
+<p>Fall 2026 assignment requirements are:</p>
 <ol type="1">
-<li>Accept the assignment using the link provided through the course site.</li>
-<li>Clone the resulting repository to your computer.</li>
-<li>Develop the single Quarto source file locally, solve every assigned problem, and organize the work into meaningful commits.</li>
-<li>Push all source files and their complete commit history to your assignment repository. A final snapshot without the development history is not a complete submission.</li>
-<li>Render the assignment and submit the PDF for ease of grading, following the assignment instructions for where to attach it.</li>
+<li>Accept the assignment through the course site and clone the resulting Classroom 50 repository.</li>
+<li>Develop the single <code>.qmd</code> source file on a descriptive branch, solving all assigned problems and labeling them clearly.</li>
+<li>Make at least <strong>ten small, meaningful commits for every assignment</strong>. Do not create empty commits or split meaningless changes merely to reach ten. Each commit should record a real development step and use an informative, imperative message.</li>
+<li>Preserve the complete branch history. Record the branch name, commit hashes and messages, and concise command results in the assignment source or wherever the assignment specifies.</li>
+<li>Push the branch and render the assignment before submitting the PDF through the designated course workflow.</li>
 </ol>
+<p>The ten-commit requirement applies to each assignment repository, not to the semester notes repository as a whole. Graded assignments remain private in Classroom 50 and are not submitted as public pull requests unless an assignment specifically says otherwise.</p>
 <p>Keep generated files out of the repository unless the assignment explicitly requests them. Use Git from the command line rather than GitHub’s file-upload interface, and never commit credentials or large data files.</p>
 </section>
 <section id="syllabus-check" class="level2">
