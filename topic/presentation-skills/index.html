@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
 <script src="index_files/libs/quarto-html/tabby.min.js"></script>
 <script src="index_files/libs/quarto-html/popper.min.js"></script>
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
@@ -9,8 +9,8 @@
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.10.18">
 
-  <meta name="author" content="Instructor-created example">
-  <title>Rental Prices</title>
+  <meta name="author" content="Example presentation">
+  <title>Presentation Skills for Data Science</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -34,7 +34,26 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -127,121 +146,142 @@
       margin-right: 0; 
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
-  
-  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Rental Prices</h1>
-  <p class="subtitle">Example final-project presentation</p>
+  <h1 class="title">Presentation Skills for Data Science</h1>
+  <p class="subtitle">Introduction to Data Science | Fall 2026</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Instructor-created example
+Example presentation
 </div>
 </div>
 </div>
 
 </section>
-<section>
-<section id="question" class="title-slide slide level1 center">
-<h1>Question</h1>
-<p>How is monthly rent related to apartment size in a small set of listings?</p>
+<section id="a-deliberately-bad-presentation" class="slide level2">
+<h2>A deliberately bad presentation</h2>
+<ul>
+<li>Put the entire script on every slide.</li>
+<li>Use tiny text, crowded tables, and unlabeled figures.</li>
+<li>Read the slides word for word.</li>
+<li>Show code without explaining what the audience should notice.</li>
+<li>Finish without a clear message or takeaway.</li>
+</ul>
+<p>The result is not merely unattractive. It makes the audience work harder to decide what matters, while the presenter competes with the screen for attention.</p>
 </section>
-<section id="data" class="slide level2">
-<h2>Data</h2>
-<div id="c6310e6e" class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display" data-execution_count="5">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-
-<table class="dataframe caption-top" data-border="1">
+<section id="turn-the-bad-presentation-into-a-good-one" class="slide level2">
+<h2>Turn the bad presentation into a good one</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
-<tr class="header" style="text-align: right;">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">size_sqft</th>
-<th data-quarto-table-cell-role="th">rent</th>
+<tr class="header">
+<th style="text-align: left;">Bad habit</th>
+<th style="text-align: left;">Better choice</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">0</th>
-<td>500</td>
-<td>1100</td>
+<td style="text-align: left;">Several ideas on one slide</td>
+<td style="text-align: left;">One idea with a descriptive heading</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">1</th>
-<td>650</td>
-<td>1300</td>
+<td style="text-align: left;">A paragraph of explanation</td>
+<td style="text-align: left;">A short claim, supported while speaking</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">2</th>
-<td>800</td>
-<td>1550</td>
+<td style="text-align: left;">A decorative or crowded figure</td>
+<td style="text-align: left;">A labeled figure that answers a question</td>
 </tr>
 <tr class="even">
-<th data-quarto-table-cell-role="th">3</th>
-<td>950</td>
-<td>1750</td>
+<td style="text-align: left;">Code copied from a script</td>
+<td style="text-align: left;">Only the lines needed for the point</td>
 </tr>
 <tr class="odd">
-<th data-quarto-table-cell-role="th">4</th>
-<td>1100</td>
-<td>2050</td>
+<td style="text-align: left;">A summary of everything shown</td>
+<td style="text-align: left;">Two or three specific takeaways</td>
 </tr>
 </tbody>
 </table>
-
-</div>
-</div>
-</div>
-<p>These values are invented for demonstration. A real project would identify the source, collection dates, location, and inclusion rules.</p>
+<p>Good slides support the speaker. They do not try to replace the speaker.</p>
 </section>
-<section id="explore-the-relationship" class="slide level2">
-<h2>Explore the relationship</h2>
-<div id="bf5f952d" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="index_files/figure-revealjs/cell-3-output-1.png" width="826" height="431"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The listings show a positive association between size and rent. Location, condition, amenities, and timing could explain part of the relationship.</p>
-</section>
-<section id="limitations-and-next-steps" class="slide level2">
-<h2>Limitations and next steps</h2>
+<section id="good-slides-still-need-good-delivery" class="slide level2">
+<h2>Good slides still need good delivery</h2>
 <ul>
-<li>The observations are not a random sample of all apartments.</li>
-<li>Asking rent may differ from the final rental price.</li>
-<li>A useful next analysis would compare neighborhoods and include amenities.</li>
+<li>Face the audience instead of reading the screen.</li>
+<li>Explain why each example, table, or figure is present.</li>
+<li>Pause after an important result.</li>
+<li>Vary pace and emphasis so the main idea is audible.</li>
+<li>Rehearse the transitions, timing, and final takeaway.</li>
+</ul>
+<p>Visual design and delivery work together: a clean slide cannot rescue an unclear explanation, and a strong explanation is harder to follow on a crowded slide.</p>
+</section>
+<section id="five-things-presenters-need-to-know-about-people" class="slide level2">
+<h2>Five things presenters need to know about people</h2>
+<p>Susan Weinschenk’s five reminders are useful when planning a data-science talk:</p>
+<ol type="1">
+<li>People learn best in shorter chunks, so divide a long talk into sections.</li>
+<li>Visual and auditory channels compete, so do not make the audience read dense slides while listening.</li>
+<li>Words are only part of the message; tone and body language also communicate.</li>
+<li>If you want the audience to act, state the desired action explicitly.</li>
+<li>The presenter’s energy affects the audience, so show why the topic matters.</li>
+</ol>
+<p>These are design prompts, not substitutes for knowing your audience or testing whether the presentation is understandable.</p>
+</section>
+<section id="a-practical-review-before-presenting" class="slide level2">
+<h2>A practical review before presenting</h2>
+<p>Ask a classmate to answer these questions after a practice run:</p>
+<ol type="1">
+<li>What was the presentation’s main question?</li>
+<li>Which example or figure helped you understand it?</li>
+<li>What should you remember or do differently afterward?</li>
+</ol>
+<p>If the answers are unclear, revise the story before adding more slides.</p>
+</section>
+<section id="tell-a-clear-data-story" class="slide level2">
+<h2>Tell a clear data story</h2>
+<ul>
+<li><strong>Question:</strong> What decision or question motivates the analysis?</li>
+<li><strong>Data:</strong> Where did the data come from, and which variables matter?</li>
+<li><strong>Evidence:</strong> What does the labeled figure or table show?</li>
+</ul>
+<p>Show only the code needed to make the example reproducible. Explain the pattern in the evidence before discussing the Python package or statistical method.</p>
+</section>
+<section id="make-claims-proportionate-to-the-evidence" class="slide level2">
+<h2>Make claims proportionate to the evidence</h2>
+<ul>
+<li>Distinguish association, prediction, and causation.</li>
+<li>Report uncertainty and important assumptions.</li>
+<li>State meaningful limitations, including what the data cannot show.</li>
+<li>End by saying exactly what the evidence supports.</li>
 </ul>
 </section>
-<section id="conclusion" class="slide level2">
-<h2>Conclusion</h2>
-<p>Apartment size is a useful starting variable, but a credible project needs broader data and a design that addresses confounding variables.</p>
-</section></section>
-<section id="sources" class="title-slide slide level1 center">
-<h1>Sources</h1>
-<p>This example uses invented values and requires no external dataset.</p>
+<section id="sources" class="slide level2 smaller scrollable">
+<h2>Sources</h2>
+<ul>
+<li><a href="https://quarto.org/docs/presentations/">Quarto presentations</a></li>
+<li><a href="https://quarto.org/docs/presentations/revealjs/">RevealJS format options</a></li>
+</ul>
+<p>The presentation-design and delivery advice is informed by <span class="citation" data-cites="phillips2014avoid treasure2014speak weinschenk2012five">(<a href="#/sources" role="doc-biblioref" onclick="">Phillips 2014</a>; <a href="#/sources" role="doc-biblioref" onclick="">Treasure 2014</a>; <a href="#/sources" role="doc-biblioref" onclick="">Weinschenk 2012</a>)</span>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-phillips2014avoid" class="csl-entry" role="listitem">
+Phillips, David JP. 2014. <em>How to Avoid Death by PowerPoint</em>. TEDxStockholmSalon. <a href="https://www.youtube.com/watch?v=Iwpi1Lm6dFo">https://www.youtube.com/watch?v=Iwpi1Lm6dFo</a>.
+</div>
+<div id="ref-treasure2014speak" class="csl-entry" role="listitem">
+Treasure, Julian. 2014. <em>How to Speak so That People Want to Listen</em>. TED. <a href="https://www.youtube.com/watch?v=eIho2S0ZahI">https://www.youtube.com/watch?v=eIho2S0ZahI</a>.
+</div>
+<div id="ref-weinschenk2012five" class="csl-entry" role="listitem">
+Weinschenk, Susan. 2012. <em>5 Things Every Presenter Needs to Know about People</em>. The Team W. <a href="https://vimeo.com/44267609">https://vimeo.com/44267609</a>.
+</div>
+</div>
 
 </section>
     </div>
@@ -425,9 +465,9 @@ Instructor-created example
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,

@@ -247,19 +247,11 @@ Example presentation
 </section>
 <section id="executable-python" class="slide level2">
 <h2>Executable Python</h2>
-<p>Use an executable code cell when the result matters:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="" aria-label="1"></a></span>
-<span id="cb2-2"><a href="" aria-label="2"></a>::: {#0588912f .cell execution_count=1}</span>
-<span id="cb2-3"><a href="" aria-label="3"></a></span>
-<span id="cb2-4"><a href="" aria-label="4"></a>::: {.cell-output .cell-output-display execution_count=1}</span>
-<span id="cb2-5"><a href="" aria-label="5"></a><span class="in">```</span></span>
-<span id="cb2-6"><a href="" aria-label="6"></a><span class="in">4.5</span></span>
-<span id="cb2-7"><a href="" aria-label="7"></a><span class="in">```</span></span>
-<span id="cb2-8"><a href="" aria-label="8"></a>:::</span>
-<span id="cb2-9"><a href="" aria-label="9"></a>:::</span>
-<span id="cb2-10"><a href="" aria-label="10"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="b9010b9a" class="cell" data-execution_count="2">
-<div class="cell-output cell-output-display" data-execution_count="2">
+<p>Use an executable code cell when the result matters. The source and its computed output stay together on the slide:</p>
+<div id="7106e94e" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a>values <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>]</span>
+<span id="cb2-2"><a href="" aria-label="2"></a><span class="bu">sum</span>(values) <span class="op">/</span> <span class="bu">len</span>(values)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>4.5</code></pre>
 </div>
 </div>
@@ -267,7 +259,7 @@ Example presentation
 </section>
 <section id="figures-from-the-same-source" class="slide level2">
 <h2>Figures from the Same Source</h2>
-<div id="cell-fig-example" class="cell" data-execution_count="3">
+<div id="cell-fig-example" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div id="fig-example" class="quarto-float quarto-figure quarto-figure-center" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig">
@@ -520,9 +512,9 @@ Figure&nbsp;1: Four observations used in the example
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1280,
 
-        height: 700,
+        height: 720,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
