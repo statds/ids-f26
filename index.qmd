@@ -147,6 +147,9 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Help students develop reproducible and collaborative working habits.
 - Anikeev, Katerina
 - Bucco, Sadie
+  - Become proficient using GitHub and git commands
+  - Work on writing code that is clear and reproducible
+  - Get more comfortable using keyboard shortcuts instead of relying on my mouse
 - Chervonny, Erik
   - Improve my practical problem solving through data science projects and real life data.
   - Transfer skills in using data science tools to other STEM courses, by developing a consistent workflow.
