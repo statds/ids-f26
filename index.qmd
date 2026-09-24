@@ -413,12 +413,12 @@ accepted.
 | 10/14 | Ong, Enrico | [topic] |
 | 10/19 | — | Midterm-project work; no topic presentations |
 | 10/21 | — | Midterm-project work; no topic presentations |
-| 10/26 | Chok, Isaac | [topic] |
+| 10/26 | Fontana, Adam | K-Means Clustering |
 | 10/28 | Wang, Chaoyang | [topic] |
 | 11/02 | Bucco, Sadie | [topic] |
 | 11/04 | Tria, Nicholas | [topic] |
 | 11/04 | Parkins, Jack | [topic] |
-| 11/09 | Fontana, Adam | [topic] |
+| 11/09 | Chok, Isaac | [topic] |
 | 11/09 | Horan, Elizabeth | [topic] |
 | 11/11 | Distefano, Cristian | [topic] |
 | 11/11 | Nair, Pardhip | [topic] |
