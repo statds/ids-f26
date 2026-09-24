@@ -156,6 +156,9 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Build experience in data wrangling and visualization.
   - Learn statistical modeling using Python.
 - Choudhury, Ruhama
+   - Become proficient in using Git and GitHub.
+   - Develop stronger Python skills.
+   - Apply data science to real world problems like financial analysis and sports statistics.
 - Distefano, Cristian
   - Become more confident using Git and GitHub for collaborative projects.
   - Strengthen my Data Science skills through practice and projects.
