@@ -426,7 +426,7 @@ accepted.
 | 10/21 | — | Midterm-project work; no topic presentations |
 | 10/26 | Fontana, Adam | K-Means Clustering |
 | 10/28 | Wang, Chaoyang | Neural Network |
-| 11/02 | Bucco, Sadie | [topic] |
+| 11/02 | Bucco, Sadie | Random Forests |
 | 11/04 | Tria, Nicholas | [topic] |
 | 11/04 | Parkins, Jack | [topic] |
 | 11/09 | Chok, Isaac | [topic] |
