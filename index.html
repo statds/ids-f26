@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jun Yan and Students in Fall 2026">
-<meta name="dcterms.date" content="2026-09-23">
+<meta name="dcterms.date" content="2026-09-30">
 
 <title>Introduction to Data Science</title>
 <style>
@@ -246,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 23, 2026</p>
+      <p class="date">September 30, 2026</p>
     </div>
   </div>
   
@@ -331,12 +331,17 @@ placeholders before publication.
 <li>Help students develop reproducible and collaborative working habits.</li>
 </ul></li>
 <li>Anikeev, Katerina</li>
-<li>Bucco, Sadie</li>
+<li>Bucco, Sadie
+<ul>
+<li>Become proficient using GitHub and git commands</li>
+<li>Work on writing code that is clear and reproducible</li>
+<li>Get more comfortable using keyboard shortcuts instead of relying on my mouse</li>
+</ul></li>
 <li>Chervonny, Erik
 <ul>
-<li>Improve my practical problem solving.</li>
-<li>Transfer skills to other courses.</li>
-<li>Leverage what I learn to find a job.</li>
+<li>Improve my practical problem solving through data science projects and real life data.</li>
+<li>Transfer skills in using data science tools to other STEM courses, by developing a consistent workflow.</li>
+<li>Leverage data science methods I learn in the class to build a career in the STEM field.</li>
 </ul></li>
 <li>Chok, Isaac
 <ul>
@@ -344,7 +349,12 @@ placeholders before publication.
 <li>Build experience in data wrangling and visualization.</li>
 <li>Learn statistical modeling using Python.</li>
 </ul></li>
-<li>Choudhury, Ruhama</li>
+<li>Choudhury, Ruhama
+<ul>
+<li>Become proficient in using Git and GitHub.</li>
+<li>Develop stronger Python skills.</li>
+<li>Apply data science to real world problems like financial analysis and sports statistics.</li>
+</ul></li>
 <li>Distefano, Cristian
 <ul>
 <li>Become more confident using Git and GitHub for collaborative projects.</li>
@@ -398,7 +408,12 @@ placeholders before publication.
 <li>Build genuine comfort with git and the command line, not just copy-pasted commands from tutorials.</li>
 </ul></li>
 <li>Nair, Pardhip</li>
-<li>Noe, Amanda</li>
+<li>Noe, Amanda
+<ul>
+<li>I want to become more proficient in keeping an organized workflow on GitHub.</li>
+<li>I want to become more confident in my python coding skills.</li>
+<li>I want to bolster my understanding of technical data science and computer terms.</li>
+</ul></li>
 <li>Ong, Enrico
 <ul>
 <li>Build fluency with the command line for everyday data-science tasks.</li>
@@ -482,7 +497,7 @@ placeholders before publication.
 <section id="presentation-order" class="level3">
 <h3 class="anchored" data-anchor-id="presentation-order">Presentation Order</h3>
 <p>The topic presentation order was set in class. Each student contributed one digit to the random seed, and the same seed reproduces the order on every render.</p>
-<div id="b317addc" class="cell" data-execution_count="1">
+<div id="2d2b0d44" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"roster.txt"</span>, newline<span class="op">=</span><span class="st">""</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
@@ -615,7 +630,7 @@ placeholders before publication.
 <tr class="even">
 <td>09/30</td>
 <td>Noe, Amanda</td>
-<td>[topic]</td>
+<td>Accessing U.S. Census Data</td>
 </tr>
 <tr class="odd">
 <td>10/05</td>
@@ -649,8 +664,8 @@ placeholders before publication.
 </tr>
 <tr class="odd">
 <td>10/26</td>
-<td>Chok, Isaac</td>
-<td>[topic]</td>
+<td>Fontana, Adam</td>
+<td>K-Means Clustering</td>
 </tr>
 <tr class="even">
 <td>10/28</td>
@@ -674,7 +689,7 @@ placeholders before publication.
 </tr>
 <tr class="even">
 <td>11/09</td>
-<td>Fontana, Adam</td>
+<td>Chok, Isaac</td>
 <td>[topic]</td>
 </tr>
 <tr class="odd">
@@ -710,7 +725,7 @@ placeholders before publication.
 <tr class="odd">
 <td>11/16</td>
 <td>Choudhury, Ruhama</td>
-<td>[topic]</td>
+<td>Deep Learning</td>
 </tr>
 <tr class="even">
 <td>11/18</td>
@@ -893,11 +908,15 @@ placeholders before publication.
 <p>Follow the detailed Git workflow in <a href="https://statds.github.io/ids-book/02-git.html#exr-git-wishlist">Project Management, especially Exercise 2.7</a>. That workflow explains how to inspect a repository, create a branch, stage named files, review diffs, write meaningful commits, inspect history, and preserve evidence of the work.</p>
 <p>Fall 2026 assignment requirements are:</p>
 <ol type="1">
-<li>Accept the assignment through the course site and clone the resulting Classroom 50 repository.</li>
-<li>Develop the single <code>.qmd</code> source file on a descriptive branch, solving all assigned problems and labeling them clearly.</li>
-<li>Make at least <strong>ten small, meaningful commits for every assignment</strong>. Do not create empty commits or split meaningless changes merely to reach ten. Each commit should record a real development step and use an informative, imperative message.</li>
-<li>Preserve the complete branch history. Record the branch name, commit hashes and messages, and concise command results in the assignment source or wherever the assignment specifies.</li>
-<li>Push the branch and render the assignment before submitting the PDF through the designated course workflow.</li>
+<li><p>Accept the assignment through the course site and clone the resulting Classroom 50 repository.</p></li>
+<li><p>Develop the single <code>.qmd</code> source file on a descriptive branch, solving all assigned problems and labeling them clearly.</p></li>
+<li><p>Make at least <strong>ten small, meaningful commits for every assignment</strong>. Do not create empty commits or split meaningless changes merely to reach ten. Each commit should record a real development step and use an informative, imperative message.</p></li>
+<li><p>Preserve the complete branch history. Record the branch name, commit hashes and messages, and concise command results in the assignment source or wherever the assignment specifies.</p></li>
+<li><p>Before submission, activate the same Python virtual environment that successfully renders the IDS-F26 class notes. Do not create a separate homework environment or install packages into a different interpreter. From the assignment repository, verify the active interpreter and render the source file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">"import sys; print(sys.executable); print(sys.version)"</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render your-homework.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Record the interpreter path, Python version, render command, and successful result in the assignment source or required evidence. If the work needs a package unavailable in the class-notes environment, ask the instructor before adding a dependency. The grader will render the submitted source with an automated script in that shared environment, so matching the environment is part of the reproducibility check.</p></li>
+<li><p>Push the branch and submit the <code>.qmd</code> source plus any required input files through the designated course workflow. A PDF is no longer required for submission; the grader will render the source. Do not submit generated output unless an assignment explicitly requests it.</p></li>
 </ol>
 <p>The ten-commit requirement applies to each assignment repository, not to the semester notes repository as a whole. Graded assignments remain private in Classroom 50 and are not submitted as public pull requests unless an assignment specifically says otherwise.</p>
 <p>Keep generated files out of the repository unless the assignment explicitly requests them. Use Git from the command line rather than GitHub’s file-upload interface, and never commit credentials or large data files.</p>
