@@ -419,7 +419,7 @@ accepted.
 | 09/28 | Liu, Ethan | [topic] |
 | 09/30 | Noe, Amanda | Accessing U.S. Census Data |
 | 10/05 | Anikeev, Katerina | [topic] |
-| 10/07 | Chervonny, Erik | [topic] |
+| 10/07 | Chervonny, Erik | Grammar of Graphics (ggplot) |
 | 10/12 | Mansur, Mahiba | [topic] |
 | 10/14 | Ong, Enrico | [topic] |
 | 10/19 | — | Midterm-project work; no topic presentations |
