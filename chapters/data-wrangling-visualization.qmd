@@ -23,3 +23,11 @@ and claims that are proportionate to the evidence.
 
 This example demonstrates a focused explanation, a reproducible figure, and
 careful interpretation of association and causation.
+
+**Topic presentation:**
+[Data manipulation with pandas](../topic/ong-pandas/)
+
+This presentation by Enrico Ong introduces core pandas operations for
+tabular data: selecting, filtering, creating columns, and grouping. It works
+through a real example on college major earnings and covers common mistakes
+and when pandas is the wrong tool.
