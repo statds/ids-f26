@@ -1,0 +1,351 @@
+---
+title: "Data Manipulation with pandas"
+subtitle: "Which majors pay the most? Four verbs answer it"
+author: "Enrico Ong"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    preview-links: auto
+    transition: fade
+    code-line-numbers: false
+    fig-format: svg
+jupyter: python3
+execute:
+  echo: true
+  warning: false
+---
+
+```{=html}
+<style>
+.reveal h2 { color: #1F3A5F; font-weight: 700; font-size: 1.25em; }
+.reveal .title { color: #1F3A5F; }
+.reveal .subtitle { color: #2A9D8F; }
+.reveal ul { font-size: 0.85em; }
+.reveal pre code { font-size: 0.62em; max-height: 420px; }
+.reveal table { font-size: 0.6em; }
+.reveal table th { background: #1F3A5F; color: white; padding: 4px 8px; }
+.reveal table td { padding: 3px 8px; }
+.notice { background: #FFF4DC; border-left: 6px solid #E9A23B;
+          padding: 6px 14px; font-size: 0.7em; margin-top: 10px; }
+.verb { display: inline-block; background: #2A9D8F; color: white;
+        border-radius: 8px; padding: 6px 16px; margin: 4px;
+        font-size: 0.8em; font-weight: 600; }
+.bad { color: #C0392B; } .good { color: #2A9D8F; }
+</style>
+```
+
+```{python}
+#| echo: false
+import pandas as pd
+import matplotlib.pyplot as plt
+
+NAVY, TEAL, AMBER, GRAY = "#1F3A5F", "#2A9D8F", "#E9A23B", "#C9CED6"
+GENRE_COLORS = {"Fiction": TEAL, "Mystery": NAVY, "Sci-Fi": AMBER}
+plt.rcParams.update({
+    "font.size": 14,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+    "axes.titleweight": "bold",
+    "axes.titlesize": 16,
+})
+```
+
+## Four verbs turn a table into an answer
+
+::: {style="text-align:center; margin-top:60px;"}
+<span class="verb">Select</span>
+<span class="verb">Filter</span>
+<span class="verb">Create</span>
+<span class="verb">Group</span>
+:::
+
+- Question: which college majors pay the most?
+- Answered without writing a loop
+
+::: notes
+Tabular data is everywhere: spreadsheets, CSVs, records. Plain lists
+and loops can hold it, but every question needs hand-written code.
+pandas gives a DataFrame with labeled columns, so the same few verbs
+work on any dataset. Guiding question: how do a few operations take us
+from a raw table to an answered question?
+:::
+
+## A DataFrame is a table, a Series is one column
+
+```{python}
+#| echo: false
+from IPython.display import Markdown
+Markdown("""
+| Concept | What it is | Example |
+|:--|:--|:--|
+| **DataFrame** | 2D table, named columns | `grads` |
+| **Series** | One labeled column | `grads["Median"]` |
+""")
+```
+
+- Rows are observations, columns are variables
+- Background:
+  [ids-book Chapter 4](
+  https://statds.github.io/ids-book/04-python.html)
+
+::: notes
+A DataFrame is two-dimensional. Each column has a name and a dtype. A
+single column pulled out is a Series. This deck is about manipulation,
+not import, so the import is one line.
+:::
+
+## Our data: earnings for 173 college majors
+
+```{python}
+import pandas as pd
+
+pd.set_option("display.max_columns", 6)
+grads = pd.read_csv("data/recent-grads.csv")
+grads.shape
+```
+
+```{python}
+grads[["Major", "Major_category", "Median"]].head(3)
+```
+
+::: notice
+**Source:** Casselman (2014), FiveThirtyEight, from the American
+Community Survey 2010 to 2012. `Median` is annual earnings in USD.
+:::
+
+::: notes
+One row per college major, for recent graduates: number of graduates,
+share who are women, median earnings, unemployment rate, and how many
+hold jobs that need a college degree. One row has missing counts (Food
+Science). Full citation is on the Sources slide.
+:::
+
+## Select: pick only the columns you need
+
+```{python}
+grads.loc[:, ["Major", "Median", "Unemployment_rate"]].head(3)
+```
+
+::: notice
+**Notice:** three of 21 columns. `:` means "every row".
+:::
+
+::: notes
+`.loc[rows, columns]` selects by label. Narrow output keeps attention on
+what the question needs.
+:::
+
+## Filter: keep only the rows you want
+
+::: {.columns}
+::: {.column width="45%"}
+```{python}
+engineering = grads.loc[
+    grads["Major_category"] == "Engineering"
+]
+len(engineering)
+```
+:::
+::: {.column width="55%"}
+```{python}
+#| echo: false
+#| fig-width: 6
+#| fig-height: 4
+#| fig-alt: "Histogram of median earnings by major, Engineering highlighted"
+is_eng = grads["Major_category"] == "Engineering"
+fig, ax = plt.subplots()
+bins = range(20000, 120000, 5000)
+ax.hist(grads.loc[~is_eng, "Median"], bins=bins, color=GRAY,
+        label="Other majors")
+ax.hist(grads.loc[is_eng, "Median"], bins=bins, color=TEAL,
+        label="Engineering (rows kept)")
+ax.set_title("The filter keeps the teal rows")
+ax.set_xlabel("Median earnings (USD)")
+ax.set_ylabel("Number of majors")
+ax.xaxis.set_major_formatter(lambda x, _: f"${x/1000:.0f}k")
+ax.legend(frameon=False, fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+::: notice
+**Notice:** the condition gives True or False per row. Only True rows stay.
+:::
+
+::: notes
+The Boolean Series goes into `.loc[]`. It is the pandas version of a
+WHERE clause in SQL. Both the comparison and the selection are
+vectorized, so no loop is written. 29 of the 173 majors are engineering.
+:::
+
+## Create: a new column from existing ones
+
+```{python}
+grads = grads.copy()
+grads["degree_job_share"] = grads["College_jobs"] / (
+    grads["College_jobs"] + grads["Non_college_jobs"]
+)
+grads[["Major", "degree_job_share"]].round(2).head(3)
+```
+
+::: notice
+**Notice:** the share of grads in jobs that need a degree, computed for
+every major at once.
+:::
+
+::: notes
+`.copy()` before assigning avoids a SettingWithCopyWarning when the table
+might be a view of another DataFrame. Counts are turned into a share so
+big and small majors can be compared.
+:::
+
+## Group: Engineering pays the most
+
+::: {.columns}
+::: {.column width="43%"}
+```{python}
+by_category = (
+    grads.groupby("Major_category")["Median"]
+    .mean()
+    .round(0)
+    .sort_values(ascending=False)
+)
+by_category.head(4)
+```
+:::
+::: {.column width="57%"}
+```{python}
+#| echo: false
+#| fig-width: 6.2
+#| fig-height: 4.4
+#| fig-alt: "Bar chart of average median earnings by major category"
+rev = by_category.head(8).sort_values()
+fig, ax = plt.subplots()
+bars = ax.barh(rev.index, rev.values,
+               color=[TEAL if c == "Engineering" else GRAY
+                      for c in rev.index])
+ax.bar_label(bars, labels=[f"${v/1000:.0f}k" for v in rev.values],
+             padding=3, fontsize=12)
+ax.set_title("Top 8 categories by average median pay")
+ax.set_xlabel("Average of major medians (USD)")
+ax.set_ylabel("Major category")
+ax.tick_params(axis="y", labelsize=11)
+ax.set_xlim(0, rev.max() * 1.15)
+ax.xaxis.set_major_formatter(lambda x, _: f"${x/1000:.0f}k")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+::: notice
+**Notice:** split by category, average each piece, combine into one result.
+:::
+
+::: notes
+This is split-apply-combine. `.groupby("Major_category")` splits,
+`["Median"].mean()` applies one summary per group, and the result comes
+back as a Series indexed by category. Engineering is about $57k, Business
+about $44k, Computers and Mathematics about $43k, and Psychology and
+Social Work lowest at about $30k.
+:::
+
+## Check how many rows each average used
+
+```{python}
+(grads.groupby("Major_category")["Median"]
+ .agg(majors="size", average="mean").round(0)
+ .sort_values("majors").head(3))
+```
+
+::: notice
+**Notice:** Interdisciplinary is one major, so its average is just that
+major's median.
+:::
+
+::: notes
+`size` counts the majors in each category. Small groups make shaky
+averages. Also, each major counts equally here, whether it has 400 or
+400,000 graduates, because we averaged the major medians. One row (Food
+Science) is also missing its graduate counts, which `mean()` of Median is
+not affected by but would matter for a weighted average.
+:::
+
+## What the result does and does not say
+
+::: {.columns}
+::: {.column width="50%"}
+**Supports** <span class="good">&#10003;</span>
+
+- Engineering majors have the highest typical earnings
+:::
+::: {.column width="50%"}
+**Does not show** <span class="bad">&#10007;</span>
+
+- That the major causes the pay
+- Results for graduates today
+:::
+:::
+
+::: notes
+This describes recent graduates in 2010 to 2012 survey data. A group
+average says nothing about why categories differ; who chooses a major,
+the local job market, and later career changes would need more data and a
+different analysis.
+:::
+
+## Four mistakes to avoid
+
+| Mistake | Fix |
+|:--|:--|
+| Chained indexing: `df[df.x > 0]["y"] = 1` | Use `.loc[]` once |
+| Assigning after filtering, no `.copy()` | Call `.copy()` first |
+| `"Engineering"` vs `"engineering "` | Clean text before comparing |
+| `groupby` drops missing keys | Pass `dropna=False` |
+
+::: notes
+Chained indexing can silently fail to modify the original table. String
+comparison with == does not fix capitalization or stray whitespace.
+:::
+
+## When pandas is the wrong tool
+
+| If your data... | Consider |
+|:--|:--|
+| Does not fit in memory | A database or chunked tool |
+| Is pure numeric arrays | NumPy |
+| Has unclear columns | Understanding it first |
+
+::: notes
+A correct average is still only as meaningful as the definitions and data
+collection behind it.
+:::
+
+## Takeaways
+
+1. **Four verbs** (select, filter, create, group) cover most table work
+2. **Filtering and grouping** replace hand-written loops
+3. **Check the output**: how many rows did each summary really use?
+
+::: notes
+Return to the guiding question: engineering majors lead in these data,
+and a few composable verbs showed it. Always re-read the output.
+:::
+
+## Sources
+
+- Casselman B (2014). The Economic Guide To Picking A College Major.
+  *FiveThirtyEight*.
+  [fivethirtyeight.com](
+  https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/)
+- Data: FiveThirtyEight `college-majors`, from the U.S. Census Bureau
+  American Community Survey 2010 to 2012 (CC BY 4.0).
+  [github.com/fivethirtyeight/data](
+  https://github.com/fivethirtyeight/data/tree/master/college-majors)
+- [pandas user guide: indexing and selecting
+  data](https://pandas.pydata.org/docs/user_guide/indexing.html)
+- [pandas user guide: group
+  by](https://pandas.pydata.org/docs/user_guide/groupby.html)
