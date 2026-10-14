@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Data Wrangling and Visualization – Introduction to Data Science</title>
+<title>3&nbsp; Data Wrangling and Visualization – Introduction to Data Science</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -47,7 +47,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d3f7f8e73c8d287b30bcf59c2b563615.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-c935fea28ce5a425f876bb828138d8e6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -88,7 +88,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/data-wrangling-visualization.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Wrangling and Visualization</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/data-wrangling-visualization.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling and Visualization</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,32 +121,38 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../midterm-project.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Midterm project: NYC honking complaints</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../chapters/data-acquisition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Acquisition and Engineering</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Acquisition and Engineering</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/data-wrangling-visualization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Wrangling and Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling and Visualization</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/statistical-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistical Modeling and Machine Learning</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Statistical Modeling and Machine Learning</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/advanced-methods-ai.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced Methods and Artificial Intelligence</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Advanced Methods and Artificial Intelligence</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/final-project-presentations.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Final Project Presentations</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Final Project Presentations</span></span></a>
   </div>
 </li>
     </ul>
@@ -159,7 +165,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#creating-presentations-with-quarto" id="toc-creating-presentations-with-quarto" class="nav-link active" data-scroll-target="#creating-presentations-with-quarto"><span class="header-section-number">2.1</span> Creating Presentations with Quarto</a></li>
+  <li><a href="#creating-presentations-with-quarto" id="toc-creating-presentations-with-quarto" class="nav-link active" data-scroll-target="#creating-presentations-with-quarto"><span class="header-section-number">3.1</span> Creating Presentations with Quarto</a></li>
   </ul>
 </nav>
     </div>
@@ -168,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Wrangling and Visualization</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data Wrangling and Visualization</span></h1>
 </div>
 
 
@@ -186,14 +192,16 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Student presentations in this chapter concern transforming, summarizing, and communicating data through tables and graphics.</p>
-<section id="creating-presentations-with-quarto" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="creating-presentations-with-quarto"><span class="header-section-number">2.1</span> Creating Presentations with Quarto</h2>
+<section id="creating-presentations-with-quarto" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="creating-presentations-with-quarto"><span class="header-section-number">3.1</span> Creating Presentations with Quarto</h2>
 <p><strong>Example presentation:</strong> <a href="../topic/example-quarto-presentations/">Creating presentations with Quarto</a></p>
 <p>This example introduces RevealJS presentations in Quarto, including slide structure, executable Python code, figures, and a pre-submission rendering check.</p>
 <p><strong>Presentation-skills example:</strong> <a href="../topic/presentation-skills/">Presentation skills for data science</a></p>
 <p>This example focuses on clear stories, readable slides, effective delivery, and claims that are proportionate to the evidence.</p>
 <p><strong>Topic example:</strong> <a href="../topic/plot/">Reading a plot</a></p>
 <p>This example demonstrates a focused explanation, a reproducible figure, and careful interpretation of association and causation.</p>
+<p><strong>Topic presentation:</strong> <a href="../topic/ong-pandas/">Data manipulation with pandas</a></p>
+<p>This presentation uses FiveThirtyEight’s college majors data to show four pandas verbs: select, filter, create, and group. It ends by checking how many rows each summary used and what the result does not show.</p>
 
 
 </section>
@@ -602,12 +610,12 @@ ul.task-list li input[type="checkbox"] {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../chapters/data-acquisition.html" class="pagination-link" aria-label="Data Acquisition and Engineering">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Data Acquisition and Engineering</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Acquisition and Engineering</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/statistical-modeling.html" class="pagination-link" aria-label="Statistical Modeling and Machine Learning">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Statistical Modeling and Machine Learning</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Statistical Modeling and Machine Learning</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
