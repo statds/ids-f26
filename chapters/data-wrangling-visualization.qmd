@@ -30,3 +30,10 @@ careful interpretation of association and causation.
 This presentation uses FiveThirtyEight's college majors data to show four
 pandas verbs: select, filter, create, and group. It ends by checking how many
 rows each summary used and what the result does not show.
+
+**Topic presentation:**
+[Data Manipulation with pandas](../topic/ong-pandas/)
+
+Presented by Enrico Ong. This presentation uses FiveThirtyEight's college majors
+data to show four pandas verbs: select, filter, create, and group. It ends by
+checking how many rows each summary used and what the result does not show.
