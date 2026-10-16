@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Jun Yan and Students in Fall 2026">
-<meta name="dcterms.date" content="2026-10-14">
+<meta name="author" content="Jun Yan">
+<meta name="author" content="Amanda Noe">
+<meta name="author" content="Enrico Ong">
+<meta name="dcterms.date" content="2026-10-16">
 
 <title>Introduction to Data Science</title>
 <style>
@@ -243,16 +245,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
-             <p><a href="https://statcomp.org">Jun Yan</a> and Students in Fall 2026 </p>
+             <p><a href="https://statcomp.org">Jun Yan</a> </p>
+             <p>Amanda Noe </p>
+             <p>Enrico Ong </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 14, 2026</p>
+      <p class="date">October 16, 2026</p>
     </div>
   </div>
   
@@ -293,6 +297,7 @@ placeholders before publication.
 <p>If you only want a local copy for reading and rendering, clone the shared repository directly instead:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/statds/ids-f26.git</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ids-f26</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The book’s <code>requirements.txt</code> is the single source for course package versions. This repository’s <code>requirements.txt</code> includes <code>../ids-book/requirements.txt</code> for the side-by-side checkout layout above. Follow the <a href="https://statds.github.io/ids-book/#building-the-book">book setup instructions</a> when creating the shared Python 3.12 environment for the first time.</p>
 <p>Use the course Python environment that you already chose while working through the instructor book. Do <strong>not</strong> create another virtual environment or install packages inside <code>ids-f26</code>. From the <code>ids-f26</code> repository, set <code>ENVIRONMENT_DIRECTORY</code> to that environment’s path and activate it:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">ENVIRONMENT_DIRECTORY</span><span class="op">=</span>/path/to/your/environment</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -301,6 +306,7 @@ placeholders before publication.
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows with Git Bash</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> <span class="st">"</span><span class="va">$ENVIRONMENT_DIRECTORY</span><span class="st">/Scripts/activate"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To refresh packages after an approved dependency change, activate that environment and run <code>make install</code> from <code>ids-book</code>. If your checkouts are not side by side, use the actual book directory; the relative include above assumes the documented layout. Propose new dependencies to the instructor for inclusion in the book’s requirements rather than adding package pins here.</p>
 <p>Confirm that the selected interpreter is the course environment before rendering:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> python</span>
@@ -336,7 +342,12 @@ placeholders before publication.
 <li>Share experience completing real-world data-science projects.</li>
 <li>Help students develop reproducible and collaborative working habits.</li>
 </ul></li>
-<li>Anikeev, Katerina</li>
+<li>Anikeev, Katerina
+<ul>
+<li>Learn how to better use my computer and navigate work through the command line</li>
+<li>Practice skills useful for research and Data Analysis in Political Science</li>
+<li>Practice my existing skills and learn how to better code in Python.</li>
+</ul></li>
 <li>Bucco, Sadie
 <ul>
 <li>Become proficient using GitHub and git commands</li>
@@ -503,7 +514,7 @@ placeholders before publication.
 <section id="presentation-order" class="level3">
 <h3 class="anchored" data-anchor-id="presentation-order">Presentation Order</h3>
 <p>The topic presentation order was set in class. Each student contributed one digit to the random seed, and the same seed reproduces the order on every render.</p>
-<div id="a782925f" class="cell" data-execution_count="1">
+<div id="5e348414" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"roster.txt"</span>, newline<span class="op">=</span><span class="st">""</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
@@ -906,7 +917,7 @@ placeholders before publication.
 <li>uses BibTeX for scholarly references;</li>
 <li>avoids unnecessary external files and large data files;</li>
 <li>uses only images that may legally be redistributed;</li>
-<li>records any new Python dependencies in the environment specification; and</li>
+<li>requests approval for new Python dependencies in <code>ids-book/requirements.txt</code>;</li>
 <li>renders successfully on the contributor’s computer.</li>
 </ul>
 <p>Pull requests contain source files, not rendered output. After a pull request is reviewed and merged, the instructor renders the complete notes and all accepted presentations and publishes the unified site.</p>
