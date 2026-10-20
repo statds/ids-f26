@@ -69,6 +69,12 @@ git clone https://github.com/statds/ids-f26.git
 cd ids-f26
 ```
 
+The book's `requirements.txt` is the single source for course package versions.
+This repository's `requirements.txt` includes `../ids-book/requirements.txt`
+for the side-by-side checkout layout above. Follow the
+[book setup instructions](https://statds.github.io/ids-book/#building-the-book)
+when creating the shared Python 3.12 environment for the first time.
+
 Use the course Python environment that you already chose while working through
 the instructor book. Do **not** create another virtual environment or install
 packages inside `ids-f26`. From the `ids-f26` repository, set
@@ -83,6 +89,12 @@ source "$ENVIRONMENT_DIRECTORY/bin/activate"
 # Windows with Git Bash
 source "$ENVIRONMENT_DIRECTORY/Scripts/activate"
 ```
+
+To refresh packages after an approved dependency change, activate that
+environment and run `make install` from `ids-book`. If your checkouts are
+not side by side, use the actual book directory; the relative include above
+assumes the documented layout. Propose new dependencies to the instructor
+for inclusion in the book's requirements rather than adding package pins here.
 
 Confirm that the selected interpreter is the course environment before
 rendering:
@@ -146,6 +158,9 @@ last name and use a nested Markdown list, as in the instructor's example:
   - Share experience completing real-world data-science projects.
   - Help students develop reproducible and collaborative working habits.
 - Anikeev, Katerina
+  - Learn how to better use my computer and navigate work through the command line
+  - Practice skills useful for research and Data Analysis in Political Science
+  - Practice my existing skills and learn how to better code in Python.
 - Bucco, Sadie
   - Become proficient using GitHub and git commands
   - Work on writing code that is clear and reproducible
@@ -235,8 +250,9 @@ or include private information.
 
 ### Midterm
 
-The midterm format, dates, and deliverables will be added after they are
-finalized.
+The [midterm project](midterm/project.qmd) uses hourly PM2.5 measurements to
+study air quality before and after congestion pricing. Submit completed work
+through Classroom 50.
 
 ### Final Project
 
@@ -418,19 +434,20 @@ accepted.
 |---|---|---|
 | 09/28 | Liu, Ethan | [topic] |
 | 09/30 | Noe, Amanda | Accessing U.S. Census Data |
-| 10/05 | Anikeev, Katerina | [topic] |
+| 10/05 | Anikeev, Katerina | Visualizing Spatial Data |
 | 10/07 | Chervonny, Erik | Grammar of Graphics (ggplot) |
 | 10/12 | Mansur, Mahiba | Decision Trees |
 | 10/14 | Ong, Enrico | Data Manipulation with Pandas |
-| 10/19 | — | Midterm-project work; no topic presentations |
-| 10/21 | — | Midterm-project work; no topic presentations |
+| 10/19 | — | Midterm-project week; no topic presentations |
+| 10/21 | — | Midterm-project week; no topic presentations |
 | 10/26 | Fontana, Adam | K-Means Clustering |
 | 10/28 | Wang, Chaoyang | Neural Network |
-| 11/02 | Bucco, Sadie | Random Forests |
-| 11/04 | Tria, Nicholas | [topic] |
-| 11/04 | Parkins, Jack | [topic] |
+| 10/28 | Bucco, Sadie | Random Forests |
+| 11/02 | -- | No class in exchange of midterm-project time |
+| 11/04 | Tria, Nicholas | Naive Bayes |
+| 11/04 | Parkins, Jack | LLM Agents |
 | 11/09 | Chok, Isaac | [topic] |
-| 11/09 | Horan, Elizabeth | [topic] |
+| 11/09 | Horan, Elizabeth | Support vector machines |
 | 11/11 | Distefano, Cristian | [topic] |
 | 11/11 | Nair, Pardhip | [topic] |
 | 11/11 | Morissette, Carter | [topic] |
@@ -458,7 +475,7 @@ chapter collects links to the rendered decks.
 | 12/02 | Mansur, Mahiba | [project] |
 | 12/02 | Ong, Enrico | [project] |
 | 12/02 | Chok, Isaac | [project] |
-| 12/02 | Wang, Chaoyang | [project] |
+| 12/02 |  | [project] |
 | 12/07 | Bucco, Sadie | [project] |
 | 12/07 | Tria, Nicholas | [project] |
 | 12/07 | Parkins, Jack | [project] |
@@ -467,12 +484,12 @@ chapter collects links to the rendered decks.
 | 12/09 | Distefano, Cristian | [project] |
 | 12/09 | Nair, Pardhip | [project] |
 | 12/09 | Morissette, Carter | [project] |
-| [exam-period date] | Maras, Ruveyda | [project] |
-| [exam-period date] | Wang, Leo | [project] |
-| [exam-period date] | Choudhury, Ruhama | [project] |
-| [exam-period date] | Hartman, Mikaela | [project] |
-| [exam-period date] | Kiani, Ismail | [project] |
-| [exam-period date] | Kelly, Daniel | [project] |
+| 12/19 (8:00-10:00) | Maras, Ruveyda | [project] |
+| 12/19 (8:00-10:00) | Wang, Leo | [project] |
+| 12/19 (8:00-10:00) | Choudhury, Ruhama | [project] |
+| 12/19 (8:00-10:00) | Hartman, Mikaela | [project] |
+| 12/19 (8:00-10:00) | Kiani, Ismail | [project] |
+| 12/19 (8:00-10:00) | Kelly, Daniel | [project] |
 
 ## Contributing to the Collaborative Notes
 
@@ -505,7 +522,7 @@ Before requesting review, check that the contribution:
 - uses BibTeX for scholarly references;
 - avoids unnecessary external files and large data files;
 - uses only images that may legally be redistributed;
-- records any new Python dependencies in the environment specification; and
+- requests approval for new Python dependencies in `ids-book/requirements.txt`;
 - renders successfully on the contributor's computer.
 
 Pull requests contain source files, not rendered output. After a pull request
