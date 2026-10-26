@@ -11,27 +11,27 @@ format:
     theme: default
     incremental: false
     html-math-method: katex
-    include-in-header:
-      text: |
-        <style>
-        .reveal .slide .slide-source {
-          color: #555;
-          font-size: 0.55em;
-          line-height: 1.2;
-          margin-top: 0.6em;
-        }
-        .reveal .slide .slide-source p { margin: 0; }
-        .reveal .katex { font-size: 1.03em; }
-        .reveal .katex-display { margin: 0.6em 0; }
-        .reveal #python-workflow pre.sourceCode { font-size: 0.72em; }
-        </style>
+    fig-format: svg
 jupyter: python3
+bibliography: references.bib
+link-citations: true
 ---
+
+## About me
+
+**Chaoyang Wang**
+
+- **Background:** PhD student in Statistics.
+- **Interests:** deep learning and its applications in finance.
+- **Why this topic?** Neural networks provide a starting point for
+  understanding deep learning.
+
 
 ## What is a neural network?
 
 A neural network is a machine learning model built from layers of
-connected computational units called **neurons**.
+connected computational units called **neurons**
+[@ibm-nn; @visionbook].
 
 - **Inputs:** the numerical features supplied to the model.
 - **Hidden layers:** calculations that combine and transform the inputs.
@@ -39,9 +39,6 @@ connected computational units called **neurons**.
 
 Training adjusts numerical parameters called **weights** and **biases**.
 
-::: {.slide-source}
-Sources: [IBM][ibm-nn] and [MIT Vision Book][mit-nn].
-:::
 
 ## Applications and motivation {.smaller}
 
@@ -73,15 +70,8 @@ $$
 
 ::::
 
-**Why use one?** Learn nonlinear relationships between inputs and
-outcomes.
-
-::: {.slide-source}
-Sources: [IBM][ibm-nn] and [MIT Vision Book][mit-nn].
-:::
-
-[ibm-nn]: https://www.ibm.com/think/topics/neural-networks
-[mit-nn]: https://visionbook.mit.edu/neural_nets.html
+**Why use one?** A network can learn nonlinear relationships between
+inputs and outcomes [@ibm-nn; @visionbook].
 
 ## Our example: two moons {.smaller}
 
@@ -156,15 +146,10 @@ $$
 
 ::::
 
+**Data:** generated with scikit-learn's `make_moons`
+[@sklearn-data].
+
 **Question:** Can a straight-line boundary capture this pattern?
-
-::: {.slide-source}
-Source: [scikit-learn's generated datasets][moons-source].
-:::
-
-[moons-source]:
-  https://scikit-learn.org/stable/datasets/sample_generators.html
-
 
 ## A straight-line classifier {.smaller}
 
@@ -186,7 +171,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-# Reuse the data from slide 4 and reserve 50 points for evaluation.
+# Reuse the two-moons data and reserve 50 points for evaluation.
 train_features, test_features, train_labels, test_labels = train_test_split(
     features,
     labels,
@@ -263,28 +248,28 @@ fig.tight_layout()
 plt.show()
 ```
 
+**Next:** neurons → activation functions → 8 neurons in one hidden layer.
+
 :::
 
 ::: {.column width="34%"}
 
 **Reading the plot**
 
-- **Black line:** the decision boundary.
-- **Background colors:** predicted classes.
-- **Point colors and shapes:** known class labels.
+- **Line:** logistic regression's boundary [@sklearn-linear].
+- **Background:** predicted classes.
+- **Points:** known class labels.
+
+**A straight boundary misses the curved pattern.**
+
+**Model connection**
+
+Logistic regression can be viewed as a neural network with
+**no hidden layer** [@cs231n-architecture].
 
 :::
 
 ::::
-
-**A straight boundary misses the curved pattern.**
-
-::: {.slide-source}
-Source: [scikit-learn: logistic regression][logistic-source].
-:::
-
-[logistic-source]:
-  https://scikit-learn.org/stable/modules/linear_model.html
 
 
 
@@ -358,8 +343,10 @@ $$
 z_i = b + w_1x_{i1} + w_2x_{i2}
 $$
 
+- $z_i$: score before activation.
+- $b$: bias.
+- $w_1,w_2$: weights.
 - $x_{i1},x_{i2}$: inputs for observation $i$.
-- $w_1,w_2$: weights; $b$: bias.
 
 :::
 
@@ -371,20 +358,15 @@ $$
 a_i = g(z_i)
 $$
 
-- $z_i$: combined score.
-- $g$: activation function; $a_i$: output.
+- $a_i$: output after activation.
+- $g(z_i)$: apply activation function $g$ to $z_i$.
 
 :::
 
 ::::
 
-**We choose $g$; training learns the weights and bias.**
-
-::: {.slide-source}
-Source: [MIT Vision Book: neural networks][neuron-source].
-:::
-
-[neuron-source]: https://visionbook.mit.edu/neural_nets.html
+**Logistic regression:** $g=\sigma$ gives $a_i=\hat{p}_i$,
+with **no hidden layer** [@cs231n-architecture].
 
 
 
@@ -465,7 +447,7 @@ $$
 $$
 
 Outputs a value between 0 and 1.
-**Our use:** estimate the probability of class 1.
+**Both models:** estimate the probability of class 1 at the output.
 
 :::
 
@@ -476,22 +458,14 @@ $$
 $$
 
 Zero if $z\le0$; otherwise, $z$.
-**Our use:** transform hidden-neuron scores.
+**Our network:** transform hidden-neuron scores.
 
 :::
 
 ::::
 
-**Nonlinear hidden activations allow flexible decision boundaries.**
-
-::: {.slide-source}
-Sources: [MIT Vision Book][activation-source] and
-[scikit-learn: neural networks][mlp-source].
-:::
-
-[activation-source]: https://visionbook.mit.edu/neural_nets.html
-[mlp-source]:
-  https://scikit-learn.org/stable/modules/neural_networks_supervised.html
+**Nonlinear hidden neurons add flexibility before the sigmoid output**
+[@visionbook; @sklearn-nn].
 
 
 
@@ -513,7 +487,7 @@ axis.axis("off")
 
 layer_nodes = [
     (1.65, "Input layer\n2 coordinates"),
-    (5.0, "Hidden layer\n8 ReLU neurons"),
+    (5.0, "Added hidden layer\n8 ReLU neurons"),
     (8.35, "Output layer\n1 sigmoid neuron"),
 ]
 for center_x, text in layer_nodes:
@@ -577,17 +551,8 @@ $$
 
 ::::
 
-**Forward pass:** inputs → hidden features → probability.
-
-::: {.slide-source}
-Sources: [MIT Vision Book][network-mit] and
-[scikit-learn: neural networks][network-sklearn].
-:::
-
-[network-mit]: https://visionbook.mit.edu/neural_nets.html
-[network-sklearn]:
-  https://scikit-learn.org/stable/modules/neural_networks_supervised.html
-
+**Our forward pass:** inputs → ReLU hidden features → sigmoid probability
+[@sklearn-nn; @sklearn-mlp].
 
 
 ## A numerical forward pass {.smaller}
@@ -632,27 +597,21 @@ demo_probability = 1.0 / (1.0 + np.exp(-demo_output_score))
 ```
 
 **Input:** $(x_{i1},x_{i2})=(1,0.5)$.
-Parameters are illustrative.
+Weights and biases are **manually chosen for demonstration**.
 
 :::: {.columns}
 
 ::: {.column width="48%"}
 
-**1. Two hidden-neuron examples**
+**1. Two hidden neurons**
 
-Positive score:
+$z_{ij}$: score before ReLU; $h_{ij}$: output after ReLU
+[@visionbook].
 
 $$
 \begin{aligned}
 z_{i1} &= 0.5+1\cdot1-2\cdot0.5=0.5,\\
-h_{i1} &= \max(0,0.5)=0.5.
-\end{aligned}
-$$
-
-Negative score:
-
-$$
-\begin{aligned}
+h_{i1} &= \max(0,0.5)=0.5,\\
 z_{i2} &= 0.25-1\cdot1+1\cdot0.5=-0.25,\\
 h_{i2} &= \max(0,-0.25)=0.
 \end{aligned}
@@ -662,37 +621,30 @@ $$
 
 ::: {.column width="48%"}
 
-**2. Combine all eight hidden outputs**
+**2. Output score before sigmoid**
 
-**Hidden outputs:** $(0.5,0,1,1,0,0,0.5,0)$.
+Hidden outputs:
+$(0.5,0,1,1,0,0,0.5,0)$.
 
-Zero contributions are omitted; the output bias is zero.
+Chosen output weights $(v_1,\ldots,v_8)=$
+$(1,-1,0.5,-0.5,1,-1,1,1)$; output bias $c=0$.
 
 $$
 \begin{aligned}
-s_i &= 0+1\cdot0.5+0.5\cdot1\\
+s_i &= c+\sum_{j=1}^{8}v_jh_{ij}\\
+    &= 1\cdot0.5+0.5\cdot1\\
     &\quad -0.5\cdot1+1\cdot0.5=1.
 \end{aligned}
 $$
 
-**3. Apply sigmoid**
-
-$$
-\hat{p}_i=\frac{1}{1+e^{-1}}\approx0.731.
-$$
-
-**Predict class 1**, since $0.731>0.5$.
+Zero contributions are omitted in the substitution.
 
 :::
 
 ::::
 
-::: {.slide-source}
-Original numerical example.
-Method: [MIT Vision Book: neural networks][forward-source].
-:::
-
-[forward-source]: https://visionbook.mit.edu/neural_nets.html
+**3. Apply sigmoid:** $\hat{p}_i=\sigma(s_i)=\sigma(1)\approx0.731$;
+**predict class 1** because $\hat{p}_i>0.5$.
 
 
 
@@ -708,7 +660,7 @@ $$
 
 ::: {.column width="44%"}
 
-**What the symbols mean**
+**Binary cross-entropy** [@sklearn-metrics]:
 
 - $y_i$: true class, either 0 or 1.
 - $\hat{p}_i$: estimated probability of class 1.
@@ -723,7 +675,7 @@ $$
 
 **Our worked example**
 
-Assume $y_i=1$, with $\hat{p}_i\approx0.731$ from slide 9:
+Assume $y_i=1$, with $\hat{p}_i\approx0.731$ from the forward pass:
 
 $$
 \ell_i=-\ln(0.731)\approx0.313.
@@ -759,13 +711,6 @@ for loss_probability, loss_value in zip(loss_probabilities, loss_values):
 ::::
 
 **Training goal:** reduce the average loss on the training observations.
-
-::: {.slide-source}
-Source: [scikit-learn: log loss][loss-source].
-:::
-
-[loss-source]:
-https://scikit-learn.org/stable/modules/generated/sklearn.metrics.log_loss.html
 
 
 ## How training works {.smaller}
@@ -880,27 +825,17 @@ $$
 - $L$: average training loss.
 - $\eta>0$: learning rate, controlling the step size.
 
-**Backpropagation** computes gradients.
-
-**The optimizer** uses them to update weights and biases.
+**Backpropagation** computes gradients; the **optimizer** uses them to
+update weights and biases [@visionbook].
 
 :::
 
 ::::
 
-**Repeat:** predict → calculate loss → compute gradients → update.
-
-::: {.slide-source}
-
-Hypothetical one-weight illustration.
-Sources: [MIT: gradient descent][training-gd] and
-[MIT: backpropagation][training-backprop].
-
-:::
-
 ## Python workflow {#python-workflow .smaller}
 
-**Configured model:** 2 inputs → 8 ReLU neurons → 1 sigmoid output.
+**Configured model:** scikit-learn's `MLPClassifier` [@sklearn-mlp],
+with 2 inputs → 8 ReLU neurons → 1 sigmoid output.
 
 ```{python}
 #| label: configure-two-moons-network
@@ -946,11 +881,6 @@ network_accuracy = network_model.score(test_features, test_labels)
 - `fit`: learn weights and biases from the training observations.
 - `predict_proba`: estimate probabilities; `[:, 1]` selects class 1.
 - `predict` and `score`: predict labels and calculate test accuracy.
-
-::: {.slide-source}
-The model uses the training settings from our example.
-Source: [scikit-learn: MLPClassifier][results-mlp].
-:::
 
 ## Trained two-moons results {.smaller}
 
@@ -1059,6 +989,8 @@ plt.show()
 
 **150 training observations; 50 test observations**
 
+**Accuracy** [@sklearn-metrics]:
+
 $$
 \text{Test accuracy}
 =
@@ -1093,15 +1025,6 @@ for model_name, correct, accuracy in (
 
 **The nonlinear boundary improves accuracy on this test split.**
 
-::: {.slide-source}
-
-Sources: [scikit-learn: MLPClassifier][results-mlp] and
-[accuracy][results-accuracy]. Results computed from our example.
-
-:::
-
-
-
 ## Limitations and takeaways {.smaller}
 
 :::: {.columns}
@@ -1111,10 +1034,10 @@ Sources: [scikit-learn: MLPClassifier][results-mlp] and
 ### Limitations
 
 - **Overfitting:** learning training noise can hurt predictions
-  on new data.
+  on new data [@cs231n-architecture].
 
 - **Training choices:** initial weights and the learning rate
-  can affect the fitted model.
+  can affect the fitted model [@sklearn-nn].
 
 - **Limited evidence:** our result comes from one small synthetic
   dataset and one train/test split.
@@ -1131,81 +1054,48 @@ Sources: [scikit-learn: MLPClassifier][results-mlp] and
 2. **Learning:** backpropagation computes gradients; the optimizer
    updates parameters to reduce training loss.
 
-3. **Evaluation:** check predictions on held-out data and compare
-   with a simpler baseline.
+3. **Evaluation:** check predictions on held-out data
+   [@sklearn-evaluation]. Compare with a simpler baseline.
 
 :::
 
 ::::
 
-::: {.slide-source}
+## AI-use disclosure {.smaller}
 
-Sources: [scikit-learn: neural networks][closing-nn] and
-[model evaluation][closing-evaluation].
+- **Tool:** OpenAI Codex.
+- **Assistance:** Refining wording, improving slide formatting, code optimization, troubleshooting Quarto code and rendering issues, and performing final sanity checks. 
+- **Responsibility:** I take responsibility for the final content and citations.
 
+
+## Concepts and training {.smaller}
+
+- **Overview:** IBM's explanation of neural networks [@ibm-nn].
+- **Neurons and activations:** Chapter 12 of
+  *Foundations of Computer Vision* [@visionbook].
+- **Learning:** gradient-based learning and backpropagation,
+  Chapters 10 and 14 [@visionbook].
+
+## Data, code, and evaluation {.smaller}
+
+- **Synthetic data:** generating the two-moons example
+  [@sklearn-data].
+- **Baseline:** logistic regression [@sklearn-linear].
+- **Neural network:** the multilayer perceptron and its Python API
+  [@sklearn-nn; @sklearn-mlp].
+- **Evaluation:** log loss, accuracy, and held-out evaluation
+  [@sklearn-metrics; @sklearn-evaluation].
+
+## Further readings {.smaller}
+
+- **Visual intuition:** 3Blue1Brown's neural-network lesson
+  [@sanderson-nn].
+- **Course context:** Chapter 10, Machine Learning, in the course notes
+  [@ids-book].
+- **Implementation details:** scikit-learn's neural-network guide
+  [@sklearn-nn].
+
+## References {.smaller .scrollable}
+
+::: {#refs}
 :::
-
-
-## Sources and further readings {.smaller}
-
-:::: {.columns}
-
-::: {.column width="48%"}
-
-### Concepts and training
-
-- **IBM:** [What is a neural network?][ibm-nn]
-
-- **MIT, Foundations of Computer Vision:**
-  [Neural networks][mit-nn],
-  [gradient descent][training-gd], and
-  [backpropagation][training-backprop].
-
-### Further readings
-
-- **3Blue1Brown:** [A visual introduction to neural networks][reading-3b1b].
-
-- **Course book:** [Machine learning][reading-course], including
-  generalization and model evaluation.
-
-:::
-
-::: {.column width="48%"}
-
-### Data, code, and evaluation
-
-**scikit-learn documentation**
-
-- [Generated datasets][moons-source] and
-  [logistic regression][logistic-source].
-
-- [Neural-network guide][mlp-source] and
-  [MLPClassifier][results-mlp].
-
-- [Log loss][loss-source] and
-  [classification accuracy][results-accuracy].
-
-- [Model evaluation][closing-evaluation].
-
-:::
-
-::::
-
-## Q&A
-
-**Thank you!**
-
-Questions about the network, training, or two-moons results?
-
-[training-gd]: https://visionbook.mit.edu/gradient_descent.html
-[training-backprop]: https://visionbook.mit.edu/backpropagation.html
-[results-mlp]:
-  https://scikit-learn.org/stable/modules/neural_networks_supervised.html
-[results-accuracy]:
-  https://scikit-learn.org/stable/modules/model_evaluation.html#accuracy-score
-[closing-nn]:
-  https://scikit-learn.org/stable/modules/neural_networks_supervised.html
-[closing-evaluation]:
-  https://scikit-learn.org/stable/modules/cross_validation.html
-[reading-3b1b]: https://www.3blue1brown.com/lessons/neural-networks/
-[reading-course]: https://statds.github.io/ids-book/10-machine-learning.html
