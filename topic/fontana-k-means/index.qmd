@@ -1,0 +1,382 @@
+---
+title: "K-Means Clustering"
+subtitle: "From start to finish + applications"
+author: "Adam Fontana"
+jupyter: ids-book-python
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: auto
+execute:
+  echo: true
+bibliography: references.bib
+---
+
+
+```{python}
+#| echo: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from matplotlib.animation import FuncAnimation
+from IPython.display import HTML
+from IPython.display import Image, display
+
+NAVY, RED, TEAL, GRAY = "#1F3A5F", "#BF280D", "#44CDE3", "#C9CED6"
+plt.rcParams.update({
+    "font.size": 14,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+    "axes.titleweight": "bold",
+    "axes.titlesize": 16,
+})
+```
+
+## About me
+
+- Senior Statistical Data Science major + Math minor
+- Analytics Supervisor for the Bristol Blues (NECBL)
+- Manager/Analyst for UConn Baseball
+- Previously Syracuse Field Hockey
+- Published MLB injury prevention research
+
+::: notes
+:::
+
+
+
+## Finding groups in data
+:::: {.columns}
+::: {.column width="50%"}
+- Data can contain patterns that aren't explicitly labeled.
+
+**Guiding question:** Can we find meaningful groups in data without being told what those groups are?
+:::
+::: {.column width="50%"}
+
+```{python}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 3.5
+X_intro, _ = make_blobs(
+    n_samples=300,
+    centers=3,
+    n_features=2,
+    cluster_std=3,
+    random_state=2026
+)
+
+fig, ax = plt.subplots(figsize=(7, 3.5))
+ax.scatter(X_intro[:, 0], X_intro[:, 1], color=NAVY, s=25, alpha=0.8)
+ax.set_title("What groups are here?")
+ax.set_xlabel("Feature 1")
+ax.set_ylabel("Feature 2")
+plt.tight_layout()
+plt.show()
+```
+
+:::
+
+::::
+
+::: notes
+
+:::
+
+## What is K-means Clustering?
+
+**K-means clustering** is an unsupervised learning tool that groups observations into a chosen number of clusters (K) based on feature similarity.
+
+```{python}
+from sklearn.cluster import KMeans
+
+kmeans = KMeans(n_clusters=3, random_state=2026)
+```
+
+- **K**: # clusters we want to find (n_clusters)
+- **Centroid**: mean position of the obs in a given cluster
+- **Goal**: group nearby observations while keeping clusters as compact as possible
+
+::: notes
+- Clustering groups observations based on similarities in their features.
+- K-means is an unsupervised learning algorithm that identifies these groups.
+- Does this by putting K points randomly on a board
+- minimizes the total euclidean distance (ie. straight line distance formula)
+- before we get specifically into a workflow, a few things to go over
+:::
+
+## Supervised vs. Unsupervised Learning
+
+| **Supervised Learning** | **Unsupervised Learning** |
+|:---|:---|
+|Uses **labeled data** | Uses **unlabeled data** |
+| Learns to predict a known outcome | Finds patterns or structure |
+| Classification and regression | Clustering and association |
+| **Question:** What outcome will occur based on the patterns in this data? | **Question:** What are the patterns in this data? |
+
+
+::: notes
+Labelled = outcome var
+Unlabelled = no outcome var, just some predictors from some samples
+Labeled Unlabelled Ex: NBA draft picks 
+Unsupervised: what types of players are drafted from these picks? (salary vs win shares)
+(picks 1-6 are high ceiling high risk/value, are picks 6-12 role players)
+Supervised: Can we predict this guy's points per game based on the pick he was drafted?
+:::
+
+
+## K-means vs. KNN
+
+| **K-means** | **K-Nearest Neighbors (KNN)** |
+|:---|:---|
+| Unsupervised learning | Supervised learning |
+| Groups unlabeled observations | Predicts using labeled examples |
+| **K = number of clusters** | **K = number of neighbors** |
+| Learns cluster centroids | Looks at nearby observations |
+|Example: Grouping pitches by characteristics | Example: Predicting whether a pitch is a fastball or slider|
+
+
+
+::: notes
+Key distinction: K means finds patterns, K nearest neighbors uses points around an observation to predict the obs
+K-Means uses a K amount of points and minimizes to find groups
+K-means uses the K closest observations to classify the obs in question
+:::
+
+## Step 1: Get Your Data {.smaller}
+
+```{python}
+X, y_true = make_blobs(n_samples=300,centers=3,
+    cluster_std=3.0, random_state=2026)
+data = pd.DataFrame(X, columns=["Taste Profile", "Texture Profile"])
+data.head()
+```
+
+- 300 observations (all the foods you've ever tried)
+- 2 numerical features
+    - Taste profile: -15 = sweet, 15 = savory
+    - Texture profile: -15 = soft, 15 = crunchy
+
+::: notes
+- What patterns appear in values of these 2 features?
+- i.e. what are the general types of foods that I've tried?
+:::
+
+## Step 2: Visualize the Data {.smaller}
+
+```{python}
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.scatter(X[:, 0], X[:, 1], color=NAVY, s=28, alpha=0.8)
+ax.set(
+    xlabel="Taste (Sweet ---> Savory)",
+    ylabel="Texture (Soft ---> Crunchy)",
+    title="Taste Scatterplot (pre cluster)"
+)
+plt.tight_layout()
+plt.show()
+```
+
+What do you notice? Can we identify groups just by looking at the data?
+
+::: notes
+
+:::
+
+## Step 3: Fit K-means with Python
+
+```{python}
+kmeans = KMeans(
+    n_clusters=3,
+    random_state=2026,
+    n_init=10
+)
+clusters = kmeans.fit_predict(X)
+centers = pd.DataFrame(
+    kmeans.cluster_centers_,
+    columns=["Taste Profile", "Texture Profile"]
+)
+print(centers)
+```
+
+::: notes
+negative taste = more sweet
+negative texture = more soft
+"now here's how it did that:"
+:::
+
+## How K-means learns
+
+```{python}
+#| echo: false
+K = 3
+rng = np.random.default_rng(7)
+
+anim_centers = X[rng.choice(len(X), K, replace=False)].copy()
+frames = []
+
+for i in range(10):
+    distances = np.linalg.norm(
+        X[:, None, :] - anim_centers[None, :, :],
+        axis=2
+    )
+    labels = distances.argmin(axis=1)
+    frames.append((labels.copy(), anim_centers.copy()))
+
+    new_centers = np.array([
+        X[labels == k].mean(axis=0)
+        if np.any(labels == k) else anim_centers[k]
+        for k in range(K)
+    ])
+
+    if np.allclose(anim_centers, new_centers):
+        anim_centers = new_centers
+        break
+
+    anim_centers = new_centers
+
+distances = np.linalg.norm(
+    X[:, None, :] - anim_centers[None, :, :],
+    axis=2
+)
+labels = distances.argmin(axis=1)
+frames.append((labels.copy(), anim_centers.copy()))
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+points = ax.scatter(
+    X[:, 0], X[:, 1],
+    c=frames[0][0], cmap="viridis",
+    vmin=0, vmax=K-1, s=28, alpha=0.8
+)
+centroid_plot = ax.scatter(
+    frames[0][1][:, 0], frames[0][1][:, 1],
+    color=RED, marker="X", s=200,
+    edgecolor="white", linewidth=1.5
+)
+
+ax.set_xlabel("Taste Profile")
+ax.set_ylabel("Texture Profile")
+
+def update(i):
+    labels_i, centers_i = frames[i]
+    points.set_array(labels_i)
+    centroid_plot.set_offsets(centers_i)
+    ax.set_title(f"Iteration {i + 1}")
+    return points, centroid_plot
+
+anim = FuncAnimation(
+    fig, update,
+    frames=len(frames),
+    interval=1000,
+    repeat=True
+)
+
+plt.close(fig)
+
+display(HTML(anim.to_jshtml()))
+```
+
+:::{notes}
+each round, points are assigned to the center closest to it.
+then the centers moves to minimize the total dist between it and those points
+then repeat
+but how do you choose k?
+:::
+
+
+## Elbow Method for Choosing K
+::::{.columns}
+:::{.column width="50%"}
+- Fit K-means for different values of K and measure **inertia** (within-cluster sum of squares).
+$$
+\text{WCSS} = \sum_{k=1}^{K} \sum_{x_i \in C_k} (x_i - \mu_k)^2
+$$
+
+- Choose where the "elbow" is as K
+:::
+::: {.column width="50%"}
+```{python}
+#|echo: false
+inertias = []
+for k in range(1, 11):
+    model = KMeans(
+        n_clusters=k,
+        random_state=2026,
+        n_init=10
+    )
+    model.fit(X)
+    inertias.append(model.inertia_)
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(range(1, 11), inertias, marker="o", color=NAVY)
+ax.set(
+    xlabel="Number of Clusters (K)",
+    ylabel="Inertia (WCSS)",
+    title="Elbow Method"
+)
+ax.set_xticks(range(1, 11))
+plt.tight_layout()
+plt.show()
+```
+
+:::
+::::
+::: notes
+One way is to use the elbow method.
+WCSS basically means the total distance between obs in a cluster
+Basically test k means for a lot of k, plot WCSS for each, and choose the one at the "elbow"
+:::
+
+## Other Methods for Choosing K
+
+| Method | What it measures |
+|:---|:---|
+| **Silhouette Score** | How well each point fits its own cluster versus other clusters |
+| **Gap Statistic** | Compares observed clustering quality against a reference null distribution |
+| **Stability Analysis** | Whether similar clusters appear across different samples or starting points |
+
+ *Note: No single method guarantees the correct K.*
+
+::: notes
+Gap Statistic:
+:::
+
+## Applications of K-means
+
+| **Industry** | **Example** |
+|:---|:---|
+| **Marketing** | Grouping customers by purchasing behavior |
+| **Healthcare** | Identifying patient groups with similar characteristics |
+| **Sports Analytics** | Grouping players or pitches by performance metrics |
+| **Image Processing** | Grouping similar pixel colors for image compression |
+
+**Common theme:** Find meaningful groups in data without predefined labels.
+
+:::notes
+
+:::
+
+## Limitations and Practical Considerations
+
+
+- Features with larger numerical ranges can dominate distance calculations
+- Outliers can pull centroids away from the main groups
+- Different starting centroids can produce different results.
+- Clusters that K-Means finds aren't automatically meaningful.
+
+:::notes
+
+:::
+
+## References
+
+[@geeksforgeeks_kmeans]
+[@crossvalidated_kmeans_knn]
+[@ibm_supervised_unsupervised]
+[@zalarushirajsinh_elbow]
+
+## Thank you!
+
+Questions?
