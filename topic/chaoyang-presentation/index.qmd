@@ -59,13 +59,12 @@ Each observation is represented by numerical inputs.
 **Binary classification**
 
 $$
-\hat{p} = f_{\boldsymbol{\theta}}(\mathbf{x})
+\hat{p} = f_{\boldsymbol{\theta}}(\mathbf{x}),
 $$
 
-- $\mathbf{x}$: input feature vector.
-- $\boldsymbol{\theta}$: learned weights and biases.
-- $f_{\boldsymbol{\theta}}$: network function.
-- $\hat{p}$: estimated probability of class 1.
+where $\mathbf{x}$ is the input feature vector, $\boldsymbol{\theta}$
+contains the learned weights and biases, $f_{\boldsymbol{\theta}}$ is the
+network function, and $\hat{p}$ is the estimated probability of class 1.
 :::
 
 ::::
@@ -135,12 +134,11 @@ $$
 \begin{bmatrix}
 x_{i1} \\
 x_{i2}
-\end{bmatrix}
+\end{bmatrix},
 $$
 
-- $i=1,\ldots,200$: point index.
-- $x_{i1},x_{i2}$: the two inputs.
-- $y_i \in \{0,1\}$: known class label.
+where $i=1,\ldots,200$ indexes the points and $x_{i1},x_{i2}$ are
+the two inputs. The known class label is $y_i\in\{0,1\}$.
 
 :::
 
@@ -340,13 +338,12 @@ plt.show()
 **1. Combine the inputs**
 
 $$
-z_i = b + w_1x_{i1} + w_2x_{i2}
+z_i = b + w_1x_{i1} + w_2x_{i2},
 $$
 
-- $z_i$: score before activation.
-- $b$: bias.
-- $w_1,w_2$: weights.
-- $x_{i1},x_{i2}$: inputs for observation $i$.
+where $z_i$ is the score before activation, $b$ is the bias,
+$w_1,w_2$ are the weights, and $x_{i1},x_{i2}$ are the inputs for
+observation $i$.
 
 :::
 
@@ -355,11 +352,11 @@ $$
 **2. Apply an activation**
 
 $$
-a_i = g(z_i)
+a_i = g(z_i),
 $$
 
-- $a_i$: output after activation.
-- $g(z_i)$: apply activation function $g$ to $z_i$.
+where $g$ is the activation function and $a_i$ is the output
+after applying it to $z_i$.
 
 :::
 
@@ -443,7 +440,7 @@ plt.show()
 ::: {.column width="48%"}
 
 $$
-\sigma(z)=\frac{1}{1+e^{-z}}
+\sigma(z)=\frac{1}{1+e^{-z}}.
 $$
 
 Outputs a value between 0 and 1.
@@ -454,7 +451,7 @@ Outputs a value between 0 and 1.
 ::: {.column width="48%"}
 
 $$
-\operatorname{ReLU}(z)=\max(0,z)
+\operatorname{ReLU}(z)=\max(0,z).
 $$
 
 Zero if $z\le0$; otherwise, $z$.
@@ -526,11 +523,11 @@ plt.show()
 $$
 h_{ij}=\operatorname{ReLU}\left(
 b_j+w_{j1}x_{i1}+w_{j2}x_{i2}
-\right)
+\right),
 $$
 
-- $h_{ij}$: hidden neuron $j$'s output for observation $i$.
-- $w_{j1},w_{j2}$: input weights; $b_j$: bias.
+where $h_{ij}$ is hidden neuron $j$'s output for observation $i$,
+$w_{j1},w_{j2}$ are its input weights, and $b_j$ is its bias.
 
 :::
 
@@ -541,11 +538,12 @@ $$
 $$
 \hat{p}_i=\sigma\left(
 c+v_1h_{i1}+\cdots+v_8h_{i8}
-\right)
+\right),
 $$
 
-- $v_1,\ldots,v_8$: output weights; $c$: bias.
-- $\sigma$: sigmoid; $\hat{p}_i$: estimated class 1 probability.
+where $v_1,\ldots,v_8$ are the output weights, $c$ is the bias,
+$\sigma$ is sigmoid, and $\hat{p}_i$ is the estimated probability of
+class 1.
 
 :::
 
@@ -653,19 +651,16 @@ Zero contributions are omitted in the substitution.
 $$
 \ell_i=-\left[
 y_i\ln(\hat{p}_i)+(1-y_i)\ln(1-\hat{p}_i)
-\right]
+\right],
 $$
 
 :::: {.columns}
 
 ::: {.column width="44%"}
 
-**Binary cross-entropy** [@sklearn-metrics]:
-
-- $y_i$: true class, either 0 or 1.
-- $\hat{p}_i$: estimated probability of class 1.
-- $\ell_i$: loss for observation $i$.
-- $\ln$: natural logarithm, with base $e$.
+where $y_i$ is the true class (0 or 1), $\hat{p}_i$ is the estimated
+probability of class 1, $\ell_i$ is the loss for observation $i$, and
+$\ln$ is the natural logarithm with base $e$ [@sklearn-metrics].
 
 **Smaller loss is better.**
 
@@ -818,12 +813,11 @@ w_{\text{new}}
 w_{\text{old}}
 -
 \eta\,
-\underbrace{\frac{\partial L}{\partial w}}_{\text{slope}}
+\underbrace{\frac{\partial L}{\partial w}}_{\text{slope}},
 $$
 
-- $w$: one weight.
-- $L$: average training loss.
-- $\eta>0$: learning rate, controlling the step size.
+where $w$ is one weight, $L$ is the average training loss, and
+$\eta>0$ is the learning rate controlling the step size.
 
 **Backpropagation** computes gradients; the **optimizer** uses them to
 update weights and biases [@visionbook].
@@ -839,31 +833,29 @@ with 2 inputs → 8 ReLU neurons → 1 sigmoid output.
 
 ```{python}
 #| label: configure-two-moons-network
-#| include: false
+#| echo: true
+#| output: false
 
-import matplotlib.pyplot as plt
-import numpy as np
 from sklearn.neural_network import MLPClassifier
 
-# Match the basic gradient descent explained on slide 11.
-# Each update uses all 150 training observations.
 network_model = MLPClassifier(
-    hidden_layer_sizes=(8,),
-    activation="relu",
-    solver="sgd",
-    batch_size=len(train_features),
-    learning_rate="constant",
-    learning_rate_init=0.1,
-    momentum=0.0,
-    nesterovs_momentum=False,
-    alpha=0.0,
-    early_stopping=False,
-    max_iter=10000,
-    tol=1e-5,
-    n_iter_no_change=100,
-    random_state=2026,
+    hidden_layer_sizes=(8,), activation="relu", solver="sgd",
+    batch_size=len(train_features), learning_rate="constant",
+    learning_rate_init=0.1, momentum=0.0, nesterovs_momentum=False,
+    alpha=0.0, early_stopping=False, max_iter=10000,
+    tol=1e-5, n_iter_no_change=100, random_state=2026,
 )
 ```
+
+- `hidden_layer_sizes=(8,)` creates one hidden layer with eight neurons.
+- The full training batch and zero momentum match the gradient-descent
+  illustration. The learning rate is 0.1, and `alpha=0` disables the penalty.
+- The stopping controls limit training; the fixed seed makes it reproducible.
+
+## Fit and evaluate {.smaller}
+
+The configured model learns from the 150 training observations. Predictions
+and accuracy use the same 50 held-out observations as the straight-line model.
 
 ```{python}
 #| label: visible-network-workflow
@@ -994,7 +986,7 @@ plt.show()
 $$
 \text{Test accuracy}
 =
-\frac{\text{correct predictions}}{\text{test observations}}
+\frac{\text{correct predictions}}{\text{test observations}}.
 $$
 
 ```{python}
@@ -1064,8 +1056,11 @@ for model_name, correct, accuracy in (
 ## AI-use disclosure {.smaller}
 
 - **Tool:** OpenAI Codex.
-- **Assistance:** Refining wording, improving slide formatting, code optimization, troubleshooting Quarto code and rendering issues, and performing final sanity checks. 
-- **Responsibility:** I take responsibility for the final content and citations.
+- **Assistance:** Refining wording, improving slide formatting, code
+  optimization, troubleshooting Quarto code and rendering issues, and
+  performing final sanity checks.
+- **Responsibility:** I take responsibility for the final content and
+  citations.
 
 
 ## Concepts and training {.smaller}
