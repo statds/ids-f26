@@ -484,7 +484,7 @@ accepted.
 | 11/11 | Nair, Pardhip | [topic] |
 | 11/11 | Morissette, Carter | [topic] |
 | 11/16 | Maras, Ruveyda | [topic] |
-| 11/16 | Wang, Leo | [topic] |
+| 11/16 | Wang, Leo | Agent Skills for Data Science |
 | 11/16 | Choudhury, Ruhama | Deep Learning |
 | 11/18 | Hartman, Mikaela | [topic] |
 | 11/18 | Kiani, Ismail | [topic] |
