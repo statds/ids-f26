@@ -1,0 +1,290 @@
+---
+title: "LLM Agents"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Jack Parkins"
+bibliography: references.bib
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+    code-line-numbers: false
+jupyter: python3
+---
+
+```{python}
+#| include: false
+import inspect
+from math import sqrt
+
+import pandas as pd
+
+from agent import (PRICES, TOOLS, ci_widget, get_prices, load_traces, player,
+                   player_bare, replay, run_agent)
+
+traces = load_traces()
+QUESTION = traces["scenarios"]["main"]["question"]
+_, MAIN = replay("main")
+
+
+def raw(html):
+    print("```{=html}\n" + html + "\n```")
+
+
+def wilson(k, n, z=1.96):
+    p = k / n
+    mid = (p + z**2 / (2 * n)) / (1 + z**2 / n)
+    half = z * sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / (1 + z**2 / n)
+    return mid - half, mid + half
+```
+
+## About Me
+
+- **Jack Parkins**, junior in Statistical Data Science
+  (Financial Analysis concentration)
+- From Hinsdale, IL, outside Chicago
+- Incoming Analyst at JPMorgan Chase, summer 2027
+- Built AI agents for finance workflows as an AI Transformation Intern
+  at Ensono
+- Why this topic: I want to show what is actually happening inside an
+  agent
+
+## Demo 1: Ask a Bare LLM
+
+A **large language model (LLM)** predicts text from a prompt. A *bare*
+LLM has no tools: it cannot open files or run code.
+
+```{python}
+#| output: asis
+raw(player_bare(height=320))
+```
+
+**Scripted illustration:** this reply was written in advance to show a
+typical bare-model response; it is not a recorded model output.
+
+## What Is an LLM Agent?
+
+An **LLM agent** runs an LLM in a loop: the LLM picks a **tool**, our
+code runs it, the **result** goes back to the LLM, and the loop repeats
+until it can answer [@yao2023react].
+
+```{=html}
+<svg viewBox="0 0 1000 300" style="width:100%;height:280px"
+  aria-label="Question goes to the LLM; the LLM sends tool calls to our
+  code, results come back, and finally the LLM returns an answer">
+<defs>
+ <marker id="lpm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6"
+  markerHeight="6" orient="auto-start-reverse">
+  <path d="M0,0L10,5L0,10z" fill="#555"/></marker>
+</defs>
+<g font-family="sans-serif" fill="#222" text-anchor="middle">
+ <rect x="20" y="75" width="170" height="56" rx="8" fill="#f3f3f3"
+  stroke="#888" stroke-width="2"/>
+ <text x="105" y="110" font-size="24">Question</text>
+ <path d="M192,103 L278,103" stroke="#555" stroke-width="2.5" fill="none"
+  marker-end="url(#lpm)"/>
+ <rect x="285" y="55" width="215" height="96" rx="8" fill="#eaf1fd"
+  stroke="#2563eb" stroke-width="2.5"/>
+ <text x="392" y="98" font-size="28" font-weight="bold">LLM</text>
+ <text x="392" y="128" font-size="18">picks next action</text>
+ <rect x="740" y="35" width="240" height="136" rx="8" fill="#fdf5e6"
+  stroke="#b45309" stroke-width="2.5"/>
+ <text x="860" y="78" font-size="26" font-weight="bold">Tools</text>
+ <text x="860" y="112" font-size="18"
+  font-family="monospace">get_prices()</text>
+ <text x="860" y="140" font-size="18"
+  font-family="monospace">calculator()</text>
+ <path d="M500,80 C560,15 680,15 735,70" stroke="#555" stroke-width="2.5"
+  fill="none" marker-end="url(#lpm)"/>
+ <text x="618" y="25" font-size="19" font-family="monospace">tool call</text>
+ <path d="M735,135 C680,190 560,190 505,130" stroke="#555"
+  stroke-width="2.5" fill="none" marker-end="url(#lpm)"/>
+ <text x="618" y="200" font-size="19" font-family="monospace">result</text>
+ <path d="M392,153 L392,230" stroke="#555" stroke-width="2.5" fill="none"
+  marker-end="url(#lpm)"/>
+ <text x="320" y="200" font-size="19" font-family="monospace">answer</text>
+ <rect x="292" y="235" width="200" height="56" rx="8" fill="#f3f3f3"
+  stroke="#888" stroke-width="2"/>
+ <text x="392" y="271" font-size="24">Answer</text>
+</g>
+</svg>
+```
+
+The LLM never runs code itself. It writes a structured request, and our
+code runs it [@schick2023toolformer].
+
+## Messages, Tool Calls, and Results
+
+```{python}
+#| echo: true
+messages = [{"role": "user", "content": QUESTION}]   # conversation so far
+turn = {"tool": "get_prices",                        # the LLM's request
+        "args": {"ticker": "HSKY", "start": "2026-01-02",
+                 "end": "2026-06-30"}}
+result = TOOLS[turn["tool"]](**turn["args"])         # our code runs it
+result
+```
+
+- **Message history:** everything said so far, which the LLM reads
+  each turn
+- **Tool arguments:** the inputs the LLM chooses for a function
+- **Result:** what the function returns; we append it to the messages
+
+## The Whole Agent Loop
+
+```{python}
+#| output: asis
+src = inspect.getsource(run_agent)
+print('```{.python code-line-numbers="|5|6-8|9-12|13-15|16"}')
+print(src + "```")
+```
+
+Line 5 asks the LLM; 6 to 8 stop on an answer; 9 to 12 run the tool;
+13 to 15 feed the result back; 16 is the step cap.
+
+## Scripted, Recorded, or Live?
+
+| | Scripted (this deck) | Recorded | Live |
+|:--|:--|:--|:--|
+| LLM turns | written by hand | saved from a real run | model called live |
+| Shows | how the loop works | what a model did once | what a model does now |
+| API key | no | to record (`record.py`) | yes |
+
+The demos that follow are **scripted**. The tools and the loop run for
+real, but the LLM's moves are pre-written and do not depend on the
+results, so they do not show that a model planned or recovered on its own.
+
+## Demo 2: The Same Question, With Tools
+
+```{python}
+#| output: asis
+raw(player("main", height=500))
+```
+
+**Scripted teaching example.** HSKY and JNTH are fictional tickers
+simulated with a fixed seed (`make_data.py`).
+
+## Checking the Answer
+
+The same quantities computed directly with pandas:
+
+```{python}
+#| echo: true
+wide = PRICES.pivot(index="date", columns="ticker", values="close")
+ret = (wide.iloc[-1] / wide.iloc[0] - 1) * 100
+winner, gap = ret.idxmax(), ret.max() - ret.min()
+```
+
+```{python}
+calc = [t["result"] for t in MAIN if t.get("tool") == "calculator"]
+agent_winner = MAIN[-1]["final"].split()[0]
+pd.DataFrame({
+    "pandas": [f"{ret['HSKY']:.2f}", f"{ret['JNTH']:.2f}", winner,
+               f"{gap:.2f}"],
+    "agent trace": [f"{calc[0]:.2f}", f"{calc[1]:.2f}", agent_winner,
+                    f"{calc[2]:.2f}"],
+}, index=["HSKY return (%)", "JNTH return (%)", "Winner",
+          "Gap (percentage points)"])
+```
+
+All four match: the prices came from `get_prices` and every number from
+`calculator`.
+
+## When Agents Break: Endless Loops
+
+```{python}
+#| output: asis
+raw(player("loop", height=470))
+```
+
+Fix: cap the steps and let tools say when a task is impossible.
+**Scripted teaching example.**
+
+## Other Ways Agents Fail
+
+- **Bad arguments:** tools should return errors that say how to recover
+
+```{python}
+#| echo: true
+try:
+    get_prices("HSKY", "2026-01-03", "2026-01-04")   # a weekend
+except ValueError as e:
+    print(e)
+```
+
+- **Tool cost:** a step cap limits LLM calls, not how long one tool call
+  runs, so tools need their own limits
+- **Untrusted tool output:** text in a file or web page can hijack the
+  agent (prompt injection) [@greshake2023compromising]
+- **Overkill:** a fixed pipeline may be enough [@schluntz2024building]
+
+## Evaluating an Agent
+
+- **Success criterion:** a task passes if the final answer names the
+  correct winner and a gap within 0.01 points of the pandas value
+- **Task selection:** write a pool of questions (tickers, windows) before
+  testing, then draw tasks from it at random
+- **Model:** each of *n* tasks is an independent Bernoulli trial with a
+  common success probability *p*, so passes *k* ~ Binomial(*n*, *p*)
+- **Estimate:** p̂ = *k*/*n* with a 95% Wilson interval
+  [@wilson1927probable; @nist2012confidence]
+
+```{python}
+lo, hi = wilson(17, 20)
+```
+
+Hypothetical example: 17 of 20 passes gives p̂ = 0.85 with
+interval `{python} f"{lo:.3f}"` to `{python} f"{hi:.3f}"`.
+
+## Try It: Interval Width
+
+```{python}
+#| output: asis
+raw(ci_widget())
+```
+
+p̂^*m*^ is a plug-in estimate: it treats the observed rate as the
+true *p* and assumes independent runs. The 70% line is illustrative,
+not an evaluated baseline.
+
+## Takeaways
+
+1. An agent is an **LLM in a loop with tools**: the LLM chooses steps,
+   and your code does the work.
+2. Put facts and arithmetic in **tools**, give them clear errors and
+   limits, and keep the **trace** so every number is checkable.
+3. Judge an agent with a defined success criterion and an **interval**,
+   not one demo.
+
+## References
+
+::: {#refs}
+:::
+
+## Further Readings
+
+- [Claude tool use documentation][tu]: the request and response format
+  used by `record.py`
+- [SWE-bench](https://arxiv.org/abs/2310.06770): a benchmark that grades
+  agents on real GitHub issues
+
+[tu]: https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview
+
+## Resources {.smaller}
+
+- `agent.py`: tools, the agent loop, the scripted stand-in for the LLM
+  (`ReplayLLM`), and helpers for the demos
+- `player.tpl`, `ci.tpl`: HTML and JavaScript for the in-slide demos
+- `make_data.py`: simulated prices and the scripted traces (fixed seed)
+- `record.py` (optional): records a real model run into
+  `data/traces.json`; needs `ANTHROPIC_API_KEY` and never runs during
+  rendering
+- **AI use:** Claude (Anthropic) helped draft the slide text, wrote first
+  versions of the Python (`agent.py`, `make_data.py`, `record.py`) and
+  the HTML and JavaScript demos, and suggested the layout. I chose the
+  topic and example, revised the content after review, checked the
+  returns, winner, and gap against pandas, and tested the demos and
+  sliders in a browser.
