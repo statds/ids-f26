@@ -233,6 +233,28 @@ Enrico Ong
 </div>
 
 </section>
+<section id="about-me" class="slide level2">
+<h2>About me</h2>
+<p><strong>Enrico Ong</strong>, Statistical Data Science major and Economics minor at UConn (graduating May 2028)</p>
+<ul>
+<li><strong>Experience:</strong> remote Pfizer project building an OCR pipeline and a RAG chatbot for scanned documents; IT Business Systems Analyst intern at Putnam Plastics and Putnam Medical; housing data analysis at EDEN</li>
+<li><strong>Projects:</strong> NBA player statistics in R; an economic nowcasting dashboard; USD to PHP remittance analysis</li>
+<li><strong>Why this topic:</strong> every one of these starts with a table, and pandas is how that table gets cleaned and summarized</li>
+</ul>
+<aside class="notes">
+<p>Quick introduction, about 20 seconds. Tie it to the topic: the work I have done with data begins with tables, so the four verbs in this deck are the ones I use most. Then move on to the question for today.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="four-verbs-turn-a-table-into-an-answer" class="slide level2">
 <h2>Four verbs turn a table into an answer</h2>
 <table class="caption-top">
@@ -286,14 +308,41 @@ Enrico Ong
           display:block!important;
       }</style></aside>
 </section>
+<section id="import-pandas-as-pd-why-pd" class="slide level2">
+<h2>import pandas as pd: why “pd”?</h2>
+<div id="db17ac3a" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="" aria-label="2"></a><span class="bu">print</span>(pd.<span class="va">__name__</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>pandas</code></pre>
+</div>
+</div>
+<ul>
+<li><code>import pandas</code> loads the library; <code>as pd</code> gives it a short nickname</li>
+<li>Without the nickname: <code>pandas.read_csv(...)</code>. With it: <code>pd.read_csv(...)</code></li>
+<li><code>pd</code> is the convention in the pandas documentation and most tutorials, so code reads the same everywhere</li>
+</ul>
+<p><strong>Notice:</strong> <code>pd.__name__</code> prints <code>pandas</code>. The nickname is the same library.</p>
+<aside class="notes">
+<p>The alias is only a shorter name for the module (np for NumPy and plt for matplotlib.pyplot follow the same habit). Any name would work, but pd is what everyone expects, so using it makes code easy to read and to copy from documentation. It saves typing because pandas functions are called constantly.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="our-data-earnings-for-173-college-majors" class="slide level2">
 <h2>Our data: earnings for 173 college majors</h2>
-<div id="feb8c3da" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="" aria-label="2"></a></span>
-<span id="cb1-3"><a href="" aria-label="3"></a>grads <span class="op">=</span> pd.read_csv(<span class="st">"data/recent-grads.csv"</span>)</span>
-<span id="cb1-4"><a href="" aria-label="4"></a>grads[[<span class="st">"Major"</span>, <span class="st">"Major_category"</span>, <span class="st">"Median"</span>]].head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div id="fad551b9" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-label="1"></a>grads <span class="op">=</span> pd.read_csv(<span class="st">"data/recent-grads.csv"</span>)</span>
+<span id="cb3-2"><a href="" aria-label="2"></a>grads[[<span class="st">"Major"</span>, <span class="st">"Major_category"</span>, <span class="st">"Median"</span>]].head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -354,8 +403,8 @@ Enrico Ong
 </section>
 <section id="a-dataframe-is-a-table-a-series-is-one-column" class="slide level2">
 <h2>A DataFrame is a table, a Series is one column</h2>
-<div id="98692518" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
+<div id="47a12645" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="4">
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -379,9 +428,9 @@ Enrico Ong
 </table>
 </div>
 </div>
-<div id="623dd992" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a><span class="bu">print</span>(<span class="bu">type</span>(grads).<span class="va">__name__</span>, grads.shape)</span>
-<span id="cb2-2"><a href="" aria-label="2"></a><span class="bu">print</span>(<span class="bu">type</span>(grads[<span class="st">"Median"</span>]).<span class="va">__name__</span>, grads[<span class="st">"Median"</span>].shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b13b9db8" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-label="1"></a><span class="bu">print</span>(<span class="bu">type</span>(grads).<span class="va">__name__</span>, grads.shape)</span>
+<span id="cb4-2"><a href="" aria-label="2"></a><span class="bu">print</span>(<span class="bu">type</span>(grads[<span class="st">"Median"</span>]).<span class="va">__name__</span>, grads[<span class="st">"Median"</span>].shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>DataFrame (173, 21)
 Series (173,)</code></pre>
@@ -408,9 +457,9 @@ Series (173,)</code></pre>
 </section>
 <section id="select-pick-only-the-columns-you-need" class="slide level2">
 <h2>Select: pick only the columns you need</h2>
-<div id="6eba99dc" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-label="1"></a>grads.loc[:, [<span class="st">"Major"</span>, <span class="st">"Median"</span>, <span class="st">"Unemployment_rate"</span>]].head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="d5a1298f" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-label="1"></a>grads.loc[:, [<span class="st">"Major"</span>, <span class="st">"Median"</span>, <span class="st">"Unemployment_rate"</span>]].head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -481,20 +530,20 @@ Series (173,)</code></pre>
 </section>
 <section id="filter-keep-only-the-rows-you-want" class="slide level2">
 <h2>Filter: keep only the rows you want</h2>
-<div id="5d44978a" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-label="1"></a>is_eng <span class="op">=</span> grads[<span class="st">"Major_category"</span>] <span class="op">==</span> <span class="st">"Engineering"</span></span>
-<span id="cb5-2"><a href="" aria-label="2"></a>engineering <span class="op">=</span> grads.loc[is_eng]</span>
-<span id="cb5-3"><a href="" aria-label="3"></a><span class="bu">len</span>(engineering)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div id="8fcd3206" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-label="1"></a>is_eng <span class="op">=</span> grads[<span class="st">"Major_category"</span>] <span class="op">==</span> <span class="st">"Engineering"</span></span>
+<span id="cb7-2"><a href="" aria-label="2"></a>engineering <span class="op">=</span> grads.loc[is_eng]</span>
+<span id="cb7-3"><a href="" aria-label="3"></a><span class="bu">len</span>(engineering)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>29</code></pre>
 </div>
 </div>
 <p><strong>Notice:</strong> the condition gives True or False per row. Only True rows stay.</p>
-<div id="983a7946" class="cell" data-fig-height="2.7" data-fig-width="8" data-execution_count="7">
+<div id="5318d0ae" class="cell" data-fig-height="2.7" data-fig-width="8" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/cell-8-output-1.png" alt="Histogram of median earnings by major, Engineering highlighted" width="939" height="459"></p>
+<p><img data-src="index_files/figure-revealjs/cell-9-output-1.png" alt="Histogram of median earnings by major, Engineering highlighted" width="939" height="459"></p>
 </figure>
 </div>
 </div>
@@ -515,13 +564,13 @@ Series (173,)</code></pre>
 </section>
 <section id="create-a-new-column-from-existing-ones" class="slide level2">
 <h2>Create: a new column from existing ones</h2>
-<div id="7023ace6" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-label="1"></a>grads <span class="op">=</span> grads.copy()</span>
-<span id="cb7-2"><a href="" aria-label="2"></a>grads[<span class="st">"degree_job_share"</span>] <span class="op">=</span> grads[<span class="st">"College_jobs"</span>] <span class="op">/</span> (</span>
-<span id="cb7-3"><a href="" aria-label="3"></a>    grads[<span class="st">"College_jobs"</span>] <span class="op">+</span> grads[<span class="st">"Non_college_jobs"</span>]</span>
-<span id="cb7-4"><a href="" aria-label="4"></a>)</span>
-<span id="cb7-5"><a href="" aria-label="5"></a>grads[[<span class="st">"Major"</span>, <span class="st">"degree_job_share"</span>]].<span class="bu">round</span>(<span class="dv">2</span>).head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<div id="c2ca12ed" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-label="1"></a>grads <span class="op">=</span> grads.copy()</span>
+<span id="cb9-2"><a href="" aria-label="2"></a>grads[<span class="st">"degree_job_share"</span>] <span class="op">=</span> grads[<span class="st">"College_jobs"</span>] <span class="op">/</span> (</span>
+<span id="cb9-3"><a href="" aria-label="3"></a>    grads[<span class="st">"College_jobs"</span>] <span class="op">+</span> grads[<span class="st">"Non_college_jobs"</span>]</span>
+<span id="cb9-4"><a href="" aria-label="4"></a>)</span>
+<span id="cb9-5"><a href="" aria-label="5"></a>grads[[<span class="st">"Major"</span>, <span class="st">"degree_job_share"</span>]].<span class="bu">round</span>(<span class="dv">2</span>).head(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -579,19 +628,19 @@ Series (173,)</code></pre>
 </section>
 <section id="group-engineering-pays-the-most" class="slide level2">
 <h2>Group: Engineering pays the most</h2>
-<div id="704bfd9f" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-label="1"></a>by_category <span class="op">=</span> (</span>
-<span id="cb8-2"><a href="" aria-label="2"></a>    grads.groupby(<span class="st">"Major_category"</span>)[<span class="st">"Median"</span>]</span>
-<span id="cb8-3"><a href="" aria-label="3"></a>    .mean().<span class="bu">round</span>(<span class="dv">0</span>)</span>
-<span id="cb8-4"><a href="" aria-label="4"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb8-5"><a href="" aria-label="5"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="2b0ba40d" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-label="1"></a>by_category <span class="op">=</span> (</span>
+<span id="cb10-2"><a href="" aria-label="2"></a>    grads.groupby(<span class="st">"Major_category"</span>)[<span class="st">"Median"</span>]</span>
+<span id="cb10-3"><a href="" aria-label="3"></a>    .mean().<span class="bu">round</span>(<span class="dv">0</span>)</span>
+<span id="cb10-4"><a href="" aria-label="4"></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-5"><a href="" aria-label="5"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Notice:</strong> split by category, average each piece, combine into one result.</p>
-<div id="c854b63f" class="cell" data-fig-height="3" data-fig-width="8" data-execution_count="10">
+<div id="81a3a12d" class="cell" data-fig-height="3" data-fig-width="8" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="index_files/figure-revealjs/cell-11-output-1.png" alt="Bar chart of average median earnings by major category" width="930" height="459"></p>
+<p><img data-src="index_files/figure-revealjs/cell-12-output-1.png" alt="Bar chart of average median earnings by major category" width="930" height="459"></p>
 </figure>
 </div>
 </div>
@@ -612,11 +661,11 @@ Series (173,)</code></pre>
 </section>
 <section id="check-how-many-rows-each-average-used" class="slide level2">
 <h2>Check how many rows each average used</h2>
-<div id="d757a4fb" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-label="1"></a>(grads.groupby(<span class="st">"Major_category"</span>)[<span class="st">"Median"</span>]</span>
-<span id="cb9-2"><a href="" aria-label="2"></a> .agg(majors<span class="op">=</span><span class="st">"size"</span>, average<span class="op">=</span><span class="st">"mean"</span>).<span class="bu">round</span>(<span class="dv">0</span>)</span>
-<span id="cb9-3"><a href="" aria-label="3"></a> .sort_values(<span class="st">"majors"</span>).head(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div id="460ea562" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-label="1"></a>(grads.groupby(<span class="st">"Major_category"</span>)[<span class="st">"Median"</span>]</span>
+<span id="cb11-2"><a href="" aria-label="2"></a> .agg(majors<span class="op">=</span><span class="st">"size"</span>, average<span class="op">=</span><span class="st">"mean"</span>).<span class="bu">round</span>(<span class="dv">0</span>)</span>
+<span id="cb11-3"><a href="" aria-label="3"></a> .sort_values(<span class="st">"majors"</span>).head(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {

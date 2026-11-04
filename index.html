@@ -7,9 +7,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jun Yan">
+<meta name="author" content="Erik Chervonny">
 <meta name="author" content="Amanda Noe">
 <meta name="author" content="Enrico Ong">
-<meta name="dcterms.date" content="2026-10-18">
+<meta name="author" content="Chaoyang Wang">
+<meta name="dcterms.date" content="2026-11-04">
 
 <title>Introduction to Data Science</title>
 <style>
@@ -248,15 +250,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
              <p><a href="https://statcomp.org">Jun Yan</a> </p>
+             <p>Erik Chervonny </p>
              <p>Amanda Noe </p>
              <p>Enrico Ong </p>
+             <p>Chaoyang Wang </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 18, 2026</p>
+      <p class="date">November 4, 2026</p>
     </div>
   </div>
   
@@ -280,7 +284,7 @@ placeholders before publication.
 </section>
 <section id="collaborative-notes" class="level2">
 <h2 class="anchored" data-anchor-id="collaborative-notes">Collaborative Notes</h2>
-<p>The Fall 2026 collaborative notes supplement the instructor-authored <em>Introduction to Data Science</em> book. They give students practice explaining data-science concepts and working through a Git and GitHub review process.</p>
+<p>The Fall 2026 collaborative notes supplement the instructor-authored <a href="https://statds.github.io/ids-book">Introduction to Data Science book</a>. They give students a real opportunity to contribute to a public resource for future readers and to practice the contribution and review process used in open-source projects.</p>
 <p>The notes are maintained in the <a href="https://github.com/statds/ids-f26"><code>ids-f26</code> repository</a>. Students contribute through topic branches and pull requests. The repository contains two kinds of presentation. A topic presentation explains a method or idea and belongs under <code>topic/</code>; a final-project presentation reports an original project and belongs under <code>final/</code>.</p>
 <p>Each topic presentation needs a short catalog entry in its relevant topical chapter. Final-project presentations are collected in the Final Project Presentations chapter. In both cases, the slide deck is the substantive contribution; contributors do not need to rewrite slides as prose.</p>
 <p>The topical chapters and final-project chapter organize and link to presentations; they do not duplicate the instructor book.</p>
@@ -472,7 +476,22 @@ placeholders before publication.
 </section>
 <section id="final-project" class="level3">
 <h3 class="anchored" data-anchor-id="final-project">Final Project</h3>
-<p>Begin considering final-project questions early in the semester. A suitable project starts with a meaningful question, uses data appropriate to that question, and communicates both findings and limitations. Potential sources of project ideas include:</p>
+<p>Begin considering final-project questions early in the semester. A suitable project starts with a meaningful question, uses data appropriate to that question, and communicates both findings and limitations.</p>
+<section id="proposal-consultation" class="level4">
+<h4 class="anchored" data-anchor-id="proposal-consultation">Proposal Consultation</h4>
+<p>Use the 15-minute consultation to clarify the project and identify the next steps. Be prepared to discuss these questions:</p>
+<ol type="1">
+<li><strong>Scientific question (2 min):</strong> What do you want to learn, and why should someone care about the answer?</li>
+<li><strong>Scope (1 min):</strong> What population, place, time period, or phenomenon will you study?</li>
+<li><strong>Existing work (2 min):</strong> What have other researchers found that is most relevant, and what gap or next question does your project address?</li>
+<li><strong>Data (2 min):</strong> What are the observational units and outcome? Where will the data come from, which key variables are available, and what might be missing or poorly measured?</li>
+<li><strong>Statistical formulation (2 min):</strong> What quantity or relationship will you estimate? Which predictors or groups will you compare, and what role does each play?</li>
+<li><strong>Methods (2 min):</strong> What analysis will answer the question, and why is it suitable for the outcome and data? What plot or summary will you examine first?</li>
+<li><strong>Assumptions and limitations (2 min):</strong> What must be true for your interpretation to hold? What could bias the result, and what conclusion would the data not support?</li>
+<li><strong>Story and deliverable (2 min):</strong> What might your main figure or table show? If the result is null or opposite to what you expect, what will the takeaway be?</li>
+</ol>
+<p>End by identifying the biggest unresolved decision and a concrete next step.</p>
+<p>Potential sources of project ideas include:</p>
 <ul>
 <li><a href="https://community.amstat.org/dataexpo/home">ASA Data Challenge Expo</a></li>
 <li><a href="https://www.kaggle.com/">Kaggle</a></li>
@@ -482,6 +501,7 @@ placeholders before publication.
 <li><a href="https://paleobiodb.org/">Paleobiology Database</a></li>
 </ul>
 <p>[Add current milestones, deliverables, presentation requirements, and links to time-sensitive challenges.]</p>
+</section>
 </section>
 <section id="final-presentation-peer-evaluation" class="level3">
 <h3 class="anchored" data-anchor-id="final-presentation-peer-evaluation">Final Presentation Peer Evaluation</h3>
@@ -514,7 +534,7 @@ placeholders before publication.
 <section id="presentation-order" class="level3">
 <h3 class="anchored" data-anchor-id="presentation-order">Presentation Order</h3>
 <p>The topic presentation order was set in class. Each student contributed one digit to the random seed, and the same seed reproduces the order on every render.</p>
-<div id="ffe6f279" class="cell" data-execution_count="1">
+<div id="793c0b24" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"roster.txt"</span>, newline<span class="op">=</span><span class="st">""</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
@@ -706,13 +726,13 @@ placeholders before publication.
 </tr>
 <tr class="even">
 <td>11/04</td>
-<td>Parkins, Jack</td>
-<td>LLM Agents</td>
+<td>Chok, Isaac</td>
+<td>Principal Component Analysis (PCA)</td>
 </tr>
 <tr class="odd">
 <td>11/09</td>
-<td>Chok, Isaac</td>
-<td>[topic]</td>
+<td>Parkins, Jack</td>
+<td>LLM Agents</td>
 </tr>
 <tr class="even">
 <td>11/09</td>
