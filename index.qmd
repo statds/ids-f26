@@ -486,7 +486,7 @@ accepted.
 | 11/16 | Maras, Ruveyda | [topic] |
 | 11/16 | Wang, Leo | [topic] |
 | 11/16 | Choudhury, Ruhama | Deep Learning |
-| 11/18 | Hartman, Mikaela | [topic] |
+| 11/18 | Hartman, Mikaela | Multidimensional Scaling |
 | 11/18 | Kiani, Ismail | [topic] |
 | 11/18 | Kelly, Daniel | [topic] |
 
