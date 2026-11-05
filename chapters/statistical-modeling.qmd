@@ -4,3 +4,10 @@ Student presentations in this chapter concern statistical reasoning,
 prediction, dimension reduction, clustering, and supervised learning.
 
 Presentations will be added during the semester.
+
+**Topic Presentation**
+[K-Means Clustering](../topic/fontana-k-means) by Adam Fontana
+This presentation uses scikit-learn's make_blobs dataset to 
+demonstrate a K-Means clustering workflow from gathering the data to
+interpreting the results. It also demonstrates some applications
+and limitations of the algorithm.
