@@ -4,3 +4,8 @@ Student presentations in this chapter concern statistical reasoning,
 prediction, dimension reduction, clustering, and supervised learning.
 
 Presentations will be added during the semester.
+
+**Topic presentation**
+[Random Forest](../topic/sadie-bucco-random-forest/) by Sadie Bucco
+
+This presentation introduces random forest and explains how it improves on single decision trees through bootstrapping and feature subsampling. It walks through a classification example in Python using NYC 311 Service Request data, covering evaluation metrics and grid search tuning, and closes with the method's key limitations.
