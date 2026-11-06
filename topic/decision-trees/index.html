@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Mahiba Mansur">
+  <title>Decision Trees</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Decision Trees</h1>
+  <p class="subtitle">Introduction to Data Science | Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Mahiba Mansur
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-the-author" class="slide level2">
+<h2>About the author</h2>
+<p><strong>Mahiba Mansur</strong></p>
+<ul>
+<li>Topic contributor to the Fall 2026 Introduction to Data Science notes.</li>
+<li>This presentation introduces decision trees through a study-hours example and a classification problem using NYC 311 requests.</li>
+</ul>
+</section>
+<section id="why-decision-trees" class="slide level2">
+<h2>Why decision trees?</h2>
+<p>A decision tree is used to make predictions or classify information by breaking a problem down into a sequence of simple questions <span class="citation" data-cites="breiman1984classification scikitlearnnddecision">(<a href="#/references" role="doc-biblioref" onclick="">Breiman et al. 1984</a>; <a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">scikit-learn developers</span>, n.d.-a</a>)</span>.</p>
+<ul>
+<li><p>Decision trees learn rules from labeled examples.</p></li>
+<li><p>They make predictions by asking a sequence of questions.</p></li>
+<li><p>Their paths are relatively easy to interpret.</p></li>
+<li><p><strong>Classification:</strong> predict a categorical outcome</p></li>
+<li><p><strong>Regression:</strong> predict a numeric outcome</p></li>
+</ul>
+</section>
+<section id="how-does-a-tree-work" class="slide level2">
+<h2>How Does a Tree Work?</h2>
+<ul>
+<li><strong>Root node:</strong> the first question, which splits the full training data.</li>
+<li><strong>Branch:</strong> a line connecting nodes, representing a question’s outcome.</li>
+<li><strong>Internal node:</strong> a decision point between the root and leaves.</li>
+<li><strong>Leaf:</strong> a terminal node that supplies a prediction.</li>
+</ul>
+</section>
+<section id="example" class="slide level2">
+<h2>Example</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="" aria-label="1"></a>                 [ What is the weather? ]  &lt;-- Root Node</span>
+<span id="cb1-2"><a href="" aria-label="2"></a>                 /         |           \</span>
+<span id="cb1-3"><a href="" aria-label="3"></a>                /          |            \</span>
+<span id="cb1-4"><a href="" aria-label="4"></a>          ( Sunny )     ( Cloudy )     ( Rainy )  &lt;-- Branches</span>
+<span id="cb1-5"><a href="" aria-label="5"></a>            /               |             \</span>
+<span id="cb1-6"><a href="" aria-label="6"></a>           /                |              \</span>
+<span id="cb1-7"><a href="" aria-label="7"></a>   [ Is humidity high? ]  [Hiking]       [Stay Inside] &lt;-- Leaf Nodes</span>
+<span id="cb1-8"><a href="" aria-label="8"></a>       /          \</span>
+<span id="cb1-9"><a href="" aria-label="9"></a>      /            \</span>
+<span id="cb1-10"><a href="" aria-label="10"></a>  ( High )      ( Normal )</span>
+<span id="cb1-11"><a href="" aria-label="11"></a>     /              \</span>
+<span id="cb1-12"><a href="" aria-label="12"></a>    /                \</span>
+<span id="cb1-13"><a href="" aria-label="13"></a>[Swimming]         [Hiking]  &lt;-- Leaf Nodes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="how-does-a-tree-choose-a-split" class="slide level2">
+<h2>How does a tree choose a split?</h2>
+<p>The <strong>Gini impurity</strong> measures the mixture of classes in a node <span class="citation" data-cites="breiman1984classification">(<a href="#/references" role="doc-biblioref" onclick="">Breiman et al. 1984</a>)</span>:</p>
+<p><span class="math display">\[
+G = 1 - \sum_{k=1}^{K} p_k^2,
+\]</span></p>
+<p>where <span class="math inline">\(G\)</span> is the node’s impurity, <span class="math inline">\(K\)</span> is the number of outcome classes, and <span class="math inline">\(p_k\)</span> is the proportion of observations in class <span class="math inline">\(k\)</span>.</p>
+<ul>
+<li><span class="math inline">\(G = 0\)</span>: the node contains one class only.</li>
+<li>Larger <span class="math inline">\(G\)</span>: the classes are more mixed (more impure)</li>
+<li>The algorithm searches for a split that reduces impurity.</li>
+</ul>
+</section>
+<section id="compare-candidate-splits" class="slide level2">
+<h2>Compare candidate splits</h2>
+<p>A binary split’s weighted impurity is</p>
+<p><span class="math display">\[
+G_{\mathrm{split}} = \frac{n_L}{n} G_L
+                      + \frac{n_R}{n} G_R,
+\]</span></p>
+<p>where <span class="math inline">\(n_L\)</span> and <span class="math inline">\(n_R\)</span> are the numbers of observations in the left and right child nodes, <span class="math inline">\(n=n_L+n_R\)</span> is the parent count, and <span class="math inline">\(G_L\)</span> and <span class="math inline">\(G_R\)</span> are the child-node impurities.</p>
+<p>The impurity reduction is</p>
+<p><span class="math display">\[
+\Delta G = G_{\mathrm{parent}} - G_{\mathrm{split}},
+\]</span></p>
+<p>where <span class="math inline">\(G_{\mathrm{parent}}\)</span> is the parent’s impurity and <span class="math inline">\(\Delta G\)</span> is the decrease produced by the split.</p>
+</section>
+<section id="choose-a-split" class="slide level2">
+<h2>Choose a split</h2>
+<p>At each node, the algorithm <span class="citation" data-cites="scikitlearnnddecision">(<a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">scikit-learn developers</span>, n.d.-a</a>)</span>:</p>
+<ol type="1">
+<li>Considers candidate features and split thresholds.</li>
+<li>Measures how much each split reduces impurity.</li>
+<li>Chooses the best available split.</li>
+</ol>
+<p>For scikit-learn’s binary trees, categorical predictors are first encoded as numerical indicators. The search is greedy: it does not optimize all future splits at once.</p>
+</section>
+<section id="an-example" class="slide level2">
+<h2>An Example</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Study hours</th>
+<th style="text-align: right;">Practice quizzes</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td>Fail</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td>Fail</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td>Fail</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td>Fail</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td>Pass</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td>Pass</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td>Pass</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td>Pass</td>
+</tr>
+</tbody>
+</table>
+<p>In this dataset, study hours perfectly separate the two classes.</p>
+</section>
+<section id="prepare-the-small-example" class="slide level2">
+<h2>Prepare the small example</h2>
+</section>
+<section id="train-a-decision-tree" class="slide level2">
+<h2>Train a decision tree</h2>
+</section>
+<section id="read-the-learned-rule" class="slide level2">
+<h2>Read the learned rule</h2>
+<div id="20ba7455" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-stdout">
+<pre><code>|--- study_hours &lt;= 2.50
+|   |--- class: Fail
+|--- study_hours &gt;  2.50
+|   |--- class: Pass
+</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation" class="slide level2">
+<h2>Interpretation</h2>
+<div id="18a84ed3" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-stdout">
+<pre><code>Prediction: Pass</code></pre>
+</div>
+</div>
+<p>The student studied four hours, which exceeds the learned threshold of 2.5 hours, so the model predicts a pass. This is a simulated example, not evidence that studying four hours guarantees passing.</p>
+</section>
+<section id="example-nyc-311" class="slide level2">
+<h2>Example: NYC 311</h2>
+<p><strong>Question:</strong> Can a small decision tree classify whether an NYPD-directed 311 request is an <strong>Illegal Parking</strong> request?</p>
+<p>The request records come from NYC Open Data <span class="citation" data-cites="nycnd311">(<a href="#/references" role="doc-biblioref" onclick="">NYC Open Data, n.d.</a>)</span>. We use the shared course extract, with requests created from September 6, 2026, through September 13 at 07:59, in New York local time.</p>
+<p>Predictors available when the request was created:</p>
+<ul>
+<li>hour of creation;</li>
+<li>day of week;</li>
+<li>open-data channel;</li>
+<li>borough and location type.</li>
+</ul>
+<p>The complaint label and closure information are not used as predictors.</p>
+</section>
+<section id="load-the-shared-data" class="slide level2">
+<h2>Load the shared data</h2>
+<p>The archive is read directly from the published book repository; no local copy is required.</p>
+</section>
+<section id="prepare-the-creation-time" class="slide level2">
+<h2>Prepare the creation time</h2>
+<p>Dates are parsed explicitly. Missing creation times or complaint labels are excluded; missing categorical predictors receive a separate label.</p>
+</section>
+<section id="define-the-outcome-and-predictors" class="slide level2">
+<h2>Define the outcome and predictors</h2>
+</section>
+<section id="check-the-analysis-sample" class="slide level2">
+<h2>Check the analysis sample</h2>
+<ul>
+<li>Loaded <strong>41,955</strong> requests; excluded <strong>0</strong> for missing dates or labels.</li>
+<li>Illegal Parking: <strong>13,370</strong> (<strong>31.9%</strong>).</li>
+<li>Created from <strong>Sep 06, 2026 00:00</strong> through <strong>Sep 13, 2026 07:59</strong>.</li>
+</ul>
+<p>Each row is one request. These counts describe this fixed extract rather than the full NYC 311 service.</p>
+</section>
+<section id="hold-out-test-requests" class="slide level2">
+<h2>Hold out test requests</h2>
+<p>We reserve 25% for testing and preserve the outcome proportions. This random split assesses requests within the observed period; it does not establish performance on a later week.</p>
+</section>
+<section id="encode-the-categorical-predictors" class="slide level2">
+<h2>Encode the categorical predictors</h2>
+<p>One-hot encoding creates a numerical indicator for each category. The encoder is fitted on training data as part of the pipeline.</p>
+</section>
+<section id="fit-a-small-tree" class="slide level2">
+<h2>Fit a small tree</h2>
+<p>The depth limit keeps the fitted rules small enough to inspect <span class="citation" data-cites="scikitlearnnddecision">(<a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">scikit-learn developers</span>, n.d.-a</a>)</span>.</p>
+</section>
+<section id="the-learned-tree" class="slide level2">
+<h2>The learned tree</h2>
+
+<img data-src="index_files/figure-revealjs/cell-13-output-1.svg" alt="The fitted depth-three classification tree uses creation-time features to separate Illegal Parking requests from other NYPD requests." class="r-stretch"><p>The <code>value</code> pair gives the proportions [Other, Illegal Parking] in each node. <code>samples</code> gives its share of the training requests.</p>
+</section>
+<section id="trace-a-prediction" class="slide level2">
+<h2>Trace a prediction</h2>
+<p>The following conditions hold for one held-out request:</p>
+<ul>
+<li><code>location_type_Street/Sidewalk</code> &gt; 0.5</li>
+<li><code>channel_MOBILE</code> &gt; 0.5</li>
+<li><code>hour</code> ≤ 19.5</li>
+</ul>
+<p>The model predicts <strong>Illegal Parking</strong> for this request.</p>
+<p>The rule describes an association in this fitted model. It does not show that a channel, location, or creation time causes the complaint type.</p>
+</section>
+<section id="compute-test-set-performance" class="slide level2">
+<h2>Compute test-set performance</h2>
+<p>The positive class is Illegal Parking. Precision measures the share of positive predictions that are correct; recall measures the share of actual positive cases detected <span class="citation" data-cites="scikitlearnndmetrics">(<a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">scikit-learn developers</span>, n.d.-b</a>)</span>.</p>
+</section>
+<section id="how-well-did-it-classify" class="slide level2">
+<h2>How well did it classify?</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: right;">Test-set result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Majority-class baseline</td>
+<td style="text-align: right;">68.1%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tree accuracy</td>
+<td style="text-align: right;">71.7%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Precision</td>
+<td style="text-align: right;">59.6%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Recall</td>
+<td style="text-align: right;">34.8%</td>
+</tr>
+</tbody>
+</table>
+<p>The tree improves on the majority baseline, but many Illegal Parking requests are still missed.</p>
+</section>
+<section id="accuracy-is-not-the-whole-story" class="slide level2">
+<h2>Accuracy is not the whole story</h2>
+<p>Only <strong>31.9%</strong> of the held-out requests are Illegal Parking. Predicting Other for every request gives <strong>68.1%</strong> accuracy but <strong>zero recall</strong>.</p>
+<p>The fitted tree detects <strong>34.8%</strong> of Illegal Parking requests. Its accuracy alone hides the missed positive cases.</p>
+<p>Choose evaluation measures according to the purpose of the predictions.</p>
+</section>
+<section id="what-changes-with-tree-depth" class="slide level2">
+<h2>What changes with tree depth?</h2>
+<p>Possible values for <code>max_depth</code> include 2, 3, 5, and <code>None</code> (unlimited). This changes the fitted model; merely assigning a variable does not refit it.</p>
+<p>Results:</p>
+<ul>
+<li><strong>Shallow tree:</strong> simpler, less flexible</li>
+<li><strong>Deeper tree:</strong> more flexible, harder to explain</li>
+<li><strong>Very deep tree:</strong> higher risk of overfitting</li>
+</ul>
+<p>The goal is not “the deepest tree possible.” The goal is enough complexity to capture useful structure without losing generalization or interpretability.</p>
+</section>
+<section id="overfitting-and-instability" class="slide level2">
+<h2>Overfitting and instability</h2>
+<p><strong>1. Overfitting</strong> The tree grows too complex and memorizes the training data instead of learning the general pattern.</p>
+<p><strong>2. High Variance and Instability</strong> A small change in training data can change the tree’s structure and splits.</p>
+</section>
+<section id="greedy-search-and-computational-cost" class="slide level2">
+<h2>Greedy search and computational cost</h2>
+<p><strong>3. Greedy Algorithm Shortcomings</strong> The algorithm makes the best local choice at each split without looking ahead. It does not guarantee a globally optimal tree <span class="citation" data-cites="breiman1984classification scikitlearnnddecision">(<a href="#/references" role="doc-biblioref" onclick="">Breiman et al. 1984</a>; <a href="#/references" role="doc-biblioref" onclick=""><span class="nocase">scikit-learn developers</span>, n.d.-a</a>)</span>.</p>
+<p><strong>4. Computational Cost</strong> Growing, sorting candidate split fields, and pruning large trees can become slow and expensive, especially with massive datasets.</p>
+</section>
+<section id="decision-trees-vs.-other-models" class="slide level2">
+<h2>Decision trees vs.&nbsp;other models</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Strength</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Decision tree</td>
+<td>Easy to explain as rules</td>
+<td>Can be unstable / overfit</td>
+</tr>
+<tr class="even">
+<td>Logistic regression</td>
+<td>Compact coefficients</td>
+<td>Linear in chosen features</td>
+</tr>
+<tr class="odd">
+<td>Random forest</td>
+<td>Usually stronger predictive performance</td>
+<td>Less transparent</td>
+</tr>
+<tr class="even">
+<td>Gradient boosting</td>
+<td>Powerful predictive model</td>
+<td>More tuning + less simple</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="takeaways" class="slide level2">
+<h2>Takeaways</h2>
+<ol type="1">
+<li><strong>Trees turn predictors into a sequence of if/then decisions.</strong></li>
+<li><strong>Gini impurity</strong> measures how mixed a node is; splits seek more homogeneous children.</li>
+<li><strong>Depth and leaf-size constraints</strong> help control overfitting.</li>
+<li><strong>Accuracy is not enough</strong> when classes are imbalanced.</li>
+<li><strong>A predictive split is not a causal explanation.</strong></li>
+</ol>
+</section>
+<section id="further-reading" class="slide level2">
+<h2>Further reading</h2>
+<p>The original contribution also listed these introductory discussions of limitations <span class="citation" data-cites="edurekanddisadvantages geeksforgeeks2025limitations">(<a href="#/references" role="doc-biblioref" onclick="">Edureka, n.d.</a>; <a href="#/references" role="doc-biblioref" onclick="">GeeksforGeeks 2025</a>)</span>. The course example uses the scikit-learn documentation for implementation and evaluation details.</p>
+</section>
+<section id="revision-disclosure" class="slide level2">
+<h2>Revision disclosure</h2>
+<ul>
+<li><strong>Original contribution:</strong> Mahiba Mansur’s decision-tree explanations and examples.</li>
+<li><strong>Instructor revisions:</strong> prepared with OpenAI Codex to repair execution, notation, citations, slide organization, and generated output; results were recomputed and the slides rendered.</li>
+<li>The original submission did not state whether the student used AI tools.</li>
+</ul>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman1984classification" class="csl-entry" role="listitem">
+Breiman, Leo, Jerome H. Friedman, Richard A. Olshen, and Charles J. Stone. 1984. <em>Classification and Regression Trees</em>. Wadsworth.
+</div>
+<div id="ref-edurekanddisadvantages" class="csl-entry" role="listitem">
+Edureka. n.d. <span>“Disadvantages of Using Decision Tree.”</span> Edureka Community. Accessed October 19, 2026. <a href="https://www.edureka.co/community/46102/disadvantages-of-using-decision-tree/">https://www.edureka.co/community/46102/disadvantages-of-using-decision-tree/</a>.
+</div>
+<div id="ref-geeksforgeeks2025limitations" class="csl-entry" role="listitem">
+GeeksforGeeks. 2025. <span>“Limitations of Decision Tree.”</span> GeeksforGeeks, July 23. <a href="https://www.geeksforgeeks.org/machine-learning/limitations-of-decision-tree/">https://www.geeksforgeeks.org/machine-learning/limitations-of-decision-tree/</a>.
+</div>
+<div id="ref-nycnd311" class="csl-entry" role="listitem">
+NYC Open Data. n.d. <span>“<span>311</span> Service Requests from 2020 to Present.”</span> City of New York. <a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2020-to-Present/erm2-nwe9">https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2020-to-Present/erm2-nwe9</a>.
+</div>
+<div id="ref-scikitlearnnddecision" class="csl-entry" role="listitem">
+<span class="nocase">scikit-learn developers</span>. n.d.-a. <span>“Decision Trees.”</span> Accessed November 6, 2026. <a href="https://scikit-learn.org/stable/modules/tree.html">https://scikit-learn.org/stable/modules/tree.html</a>.
+</div>
+<div id="ref-scikitlearnndmetrics" class="csl-entry" role="listitem">
+<span class="nocase">scikit-learn developers</span>. n.d.-b. <span>“Metrics and Scoring: Quantifying the Quality of Predictions.”</span> Accessed November 6, 2026. <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">https://scikit-learn.org/stable/modules/model_evaluation.html</a>.
+</div>
+</div>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
