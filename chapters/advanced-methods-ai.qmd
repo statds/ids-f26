@@ -3,4 +3,12 @@
 Student presentations in this chapter concern advanced computational methods,
 deep learning, natural-language processing, and artificial intelligence.
 
-Presentations will be added during the semester.
+## Introduction to Neural Networks
+
+[Presentation](../topic/chaoyang-presentation/) by **Chaoyang Wang**.
+
+Introduces neurons, nonlinear activations, forward prediction, and
+gradient-based training through a small binary-classification example.
+A reproducible two-moons analysis connects the equations to Python and
+compares a neural network with a straight-line classifier on held-out data.
+The presentation closes with limitations and practical takeaways.
