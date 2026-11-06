@@ -449,7 +449,7 @@ Katerina Anikeev
 </section>
 <section id="creating-the-map-calculating-population-density" class="slide level2">
 <h2>Creating the Map: Calculating Population Density</h2>
-<div id="e0659292" class="cell" data-execution_count="2">
+<div id="5d518505" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-label="1"></a><span class="co"># Convert land area from square meters to square miles</span></span>
 <span id="cb5-2"><a href="" aria-label="2"></a>ct_counties[<span class="st">"land_area_sq_mi"</span>] <span class="op">=</span> (</span>
 <span id="cb5-3"><a href="" aria-label="3"></a>    ct_counties[<span class="st">"land_area_sq_m"</span>] <span class="op">/</span> <span class="fl">2_589_988.11</span></span>
@@ -463,7 +463,7 @@ Katerina Anikeev
 </section>
 <section id="creating-the-map-plotting-the-results" class="slide level2">
 <h2>Creating the Map: Plotting the Results</h2>
-<div id="49c1937d" class="cell" data-execution_count="3">
+<div id="014323fb" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-label="1"></a><span class="co"># Create the choropleth map</span></span>
 <span id="cb6-2"><a href="" aria-label="2"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb6-3"><a href="" aria-label="3"></a>fig.subplots_adjust(bottom<span class="op">=</span><span class="fl">0.22</span>)</span>
