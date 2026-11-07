@@ -1,0 +1,332 @@
+---
+title: "Perfect Separation in Logistic Regression"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Carter Morissette"
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+jupyter: python3
+---
+
+## Motivation
+
+- A logistic model can fit the data perfectly and still be useless.
+- Warning signs: huge coefficients, enormous standard errors, or a
+  convergence warning.
+- It tends to appear with small samples, rare outcomes, or a category
+  where every row has the same outcome.
+- The estimates cannot be trusted or interpreted, so we need to know why
+  it happens and how to fix it.
+
+**In plain English:** a model can look perfect and still tell you
+nothing useful.
+
+## Main idea
+
+- Logistic regression predicts a yes/no outcome from numbers.
+- Example: hours studied predicts pass or fail.
+- It gives a probability, like "80% chance of passing".
+- Basics: [Chapter 9](https://statds.github.io/ids-book/09-modeling.html).
+
+**In plain English:** it turns numbers into a chance of yes or no.
+
+## The model
+
+Logistic regression models the log-odds of an outcome:
+
+$$\log\frac{p}{1-p} = \beta_0 + \beta_1 x$$
+
+- $p$ is the chance of passing, and $x$ is hours studied.
+- Odds compare the chance of passing to the chance of failing.
+- $\beta_1$ is the slope: how strongly hours studied matter.
+
+**In plain English:** the slope says how much each extra hour changes
+your odds of passing.
+
+## What is perfect separation?
+
+- Example: everyone who studied over 5 hours passed. Everyone under 5
+  failed.
+- One cutoff splits the groups perfectly. That is perfect separation.
+- The model keeps making its curve steeper and never finds a best slope.
+  - A steeper curve pushes predictions closer to 0% or 100%. With no
+      student on the wrong side, steeper is always better.
+- Categories can do it too. Say students are in four study groups
+  (A to D), and everyone in group D passed.
+
+**In plain English:** the model chases a perfect fit and never stops.
+
+
+## Worked example
+
+Simulated data: 40 students, and everyone above 5 hours passes.
+
+```{python}
+#| echo: true
+import numpy as np
+import pandas as pd
+
+rng = np.random.default_rng(3255)
+hours = rng.uniform(0, 10, 40).round(2)
+df = pd.DataFrame({"hours": hours, "passed": (hours > 5).astype(int)})
+```
+
+Each row is one student: hours studied, and whether they passed.
+
+**In plain English:** we made up 40 students. Studying more than 5
+hours always means passing.
+
+## The two groups
+
+```{python}
+#| echo: true
+df.groupby("passed")["hours"].agg(["count", "min", "max"])
+```
+
+Every student who failed (0) studied less than every student who
+passed (1).
+
+**In plain English:** no failing student studied as long as any
+passing student.
+
+## What it looks like
+
+```{python}
+#| echo: false
+#| fig-cap: "Passing is fully determined by hours studied."
+#| fig-alt: "Scatter plot of hours studied against pass or fail, with a dashed line separating the two groups."
+import matplotlib.pyplot as plt
+
+BLUE, ORANGE, MUTED = "#2a78d6", "#eb6834", "#898781"
+gap = (df.loc[df["passed"] == 0, "hours"].max()
+       + df.loc[df["passed"] == 1, "hours"].min()) / 2
+
+fig, ax = plt.subplots(figsize=(8, 3))
+ax.scatter(df["hours"], df["passed"],
+           c=np.where(df["passed"] == 1, BLUE, ORANGE),
+           s=40, edgecolor="white", linewidth=0.8)
+ax.axvline(gap, color=MUTED, linestyle="--", linewidth=1)
+ax.text(gap + 0.1, 0.5, "no overlap: one cut\nsplits the groups",
+        color="#52514e", va="center")
+ax.set(xlabel="Hours studied", ylabel="Passed", yticks=[0, 1],
+       yticklabels=["No", "Yes"])
+ax.spines[["top", "right"]].set_visible(False)
+plt.show()
+```
+
+Any cutoff between 4.93 and 5.53 hours is a perfect classifier.
+
+**In plain English:** one line on the chart puts every student on the
+correct side.
+
+## Interpretation
+
+```{python}
+#| echo: true
+#| warning: false
+import statsmodels.api as sm
+X = sm.add_constant(df[["hours"]])
+fit = sm.Logit(df["passed"], X).fit(disp=False)
+print(fit.summary().tables[1])
+print("Training accuracy:", ((fit.predict(X) > 0.5) == df["passed"]).mean())
+print("Converged:", fit.mle_retvals["converged"])
+```
+
+**In plain English:** every answer is right, but the model never
+finished its math.
+
+## Reading the output
+
+- **Slope (57.7):** each extra hour would multiply the odds of passing
+  by about $10^{25}$. Not believable.
+- **Std err (11,300):** the 95% range runs from -22,100 to 22,200, so
+  the slope could be almost anything.
+- **p = 0.996:** the usual test says hours does not matter, even though
+  it predicts every student.
+
+**In plain English:** the model finds the cutoff (about 5.2 hours) but
+not how steep the curve is, so the slope could be almost anything.
+
+
+## Why it fails
+
+```{python}
+#| echo: false
+#| fig-cap: "With separation, the slope has no finite best value."
+#| fig-alt: "Left: the estimated slope keeps rising as more iterations are allowed. Right: the log-likelihood rises toward zero as the slope grows but never reaches it."
+import warnings
+
+iters = [3, 4, 6, 8, 10, 15, 25, 35]
+coefs = []
+for k in iters:
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        res = sm.Logit(df["passed"], X).fit(maxiter=k, disp=False)
+    coefs.append(res.params["hours"])
+
+slopes = np.linspace(0.2, 30, 200)
+def loglik(b):
+    z = b * (df["hours"] - gap)
+    return np.sum(df["passed"] * z - np.logaddexp(0, z))
+ll = [loglik(b) for b in slopes]
+
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(10, 3.4))
+a1.plot(iters, coefs, color=BLUE, linewidth=2, marker="o", markersize=5)
+a1.set(xlabel="Iterations allowed", ylabel="Estimated slope",
+       title="The estimate never settles")
+a2.plot(slopes, ll, color=BLUE, linewidth=2)
+a2.axhline(0, color=MUTED, linestyle="--", linewidth=1)
+a2.text(15, -2.5, "highest possible value (0)", color="#52514e", ha="center")
+a2.set(xlabel="Slope", ylabel="Log-likelihood",
+       title="The likelihood only keeps climbing")
+for a in (a1, a2):
+    a.spines[["top", "right"]].set_visible(False)
+fig.tight_layout()
+plt.show()
+```
+
+**In plain English:** the model's "best" slope keeps growing, so the
+number it prints just depends on when it gave up.
+
+
+## Spotting separation
+
+- Warnings: a `ConvergenceWarning`, or `Converged: False`.
+- Huge coefficients, standard errors in the thousands, p-values near 1.
+- Perfect (or nearly perfect) accuracy on the training data.
+- For a category, a zero cell in `pd.crosstab(predictor, outcome)`.
+
+**In plain English:** if the model looks too good and the uncertainty
+looks absurd, check for separation.
+
+
+## Fixes
+
+**Fix 1: add a penalty.** It puts a price on steep curves.
+
+::: {.columns}
+::: {.column width="38%"}
+- `C` sets the price.
+- **Smaller C = bigger price = flatter curve.**
+- With no price, the slope keeps growing.
+:::
+::: {.column width="62%"}
+```{python}
+#| echo: false
+#| fig-alt: "Chance of passing against hours studied for four penalty strengths; the curve gets steeper as the penalty weakens."
+from sklearn.linear_model import LogisticRegression
+
+grid = pd.DataFrame({"hours": np.linspace(0, 10, 200)})
+shades = {0.1: "#6da7ec", 1: "#2a78d6", 100: "#184f95", np.inf: "#0d366b"}
+with plt.rc_context({"font.size": 13}):
+    fig, ax = plt.subplots(figsize=(9.4, 4.4))
+    ax.scatter(df["hours"], df["passed"], c=MUTED, s=30, alpha=0.7)
+    for c, col in shades.items():
+        m = LogisticRegression(C=c, max_iter=10_000)
+        m.fit(df[["hours"]], df["passed"])
+        slope = m.coef_[0][0]
+        if np.isinf(c):
+            label = "no penalty: slope keeps growing"
+        elif c == 1:
+            label = f"C = 1 (default): slope {slope:.1f}"
+        else:
+            label = f"C = {c:g}: slope {slope:.1f}"
+        ax.plot(grid["hours"], m.predict_proba(grid)[:, 1],
+                color=col, linewidth=2.5, label=label)
+    ax.legend(frameon=False, loc="lower right")
+    ax.set(xlabel="Hours studied", ylabel="Chance of passing")
+    ax.spines[["top", "right"]].set_visible(False)
+    plt.show()
+```
+:::
+:::
+
+**In plain English:** a penalty is a price on steepness. The cost is
+that the slope gets pulled toward zero.
+
+## Merge categories
+
+**Fix 2: merge sparse categories.** Back to the four study groups
+(made-up data). Group D had no failures.
+
+```{python}
+#| echo: false
+#| output: asis
+import warnings
+import statsmodels.formula.api as smf
+
+g = np.repeat(list("ABCD"), 15)
+y = np.concatenate([[1] * 3 + [0] * 12, [1] * 6 + [0] * 9,
+                    [1] * 10 + [0] * 5, [1] * 15])
+d = pd.DataFrame({"group": g, "passed": y})
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    m1 = smf.logit("passed ~ C(group)", data=d).fit(disp=False)
+d["merged"] = d["group"].replace({"C": "C or D", "D": "C or D"})
+m2 = smf.logit("passed ~ C(merged)", data=d).fit(disp=False)
+c1, s1 = m1.params["C(group)[T.D]"], m1.bse["C(group)[T.D]"]
+c2, s2 = m2.params["C(merged)[T.C or D]"], m2.bse["C(merged)[T.C or D]"]
+n = pd.crosstab(d["passed"], d["group"])
+
+print(f"""
+| Study group | A | B | C | D |
+|:-------|--:|--:|--:|--:|
+| Passed | {n.loc[1, "A"]} | {n.loc[1, "B"]} | {n.loc[1, "C"]} | {n.loc[1, "D"]} |
+| Failed | {n.loc[0, "A"]} | {n.loc[0, "B"]} | {n.loc[0, "C"]} | {n.loc[0, "D"]} |
+
+- **Problem:** D has no failures. Its effect vs group A is {c1:.1f},
+  std err {s1:,.0f}.
+- **Fix:** treat C and D as one group. The effect is {c2:.1f},
+  std err {s2:.1f}.
+""")
+```
+
+**In plain English:** if one group has no failures, combine it with a
+similar group so the numbers make sense again.
+
+## Limitations
+
+- A penalty pulls the slope toward zero, and the answer depends on the
+  `C` you pick.
+- After a penalty, the usual std errors and p-values no longer mean
+  what they normally do.
+- Merging groups throws away detail. Pick groups that make sense in
+  real life, not ones that just fix the numbers.
+- With small samples, separation can happen by chance.
+
+**In plain English:** every fix changes the answer a little, so say
+what you changed and why.
+
+## Takeaways
+
+1. A perfect fit with huge uncertainty usually means separation, not a
+   great model.
+2. Under separation, the printed slope is just where the computer
+   stopped. Do not trust it.
+3. Fix it with a penalty or by merging sparse groups, and say what the
+   fix costs.
+
+**In plain English:** too perfect plus huge uncertainty means
+something is wrong. Fix it, and say what the fix cost.
+
+## Sources {.smaller}
+
+- Data: both examples are simulated, not real. Hours studied is on the
+  Worked example slide, and groups A to D are on the Merge categories
+  slide.
+- [Chapter 9, Statistical Models](https://statds.github.io/ids-book/09-modeling.html)
+- [statsmodels Logit](https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.Logit.html)
+- [scikit-learn LogisticRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html)
+- Albert, A. and Anderson, J. A. (1984). On the existence of maximum
+  likelihood estimates in logistic regression models. *Biometrika*,
+  71(1), 1-10.
+- Firth, D. (1993). Bias reduction of maximum likelihood estimates.
+  *Biometrika*, 80(1), 27-38.
+- Heinze, G. and Schemper, M. (2002). A solution to the problem of
+  separation in logistic regression. *Statistics in Medicine*, 21(16),
+  2409-2419.
