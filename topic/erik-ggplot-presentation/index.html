@@ -258,7 +258,7 @@ Erik Chervonny
 <li>Each row represents a 311 request.</li>
 <li>I primarily will use the columns/variables: <code>created_at</code>, <code>problem_detail</code>, <code>borough</code>, and <code>closure_hours</code>.</li>
 </ul>
-<div id="57d2a754" class="cell" data-execution_count="1">
+<div id="6e374a6d" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="" aria-label="2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="" aria-label="3"></a><span class="im">from</span> plotnine <span class="im">import</span> <span class="op">*</span></span>
@@ -267,7 +267,7 @@ Erik Chervonny
 <span id="cb1-6"><a href="" aria-label="6"></a>parking <span class="op">=</span> pd.read_feather(<span class="st">"../../data/illegal_parking_lbdwk_2026.feather"</span>)</span>
 <span id="cb1-7"><a href="" aria-label="7"></a></span>
 <span id="cb1-8"><a href="" aria-label="8"></a>parking[[<span class="st">"created_at"</span>, <span class="st">"problem_detail"</span>, <span class="st">"borough"</span>, <span class="st">"closure_hours"</span>]].head(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="27">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -344,7 +344,7 @@ Erik Chervonny
 <li>Here, I use <code>gpd.read_file()</code> to load a GeoJSON file containing New York City’s borough boundaries.</li>
 <li>I also standardize row values of the borough columns, so that they match the borough names in the main data set, <code>illegal_parking_lbdwk_2026.feather</code> <span class="citation" data-cites="ids-book-chapter5">(<a href="#/references" role="doc-biblioref" onclick="">Yan 2026</a>)</span>.</li>
 </ul>
-<div id="023e7dcb" class="cell" data-execution_count="2">
+<div id="436355ca" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
 <span id="cb2-2"><a href="" aria-label="2"></a></span>
 <span id="cb2-3"><a href="" aria-label="3"></a>boundaries <span class="op">=</span> gpd.read_file(<span class="st">"../../data/nyc_borough_boundaries.geojson"</span>)</span>
@@ -433,7 +433,7 @@ Length: 5, dtype: str</code></pre>
 <ul>
 <li>Each plot starts with passing data to the <code>ggplot()</code> function, which has a parameter called data.</li>
 </ul>
-<div id="fde37c28" class="cell" data-execution_count="3">
+<div id="870a9ff2" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb4-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking)</span>
 <span id="cb4-3"><a href="" aria-label="3"></a>    <span class="op">+</span> theme(figure_size<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">2.8</span>))</span>
@@ -452,7 +452,7 @@ Length: 5, dtype: str</code></pre>
 <li>This function maps <strong>columns</strong> of data on to specified graphical attributes.</li>
 <li>The following code maps the <code>borough</code> and <code>closure_hours</code> columns to x- and y- coordinates in the plot.</li>
 </ul>
-<div id="1a5938f5" class="cell" data-execution_count="4">
+<div id="7f013b26" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb5-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb5-3"><a href="" aria-label="3"></a>    <span class="op">+</span> theme(figure_size<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">2.8</span>))</span>
@@ -469,7 +469,7 @@ Length: 5, dtype: str</code></pre>
 <ul>
 <li>Functions that start with the prefix <code>geom_*()</code> specify the kind of geometric objects to add to the plot.</li>
 </ul>
-<div id="ed53ed05" class="cell" data-execution_count="5">
+<div id="bbb4a57c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb6-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>))</span>
 <span id="cb6-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_bar(fill<span class="op">=</span><span class="st">"steelblue"</span>)</span>
@@ -531,7 +531,7 @@ Length: 5, dtype: str</code></pre>
 <ul>
 <li>Functions that start with this prefix customize the styling of visual elements from the data mapping.</li>
 </ul>
-<div id="bb3a13be" class="cell" data-execution_count="6">
+<div id="eab04510" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb7-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb7-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_histogram(bins<span class="op">=</span><span class="dv">30</span>)</span>
@@ -551,7 +551,7 @@ Length: 5, dtype: str</code></pre>
 <section id="plot-for-scale_" class="slide level2 smaller">
 <h2>Plot for <code>scale_*()</code></h2>
 <p>Here is a larger view of the plot:</p>
-<div id="de7ab57a" class="cell" data-execution_count="7">
+<div id="3c955d23" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb8-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb8-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_histogram(bins<span class="op">=</span><span class="dv">30</span>)</span>
@@ -613,7 +613,7 @@ Length: 5, dtype: str</code></pre>
 <li>Functions that start with this prefix adjust the position of elements in the plot.</li>
 <li>For instance, you can have bars placed side-by-side instead of stacking them by using <code>position_dodge()</code>.</li>
 </ul>
-<div id="0b67e3cc" class="cell" data-execution_count="8">
+<div id="83f6e29a" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb9-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>, fill<span class="op">=</span><span class="st">"problem_detail"</span>))</span>
 <span id="cb9-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_bar(position<span class="op">=</span>position_dodge())</span>
@@ -629,7 +629,7 @@ Length: 5, dtype: str</code></pre>
 <section id="plot-for-position_" class="slide level2 smaller">
 <h2>Plot for <code>position_*()</code></h2>
 <p>Here is a larger view of the plot:</p>
-<div id="69e8d9b2" class="cell" data-execution_count="9">
+<div id="44c6712e" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb10-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>, fill<span class="op">=</span><span class="st">"problem_detail"</span>))</span>
 <span id="cb10-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_bar(position<span class="op">=</span>position_dodge())</span>
@@ -669,7 +669,7 @@ Length: 5, dtype: str</code></pre>
 <li>Functions that start with this prefix specify the coordinate system of the plot.</li>
 <li>You could use <code>coord_cartesian()</code> to zoom in in part of the plot, <code>coord_polar()</code> for plotting using polar coordinates, or <code>coord_flip()</code> to swap the x and y axes.</li>
 </ul>
-<div id="562423fc" class="cell" data-execution_count="10">
+<div id="9ffc9de1" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb11-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb11-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_boxplot(fill<span class="op">=</span><span class="st">"steelblue"</span>)</span>
@@ -687,8 +687,8 @@ Length: 5, dtype: str</code></pre>
 <p>Here is a comparison of the zoomed and unzoomed plots:</p>
 <div class="columns">
 <div class="column" style="width:85%;">
-<div id="7caaa20b" class="cell" title="Not Zoomed" data-execution_count="11">
-<div class="cell-output cell-output-display" data-execution_count="37">
+<div id="aa8ad8d1" class="cell" title="Not Zoomed" data-execution_count="11">
+<div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 <figure>
 <p><img data-src="index_files/figure-revealjs/cell-12-output-1.svg"></p>
@@ -701,8 +701,8 @@ Length: 5, dtype: str</code></pre>
 </div></div>
 <div class="columns">
 <div class="column" style="width:85%;">
-<div id="e92be071" class="cell" title="Zoomed" data-execution_count="12">
-<div class="cell-output cell-output-display" data-execution_count="38">
+<div id="6ab0b7e0" class="cell" title="Zoomed" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 <figure>
 <p><img data-src="index_files/figure-revealjs/cell-13-output-1.svg"></p>
@@ -757,7 +757,7 @@ Length: 5, dtype: str</code></pre>
 <li>Functions that start with this prefix control the style of all the aspects of the plot that aren’t already decided by the data.</li>
 <li>You can also use the general <code>theme()</code> function to create new custom themes, and the <code>element_*()</code> prefixed functions to configure new themes.</li>
 </ul>
-<div id="102a61a5" class="cell" data-execution_count="13">
+<div id="f16add21" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb12-2"><a href="" aria-label="2"></a>    ggplot(</span>
 <span id="cb12-3"><a href="" aria-label="3"></a>        data<span class="op">=</span>parking,</span>
@@ -785,7 +785,7 @@ Length: 5, dtype: str</code></pre>
 <section id="plot-of-theme_" class="slide level2 smaller">
 <h2>Plot of <code>theme_*()</code></h2>
 <p>Here is the plot from the previous slide:</p>
-<div id="312f0aa7" class="cell" data-execution_count="14">
+<div id="18b2a449" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb13-2"><a href="" aria-label="2"></a>    ggplot(</span>
 <span id="cb13-3"><a href="" aria-label="3"></a>        data<span class="op">=</span>parking,</span>
@@ -857,7 +857,7 @@ Length: 5, dtype: str</code></pre>
 <li>Functions that start with this prefix perform calculations on the data before the plot is drawn.</li>
 <li>For instance, <code>stat_summary()</code> can calculate a summary such as the mean for each group.</li>
 </ul>
-<div id="7dfb11b9" class="cell" data-execution_count="15">
+<div id="a86bd991" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb14-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb14-3"><a href="" aria-label="3"></a>    <span class="op">+</span> stat_summary(</span>
@@ -877,7 +877,7 @@ Length: 5, dtype: str</code></pre>
 </section>
 <section id="plot-for-stat_" class="slide level2 smaller">
 <h2>Plot for <code>stat_*()</code></h2>
-<div id="038cc9ef" class="cell" data-execution_count="16">
+<div id="f9351506" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb15-2"><a href="" aria-label="2"></a>    ggplot(data<span class="op">=</span>parking, mapping<span class="op">=</span>aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb15-3"><a href="" aria-label="3"></a>    <span class="op">+</span> stat_summary(</span>
@@ -934,7 +934,7 @@ Length: 5, dtype: str</code></pre>
 <ul>
 <li>This map shows requests across all five boroughs in a single plot, but they can be separated using the faceting functions to examine eac borough separately.</li>
 </ul>
-<div id="277d2678" class="cell" data-execution_count="17">
+<div id="80130965" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb16-2"><a href="" aria-label="2"></a>    ggplot()</span>
 <span id="cb16-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_map(data<span class="op">=</span>boundaries, fill<span class="op">=</span><span class="st">"white"</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
@@ -952,7 +952,7 @@ Length: 5, dtype: str</code></pre>
 </section>
 <section id="unfaceted-plot-of-nyc-boroughs" class="slide level2 smaller">
 <h2>Unfaceted plot of NYC Boroughs</h2>
-<div id="8c295047" class="cell" data-execution_count="18">
+<div id="b5bfcc25" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb17-2"><a href="" aria-label="2"></a>    ggplot()</span>
 <span id="cb17-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_map(data<span class="op">=</span>boundaries, fill<span class="op">=</span><span class="st">"white"</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
@@ -972,7 +972,7 @@ Length: 5, dtype: str</code></pre>
 <li>Functions that start with this prefix split a plot into multiple subplots.</li>
 <li>The facet functions, <code>facet_grid()</code> and <code>facet_wrap()</code>, determine how to split the data.</li>
 </ul>
-<div id="bbf0f831" class="cell" data-execution_count="19">
+<div id="2dc5ae8a" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb18-2"><a href="" aria-label="2"></a>    ggplot()</span>
 <span id="cb18-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_map(data<span class="op">=</span>boundaries, fill<span class="op">=</span><span class="st">"white"</span>, color<span class="op">=</span><span class="st">"gray"</span>)</span>
@@ -1049,11 +1049,11 @@ Length: 5, dtype: str</code></pre>
 </section>
 <section id="finding-top-problem-details" class="slide level2 smaller">
 <h2>Finding Top Problem Details</h2>
-<div id="ffb125ff" class="cell" data-execution_count="21">
+<div id="d0ee6070" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="" aria-label="1"></a>top_details <span class="op">=</span> parking[<span class="st">"problem_detail"</span>].value_counts().head(<span class="dv">3</span>).index</span>
 <span id="cb20-2"><a href="" aria-label="2"></a>top <span class="op">=</span> parking.loc[parking[<span class="st">"problem_detail"</span>].isin(top_details)]</span>
 <span id="cb20-3"><a href="" aria-label="3"></a>top.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-display" data-execution_count="47">
+<div class="cell-output cell-output-display" data-execution_count="21">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -1232,7 +1232,7 @@ Length: 5, dtype: str</code></pre>
 <li><code>aes()</code> connects <code>borough</code> to the x-axis and <code>closure_hours</code> to the y-axis. Since there is no geometry yet, <strong>nothing is drawn</strong>.</li>
 <li><code>figure_size</code> sets how big the plot is.</li>
 </ul>
-<div id="5378ecf6" class="cell" data-execution_count="22">
+<div id="9bf09f80" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb21-2"><a href="" aria-label="2"></a>    ggplot(top, aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>, fill<span class="op">=</span><span class="st">"borough"</span>))</span>
 <span id="cb21-3"><a href="" aria-label="3"></a>    <span class="op">+</span> theme(figure_size<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
@@ -1245,7 +1245,7 @@ Length: 5, dtype: str</code></pre>
 <ul>
 <li><code>geom_boxplot()</code> displays the median, spread, and potential outliers in closures times for each borough</li>
 </ul>
-<div id="4714ec41" class="cell" data-execution_count="23">
+<div id="a7f51a11" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb22-2"><a href="" aria-label="2"></a>    ggplot(top, aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>))</span>
 <span id="cb22-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_boxplot()</span>
@@ -1264,7 +1264,7 @@ Length: 5, dtype: str</code></pre>
 <li><code>coord_flip()</code> swaps the x- and y-axes, so the borough labels are easier to read.</li>
 <li><code>labs()</code> added title and variables labels, <code>theme_minimal()</code> cleans up the plot.</li>
 </ul>
-<div id="b597ac2d" class="cell" data-execution_count="24">
+<div id="e8ad0dbf" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb23-2"><a href="" aria-label="2"></a>    ggplot(top, aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>, fill<span class="op">=</span><span class="st">"borough"</span>))</span>
 <span id="cb23-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_boxplot()</span>
@@ -1289,7 +1289,7 @@ Length: 5, dtype: str</code></pre>
 <li><code>facet_wrap("~problem_detail")</code> creates subplots for the problem details.</li>
 <li><code>geom_hline(yintercept=24, linetype="dashed")</code> draws a dashed line at 24 hrs.</li>
 </ul>
-<div id="5118ea5d" class="cell" data-execution_count="25">
+<div id="82d3e1aa" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="" aria-label="1"></a>(</span>
 <span id="cb24-2"><a href="" aria-label="2"></a>    ggplot(top, aes(x<span class="op">=</span><span class="st">"borough"</span>, y<span class="op">=</span><span class="st">"closure_hours"</span>, fill<span class="op">=</span><span class="st">"borough"</span>))</span>
 <span id="cb24-3"><a href="" aria-label="3"></a>    <span class="op">+</span> geom_boxplot()</span>

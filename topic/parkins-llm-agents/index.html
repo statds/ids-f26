@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Jack Parkins">
+  <title>LLM Agents</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-2740581606dc327e82f18f789b69d8a0.css">
+  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">LLM Agents</h1>
+  <p class="subtitle">Introduction to Data Science | Fall 2026</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Jack Parkins
+</div>
+</div>
+</div>
+
+</section>
+<section id="about-me" class="slide level2">
+<h2>About Me</h2>
+<ul>
+<li><strong>Jack Parkins</strong>, junior in Statistical Data Science (Financial Analysis concentration)</li>
+<li>From Hinsdale, IL, outside Chicago</li>
+<li>Incoming Analyst at JPMorgan Chase, summer 2027</li>
+<li>Built AI agents for finance workflows as an AI Transformation Intern at Ensono</li>
+<li>Why this topic: I want to show what is actually happening inside an agent</li>
+</ul>
+</section>
+<section id="demo-1-ask-a-bare-llm" class="slide level2">
+<h2>Demo 1: Ask a Bare LLM</h2>
+<p>A <strong>large language model (LLM)</strong> predicts text from a prompt. A <em>bare</em> LLM has no tools: it cannot open files or run code.</p>
+<div class="agent-player notools" id="p-bare" data-trace="{&quot;q&quot;: &quot;Which stock had the higher return from 2026-01-02 to 2026-06-30, HSKY or JNTH, and by how many percentage points?&quot;, &quot;src&quot;: &quot;scripted teaching example (pre-written turns, not a model)&quot;, &quot;ev&quot;: [{&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;bare&quot;, &quot;text&quot;: &quot;I don't have access to price data for HSKY or JNTH, so I can't compute their returns. Typically you would divide the ending price by the starting price and subtract 1.&quot;}]}" data-prevent-swipe="" style="height:320px">
+<style>
+.agent-player{display:flex;flex-direction:column;gap:10px;font-size:20px;
+  line-height:1.3;text-align:left;font-family:inherit;position:relative}
+.agent-player .ap-bar{height:4px;background:#e2e8f0;border-radius:2px;
+  overflow:hidden}
+.agent-player .ap-bar i{display:block;height:100%;width:0;
+  background:#2563eb;transition:width .35s}
+.agent-player .ap-q{display:flex;gap:10px;align-items:baseline}
+.agent-player .ap-tag{font-weight:800;font-size:15px;letter-spacing:.06em;
+  text-transform:uppercase;color:#7c3aed;white-space:nowrap}
+.agent-player .qt{font-weight:600;color:#0f172a}
+.agent-player .ap-body{display:flex;gap:16px;flex:1;min-height:0}
+.agent-player .ap-side{flex:0 0 250px;display:flex;flex-direction:column;
+  gap:10px}
+.agent-player svg{width:250px;height:250px}
+.agent-player .nd rect{fill:#fff;stroke:#cbd5e1;stroke-width:2.5;
+  transition:all .3s}
+.agent-player .nd text{font-size:18px;font-weight:800;fill:#334155;
+  text-anchor:middle;dominant-baseline:middle}
+.agent-player .nd.on rect{stroke-width:4;animation:apPulse 1.2s ease infinite}
+.agent-player .nd.llm.on rect{fill:#dbeafe;stroke:#2563eb}
+.agent-player .nd.tool.on rect{fill:#fef3c7;stroke:#f59e0b}
+.agent-player .nd.obs.on rect{fill:#d1fae5;stroke:#10b981}
+.agent-player .ar{stroke:#cbd5e1;stroke-width:2.5;fill:none;
+  transition:stroke .3s}
+.agent-player .ar.flow{stroke:#7c3aed;stroke-width:3.5;
+  stroke-dasharray:8 7;animation:apFlow .6s linear infinite}
+.agent-player .al{font-size:14px;fill:#94a3b8;text-anchor:middle;
+  font-family:"JetBrains Mono",Consolas,monospace}
+.agent-player .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.agent-player .st{background:#f8fafc;border:1px solid #e2e8f0;
+  border-radius:10px;padding:4px 0;text-align:center}
+.agent-player .st b{display:block;font-size:24px;color:#0f172a;
+  font-weight:800;line-height:1.1}
+.agent-player .st span{font-size:12px;color:#64748b;text-transform:uppercase;
+  letter-spacing:.05em}
+.agent-player .st.err b{color:#dc2626}
+.agent-player .ap-log{flex:1;overflow-y:auto;border:1px solid #e2e8f0;
+  border-radius:12px;padding:10px 12px;background:#fff;
+  box-shadow:0 4px 18px rgba(15,23,42,.05)}
+.agent-player .ev{border-left:5px solid #94a3b8;padding:4px 10px;
+  margin:0 0 7px 0;border-radius:6px;animation:apIn .3s ease;display:flex;
+  gap:10px}
+.agent-player .ev b{flex:0 0 118px;font-size:16px;text-transform:uppercase;
+  letter-spacing:.04em;padding-top:2px}
+.agent-player .ev code{font-size:16.5px;background:none;white-space:pre-wrap;
+  word-break:break-word;font-family:"JetBrains Mono",Consolas,monospace}
+.agent-player .ev.thought{border-color:#2563eb;background:#eff6ff}
+.agent-player .ev.thought b{color:#1d4ed8}
+.agent-player .ev.call{border-color:#f59e0b;background:#fffbeb}
+.agent-player .ev.call b{color:#b45309}
+.agent-player .ev.obs{border-color:#10b981;background:#ecfdf5}
+.agent-player .ev.obs b{color:#047857}
+.agent-player .ev.error{border-color:#dc2626;background:#fef2f2}
+.agent-player .ev.error b{color:#b91c1c}
+.agent-player .ev.final{border-color:#7c3aed;background:#f5f3ff;
+  font-weight:700;box-shadow:0 0 0 3px #ede9fe}
+.agent-player .ev.final b{color:#6d28d9}
+.agent-player .ev.stopped{border-color:#ea580c;background:#fff7ed;
+  font-weight:700;box-shadow:0 0 0 3px #ffedd5}
+.agent-player .ev.stopped b{color:#c2410c}
+.agent-player .ap-ctl{display:flex;gap:8px;align-items:center}
+.agent-player button{font-size:17px;padding:6px 16px;border-radius:999px;
+  border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-family:inherit;
+  font-weight:600;color:#334155}
+.agent-player button.pri{background:#2563eb;color:#fff;border:none}
+.agent-player button:disabled{opacity:.35;cursor:default}
+.agent-player .ap-src{margin-left:auto;color:#64748b;font-size:14px}
+.agent-player.halt .ap-log{box-shadow:0 0 0 3px #fdba74}
+.agent-player.notools .nd.tool,.agent-player.notools .nd.obs,
+.agent-player.notools .ar,.agent-player.notools .al{opacity:.18}
+.agent-player .nt{display:none;font-size:13px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;color:#64748b;
+  background:#f1f5f9;border-radius:999px;padding:2px 10px;margin-left:auto}
+.agent-player.notools .nt{display:inline-block}
+.agent-player .ev.bare{border-color:#64748b;background:#f8fafc;
+  font-weight:600}
+.agent-player .ev.bare b{color:#475569}
+@keyframes apIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+@keyframes apFlow{to{stroke-dashoffset:-15}}
+@keyframes apPulse{50%{stroke-width:7}}
+</style>
+<div class="ap-bar"><i></i></div>
+<div class="ap-q"><span class="ap-tag">Task</span><span class="qt"></span>
+<span class="nt">No tools connected</span></div>
+<div class="ap-body">
+<div class="ap-side">
+<svg viewbox="0 0 250 250" aria-label="Agent loop: the LLM decides, the tool
+ runs, the result is read back by the LLM">
+ <defs><marker id="p-bare-m" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+  <path d="M0,0L10,5L0,10z" fill="#94a3b8"></path></marker></defs>
+ <path class="ar decide" d="M168,62 Q232,100 205,168" marker-end="url(#p-bare-m)"></path>
+ <path class="ar run" d="M155,205 L97,205" marker-end="url(#p-bare-m)"></path>
+ <path class="ar read" d="M45,168 Q18,100 82,62" marker-end="url(#p-bare-m)"></path>
+ <text class="al" x="226" y="112">decide</text>
+ <text class="al" x="126" y="232">run</text>
+ <text class="al" x="24" y="112">read</text>
+ <g class="nd llm"><rect x="78" y="14" width="94" height="48" rx="12"></rect>
+  <text x="125" y="39">LLM</text></g>
+ <g class="nd tool"><rect x="158" y="168" width="86" height="48" rx="12"></rect>
+  <text x="201" y="193">Tool</text></g>
+ <g class="nd obs"><rect x="6" y="168" width="86" height="48" rx="12"></rect>
+  <text x="49" y="193">Result</text></g>
+</svg>
+<div class="stats">
+ <div class="st"><b class="c-turn">0</b><span>LLM turns</span></div>
+ <div class="st"><b class="c-call">0</b><span>Tool calls</span></div>
+ <div class="st err"><b class="c-err">0</b><span>Errors</span></div>
+</div>
+</div>
+<div class="ap-log" aria-live="polite"></div>
+</div>
+<div class="ap-ctl">
+ <button class="pri nx">Next step ▶</button>
+ <button class="all">Run all</button>
+ <button class="rs">Reset</button>
+ <span class="ap-src"></span>
+</div>
+<script>
+(function(){
+  const root = document.getElementById("p-bare");
+  const d = JSON.parse(root.dataset.trace);
+  const $ = s => root.querySelector(s);
+  const log = $(".ap-log"), nx = $(".nx"), all = $(".all");
+  const label = {thought:"Thinks", call:"Calls tool", obs:"Result",
+    error:"Error", final:"✓ Answer", bare:"Answer",
+    stopped:"■ Stopped"};
+  const arrow = {call:"decide", obs:"run", error:"run"};
+  let i = 0, timer = null, typing = null, prev = null;
+  $(".qt").textContent = d.q;
+  $(".ap-src").textContent = "Model turns: " + d.src;
+  function light(n, a){
+    root.querySelectorAll(".nd").forEach(g =>
+      g.classList.toggle("on", g.classList.contains(n)));
+    root.querySelectorAll(".ar").forEach(p =>
+      p.classList.toggle("flow", p.classList.contains(a)));
+  }
+  function stats(){
+    const seen = d.ev.slice(0, i), c = k => seen.filter(e => k.includes(e.kind)).length;
+    $(".c-turn").textContent = c(["call", "final", "bare"]);
+    $(".c-call").textContent = c(["call"]);
+    $(".c-err").textContent = c(["error"]);
+    $(".ap-bar i").style.width = (100 * i / d.ev.length) + "%";
+    nx.disabled = all.disabled = i >= d.ev.length;
+  }
+  function type(el, text){
+    if (typing) typing();
+    let k = 0, id = setInterval(() => {
+      el.textContent = text.slice(0, k += 2);
+      log.scrollTop = log.scrollHeight;
+      if (k >= text.length) done();
+    }, 14);
+    function done(){ clearInterval(id); el.textContent = text; typing = null; }
+    typing = done;
+  }
+  function step(){
+    if (i >= d.ev.length) { clearInterval(timer); return; }
+    const e = d.ev[i++], div = document.createElement("div");
+    div.className = "ev " + e.kind;
+    const b = document.createElement("b"); b.textContent = label[e.kind];
+    const code = ["call", "obs", "error"].includes(e.kind);
+    const body = document.createElement(code ? "code" : "span");
+    div.append(b, body); log.append(div);
+    if (code) body.textContent = e.text; else type(body, e.text);
+    log.scrollTop = log.scrollHeight;
+    const a = arrow[e.kind] || (e.kind === "thought" && prev ? "read" : "");
+    light(e.node, a); prev = e.kind;
+    root.classList.toggle("halt", e.kind === "stopped");
+    stats();
+  }
+  function reset(){
+    clearInterval(timer); if (typing) typing();
+    i = 0; prev = null; log.innerHTML = ""; light("none", "");
+    root.classList.remove("halt"); stats();
+  }
+  const on = (el, f) => el.onclick = ev => { f(); ev.currentTarget.blur(); };
+  on(nx, step);
+  on(all, () => { clearInterval(timer); step(); timer = setInterval(step, 900); });
+  on($(".rs"), reset);
+  reset();
+})();
+</script>
+</div>
+
+<p><strong>Scripted illustration:</strong> this reply was written in advance to show a typical bare-model response; it is not a recorded model output.</p>
+</section>
+<section id="what-is-an-llm-agent" class="slide level2">
+<h2>What Is an LLM Agent?</h2>
+<p>An <strong>LLM agent</strong> runs an LLM in a loop: the LLM picks a <strong>tool</strong>, our code runs it, the <strong>result</strong> goes back to the LLM, and the loop repeats until it can answer <span class="citation" data-cites="yao2023react">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2023</a>)</span>.</p>
+<svg viewbox="0 0 1000 300" style="width:100%;height:280px" aria-label="Question goes to the LLM; the LLM sends tool calls to our
+  code, results come back, and finally the LLM returns an answer">
+<defs>
+ <marker id="lpm" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+  <path d="M0,0L10,5L0,10z" fill="#555"></path></marker>
+</defs>
+<g font-family="sans-serif" fill="#222" text-anchor="middle">
+ <rect x="20" y="75" width="170" height="56" rx="8" fill="#f3f3f3" stroke="#888" stroke-width="2"></rect>
+ <text x="105" y="110" font-size="24">Question</text>
+ <path d="M192,103 L278,103" stroke="#555" stroke-width="2.5" fill="none" marker-end="url(#lpm)"></path>
+ <rect x="285" y="55" width="215" height="96" rx="8" fill="#eaf1fd" stroke="#2563eb" stroke-width="2.5"></rect>
+ <text x="392" y="98" font-size="28" font-weight="bold">LLM</text>
+ <text x="392" y="128" font-size="18">picks next action</text>
+ <rect x="740" y="35" width="240" height="136" rx="8" fill="#fdf5e6" stroke="#b45309" stroke-width="2.5"></rect>
+ <text x="860" y="78" font-size="26" font-weight="bold">Tools</text>
+ <text x="860" y="112" font-size="18" font-family="monospace">get_prices()</text>
+ <text x="860" y="140" font-size="18" font-family="monospace">calculator()</text>
+ <path d="M500,80 C560,15 680,15 735,70" stroke="#555" stroke-width="2.5" fill="none" marker-end="url(#lpm)"></path>
+ <text x="618" y="25" font-size="19" font-family="monospace">tool call</text>
+ <path d="M735,135 C680,190 560,190 505,130" stroke="#555" stroke-width="2.5" fill="none" marker-end="url(#lpm)"></path>
+ <text x="618" y="200" font-size="19" font-family="monospace">result</text>
+ <path d="M392,153 L392,230" stroke="#555" stroke-width="2.5" fill="none" marker-end="url(#lpm)"></path>
+ <text x="320" y="200" font-size="19" font-family="monospace">answer</text>
+ <rect x="292" y="235" width="200" height="56" rx="8" fill="#f3f3f3" stroke="#888" stroke-width="2"></rect>
+ <text x="392" y="271" font-size="24">Answer</text>
+</g>
+</svg>
+<p>The LLM never runs code itself. It writes a structured request, and our code runs it <span class="citation" data-cites="schick2023toolformer">(<a href="#/references" role="doc-biblioref" onclick="">Schick et al. 2023</a>)</span>.</p>
+</section>
+<section id="messages-tool-calls-and-results" class="slide level2">
+<h2>Messages, Tool Calls, and Results</h2>
+<div id="d828bfe1" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>messages <span class="op">=</span> [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: QUESTION}]   <span class="co"># conversation so far</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>turn <span class="op">=</span> {<span class="st">"tool"</span>: <span class="st">"get_prices"</span>,                        <span class="co"># the LLM's request</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"args"</span>: {<span class="st">"ticker"</span>: <span class="st">"HSKY"</span>, <span class="st">"start"</span>: <span class="st">"2026-01-02"</span>,</span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"end"</span>: <span class="st">"2026-06-30"</span>}}</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> TOOLS[turn[<span class="st">"tool"</span>]](<span class="op">**</span>turn[<span class="st">"args"</span>])         <span class="co"># our code runs it</span></span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>{'ticker': 'HSKY',
+ 'start_date': '2026-01-02',
+ 'start_close': 100.0,
+ 'end_date': '2026-06-30',
+ 'end_close': 123.07}</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Message history:</strong> everything said so far, which the LLM reads each turn</li>
+<li><strong>Tool arguments:</strong> the inputs the LLM chooses for a function</li>
+<li><strong>Result:</strong> what the function returns; we append it to the messages</li>
+</ul>
+</section>
+<section id="the-whole-agent-loop" class="slide level2">
+<h2>The Whole Agent Loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="|5|6-8|9-12|13-15|16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-label="1"></a><span class="kw">def</span> run_agent(question, llm, tools<span class="op">=</span>TOOLS, max_steps<span class="op">=</span><span class="dv">8</span>):</span>
+<span id="cb3-2"><a href="" aria-label="2"></a>    messages <span class="op">=</span> [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: question}]</span>
+<span id="cb3-3"><a href="" aria-label="3"></a>    trace <span class="op">=</span> []</span>
+<span id="cb3-4"><a href="" aria-label="4"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_steps):</span>
+<span id="cb3-5"><a href="" aria-label="5"></a>        turn <span class="op">=</span> llm(messages)                      <span class="co"># model picks next action</span></span>
+<span id="cb3-6"><a href="" aria-label="6"></a>        <span class="cf">if</span> <span class="st">"final"</span> <span class="kw">in</span> turn:</span>
+<span id="cb3-7"><a href="" aria-label="7"></a>            trace.append(turn)</span>
+<span id="cb3-8"><a href="" aria-label="8"></a>            <span class="cf">return</span> trace</span>
+<span id="cb3-9"><a href="" aria-label="9"></a>        <span class="cf">try</span>:</span>
+<span id="cb3-10"><a href="" aria-label="10"></a>            result <span class="op">=</span> tools[turn[<span class="st">"tool"</span>]](<span class="op">**</span>turn[<span class="st">"args"</span>])   <span class="co"># we run the tool</span></span>
+<span id="cb3-11"><a href="" aria-label="11"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb3-12"><a href="" aria-label="12"></a>            result <span class="op">=</span> {<span class="st">"error"</span>: <span class="bu">str</span>(e)}</span>
+<span id="cb3-13"><a href="" aria-label="13"></a>        trace.append({<span class="op">**</span>turn, <span class="st">"result"</span>: result})</span>
+<span id="cb3-14"><a href="" aria-label="14"></a>        messages <span class="op">+=</span> [{<span class="st">"role"</span>: <span class="st">"assistant"</span>, <span class="st">"content"</span>: turn},</span>
+<span id="cb3-15"><a href="" aria-label="15"></a>                     {<span class="st">"role"</span>: <span class="st">"tool"</span>, <span class="st">"content"</span>: result}]  <span class="co"># model sees it</span></span>
+<span id="cb3-16"><a href="" aria-label="16"></a>    trace.append({<span class="st">"stopped"</span>: <span class="ss">f"hit max_steps=</span><span class="sc">{</span>max_steps<span class="sc">}</span><span class="ss">"</span>})</span>
+<span id="cb3-17"><a href="" aria-label="17"></a>    <span class="cf">return</span> trace</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Line 5 asks the LLM; 6 to 8 stop on an answer; 9 to 12 run the tool; 13 to 15 feed the result back; 16 is the step cap.</p>
+</section>
+<section id="scripted-recorded-or-live" class="slide level2">
+<h2>Scripted, Recorded, or Live?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Scripted (this deck)</th>
+<th style="text-align: left;">Recorded</th>
+<th style="text-align: left;">Live</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">LLM turns</td>
+<td style="text-align: left;">written by hand</td>
+<td style="text-align: left;">saved from a real run</td>
+<td style="text-align: left;">model called live</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shows</td>
+<td style="text-align: left;">how the loop works</td>
+<td style="text-align: left;">what a model did once</td>
+<td style="text-align: left;">what a model does now</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">API key</td>
+<td style="text-align: left;">no</td>
+<td style="text-align: left;">to record (<code>record.py</code>)</td>
+<td style="text-align: left;">yes</td>
+</tr>
+</tbody>
+</table>
+<p>The demos that follow are <strong>scripted</strong>. The tools and the loop run for real, but the LLM’s moves are pre-written and do not depend on the results, so they do not show that a model planned or recovered on its own.</p>
+</section>
+<section id="demo-2-the-same-question-with-tools" class="slide level2">
+<h2>Demo 2: The Same Question, With Tools</h2>
+<div class="agent-player " id="p-main" data-trace="{&quot;q&quot;: &quot;Which stock had the higher return from 2026-01-02 to 2026-06-30, HSKY or JNTH, and by how many percentage points?&quot;, &quot;src&quot;: &quot;scripted teaching example (pre-written turns, not a model)&quot;, &quot;ev&quot;: [{&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;I need both stocks' prices over the window.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;get_prices(ticker='HSKY', start='2026-01-02', end='2026-06-30')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;obs&quot;, &quot;text&quot;: &quot;HSKY: $100.00 (Jan 2) \u2192 $123.07 (Jun 30)&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Now the same window for JNTH.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;get_prices(ticker='JNTH', start='2026-01-02', end='2026-06-30')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;obs&quot;, &quot;text&quot;: &quot;JNTH: $80.00 (Jan 2) \u2192 $100.87 (Jun 30)&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Compute HSKY's percent return.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;calculator(expression='(123.07 / 100.0 - 1) * 100')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;obs&quot;, &quot;text&quot;: &quot;23.07&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Compute JNTH's percent return.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;calculator(expression='(100.87 / 80.0 - 1) * 100')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;obs&quot;, &quot;text&quot;: &quot;26.0875&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;JNTH is higher. Compute the gap in percentage points.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;calculator(expression='26.0875 - 23.07')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;obs&quot;, &quot;text&quot;: &quot;3.0175&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;I have both returns and the gap.&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;final&quot;, &quot;text&quot;: &quot;JNTH had the higher return: HSKY +23.07% vs JNTH +26.09%, a gap of 3.02 percentage points.&quot;}]}" data-prevent-swipe="" style="height:500px">
+<style>
+.agent-player{display:flex;flex-direction:column;gap:10px;font-size:20px;
+  line-height:1.3;text-align:left;font-family:inherit;position:relative}
+.agent-player .ap-bar{height:4px;background:#e2e8f0;border-radius:2px;
+  overflow:hidden}
+.agent-player .ap-bar i{display:block;height:100%;width:0;
+  background:#2563eb;transition:width .35s}
+.agent-player .ap-q{display:flex;gap:10px;align-items:baseline}
+.agent-player .ap-tag{font-weight:800;font-size:15px;letter-spacing:.06em;
+  text-transform:uppercase;color:#7c3aed;white-space:nowrap}
+.agent-player .qt{font-weight:600;color:#0f172a}
+.agent-player .ap-body{display:flex;gap:16px;flex:1;min-height:0}
+.agent-player .ap-side{flex:0 0 250px;display:flex;flex-direction:column;
+  gap:10px}
+.agent-player svg{width:250px;height:250px}
+.agent-player .nd rect{fill:#fff;stroke:#cbd5e1;stroke-width:2.5;
+  transition:all .3s}
+.agent-player .nd text{font-size:18px;font-weight:800;fill:#334155;
+  text-anchor:middle;dominant-baseline:middle}
+.agent-player .nd.on rect{stroke-width:4;animation:apPulse 1.2s ease infinite}
+.agent-player .nd.llm.on rect{fill:#dbeafe;stroke:#2563eb}
+.agent-player .nd.tool.on rect{fill:#fef3c7;stroke:#f59e0b}
+.agent-player .nd.obs.on rect{fill:#d1fae5;stroke:#10b981}
+.agent-player .ar{stroke:#cbd5e1;stroke-width:2.5;fill:none;
+  transition:stroke .3s}
+.agent-player .ar.flow{stroke:#7c3aed;stroke-width:3.5;
+  stroke-dasharray:8 7;animation:apFlow .6s linear infinite}
+.agent-player .al{font-size:14px;fill:#94a3b8;text-anchor:middle;
+  font-family:"JetBrains Mono",Consolas,monospace}
+.agent-player .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.agent-player .st{background:#f8fafc;border:1px solid #e2e8f0;
+  border-radius:10px;padding:4px 0;text-align:center}
+.agent-player .st b{display:block;font-size:24px;color:#0f172a;
+  font-weight:800;line-height:1.1}
+.agent-player .st span{font-size:12px;color:#64748b;text-transform:uppercase;
+  letter-spacing:.05em}
+.agent-player .st.err b{color:#dc2626}
+.agent-player .ap-log{flex:1;overflow-y:auto;border:1px solid #e2e8f0;
+  border-radius:12px;padding:10px 12px;background:#fff;
+  box-shadow:0 4px 18px rgba(15,23,42,.05)}
+.agent-player .ev{border-left:5px solid #94a3b8;padding:4px 10px;
+  margin:0 0 7px 0;border-radius:6px;animation:apIn .3s ease;display:flex;
+  gap:10px}
+.agent-player .ev b{flex:0 0 118px;font-size:16px;text-transform:uppercase;
+  letter-spacing:.04em;padding-top:2px}
+.agent-player .ev code{font-size:16.5px;background:none;white-space:pre-wrap;
+  word-break:break-word;font-family:"JetBrains Mono",Consolas,monospace}
+.agent-player .ev.thought{border-color:#2563eb;background:#eff6ff}
+.agent-player .ev.thought b{color:#1d4ed8}
+.agent-player .ev.call{border-color:#f59e0b;background:#fffbeb}
+.agent-player .ev.call b{color:#b45309}
+.agent-player .ev.obs{border-color:#10b981;background:#ecfdf5}
+.agent-player .ev.obs b{color:#047857}
+.agent-player .ev.error{border-color:#dc2626;background:#fef2f2}
+.agent-player .ev.error b{color:#b91c1c}
+.agent-player .ev.final{border-color:#7c3aed;background:#f5f3ff;
+  font-weight:700;box-shadow:0 0 0 3px #ede9fe}
+.agent-player .ev.final b{color:#6d28d9}
+.agent-player .ev.stopped{border-color:#ea580c;background:#fff7ed;
+  font-weight:700;box-shadow:0 0 0 3px #ffedd5}
+.agent-player .ev.stopped b{color:#c2410c}
+.agent-player .ap-ctl{display:flex;gap:8px;align-items:center}
+.agent-player button{font-size:17px;padding:6px 16px;border-radius:999px;
+  border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-family:inherit;
+  font-weight:600;color:#334155}
+.agent-player button.pri{background:#2563eb;color:#fff;border:none}
+.agent-player button:disabled{opacity:.35;cursor:default}
+.agent-player .ap-src{margin-left:auto;color:#64748b;font-size:14px}
+.agent-player.halt .ap-log{box-shadow:0 0 0 3px #fdba74}
+.agent-player.notools .nd.tool,.agent-player.notools .nd.obs,
+.agent-player.notools .ar,.agent-player.notools .al{opacity:.18}
+.agent-player .nt{display:none;font-size:13px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;color:#64748b;
+  background:#f1f5f9;border-radius:999px;padding:2px 10px;margin-left:auto}
+.agent-player.notools .nt{display:inline-block}
+.agent-player .ev.bare{border-color:#64748b;background:#f8fafc;
+  font-weight:600}
+.agent-player .ev.bare b{color:#475569}
+@keyframes apIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+@keyframes apFlow{to{stroke-dashoffset:-15}}
+@keyframes apPulse{50%{stroke-width:7}}
+</style>
+<div class="ap-bar"><i></i></div>
+<div class="ap-q"><span class="ap-tag">Task</span><span class="qt"></span>
+<span class="nt">No tools connected</span></div>
+<div class="ap-body">
+<div class="ap-side">
+<svg viewbox="0 0 250 250" aria-label="Agent loop: the LLM decides, the tool
+ runs, the result is read back by the LLM">
+ <defs><marker id="p-main-m" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+  <path d="M0,0L10,5L0,10z" fill="#94a3b8"></path></marker></defs>
+ <path class="ar decide" d="M168,62 Q232,100 205,168" marker-end="url(#p-main-m)"></path>
+ <path class="ar run" d="M155,205 L97,205" marker-end="url(#p-main-m)"></path>
+ <path class="ar read" d="M45,168 Q18,100 82,62" marker-end="url(#p-main-m)"></path>
+ <text class="al" x="226" y="112">decide</text>
+ <text class="al" x="126" y="232">run</text>
+ <text class="al" x="24" y="112">read</text>
+ <g class="nd llm"><rect x="78" y="14" width="94" height="48" rx="12"></rect>
+  <text x="125" y="39">LLM</text></g>
+ <g class="nd tool"><rect x="158" y="168" width="86" height="48" rx="12"></rect>
+  <text x="201" y="193">Tool</text></g>
+ <g class="nd obs"><rect x="6" y="168" width="86" height="48" rx="12"></rect>
+  <text x="49" y="193">Result</text></g>
+</svg>
+<div class="stats">
+ <div class="st"><b class="c-turn">0</b><span>LLM turns</span></div>
+ <div class="st"><b class="c-call">0</b><span>Tool calls</span></div>
+ <div class="st err"><b class="c-err">0</b><span>Errors</span></div>
+</div>
+</div>
+<div class="ap-log" aria-live="polite"></div>
+</div>
+<div class="ap-ctl">
+ <button class="pri nx">Next step ▶</button>
+ <button class="all">Run all</button>
+ <button class="rs">Reset</button>
+ <span class="ap-src"></span>
+</div>
+<script>
+(function(){
+  const root = document.getElementById("p-main");
+  const d = JSON.parse(root.dataset.trace);
+  const $ = s => root.querySelector(s);
+  const log = $(".ap-log"), nx = $(".nx"), all = $(".all");
+  const label = {thought:"Thinks", call:"Calls tool", obs:"Result",
+    error:"Error", final:"✓ Answer", bare:"Answer",
+    stopped:"■ Stopped"};
+  const arrow = {call:"decide", obs:"run", error:"run"};
+  let i = 0, timer = null, typing = null, prev = null;
+  $(".qt").textContent = d.q;
+  $(".ap-src").textContent = "Model turns: " + d.src;
+  function light(n, a){
+    root.querySelectorAll(".nd").forEach(g =>
+      g.classList.toggle("on", g.classList.contains(n)));
+    root.querySelectorAll(".ar").forEach(p =>
+      p.classList.toggle("flow", p.classList.contains(a)));
+  }
+  function stats(){
+    const seen = d.ev.slice(0, i), c = k => seen.filter(e => k.includes(e.kind)).length;
+    $(".c-turn").textContent = c(["call", "final", "bare"]);
+    $(".c-call").textContent = c(["call"]);
+    $(".c-err").textContent = c(["error"]);
+    $(".ap-bar i").style.width = (100 * i / d.ev.length) + "%";
+    nx.disabled = all.disabled = i >= d.ev.length;
+  }
+  function type(el, text){
+    if (typing) typing();
+    let k = 0, id = setInterval(() => {
+      el.textContent = text.slice(0, k += 2);
+      log.scrollTop = log.scrollHeight;
+      if (k >= text.length) done();
+    }, 14);
+    function done(){ clearInterval(id); el.textContent = text; typing = null; }
+    typing = done;
+  }
+  function step(){
+    if (i >= d.ev.length) { clearInterval(timer); return; }
+    const e = d.ev[i++], div = document.createElement("div");
+    div.className = "ev " + e.kind;
+    const b = document.createElement("b"); b.textContent = label[e.kind];
+    const code = ["call", "obs", "error"].includes(e.kind);
+    const body = document.createElement(code ? "code" : "span");
+    div.append(b, body); log.append(div);
+    if (code) body.textContent = e.text; else type(body, e.text);
+    log.scrollTop = log.scrollHeight;
+    const a = arrow[e.kind] || (e.kind === "thought" && prev ? "read" : "");
+    light(e.node, a); prev = e.kind;
+    root.classList.toggle("halt", e.kind === "stopped");
+    stats();
+  }
+  function reset(){
+    clearInterval(timer); if (typing) typing();
+    i = 0; prev = null; log.innerHTML = ""; light("none", "");
+    root.classList.remove("halt"); stats();
+  }
+  const on = (el, f) => el.onclick = ev => { f(); ev.currentTarget.blur(); };
+  on(nx, step);
+  on(all, () => { clearInterval(timer); step(); timer = setInterval(step, 900); });
+  on($(".rs"), reset);
+  reset();
+})();
+</script>
+</div>
+
+<p><strong>Scripted teaching example.</strong> HSKY and JNTH are fictional tickers simulated with a fixed seed (<code>make_data.py</code>).</p>
+</section>
+<section id="checking-the-answer" class="slide level2">
+<h2>Checking the Answer</h2>
+<p>The same quantities computed directly with pandas:</p>
+<div id="80801f49" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> PRICES.pivot(index<span class="op">=</span><span class="st">"date"</span>, columns<span class="op">=</span><span class="st">"ticker"</span>, values<span class="op">=</span><span class="st">"close"</span>)</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> (wide.iloc[<span class="op">-</span><span class="dv">1</span>] <span class="op">/</span> wide.iloc[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>winner, gap <span class="op">=</span> ret.idxmax(), ret.<span class="bu">max</span>() <span class="op">-</span> ret.<span class="bu">min</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="dde83896" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">pandas</th>
+<th data-quarto-table-cell-role="th">agent trace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">HSKY return (%)</th>
+<td>23.07</td>
+<td>23.07</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">JNTH return (%)</th>
+<td>26.09</td>
+<td>26.09</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">Winner</th>
+<td>JNTH</td>
+<td>JNTH</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">Gap (percentage points)</th>
+<td>3.02</td>
+<td>3.02</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>All four match: the prices came from <code>get_prices</code> and every number from <code>calculator</code>.</p>
+</section>
+<section id="when-agents-break-endless-loops" class="slide level2">
+<h2>When Agents Break: Endless Loops</h2>
+<div class="agent-player " id="p-loop" data-trace="{&quot;q&quot;: &quot;What will HSKY close at on 2026-07-10?&quot;, &quot;src&quot;: &quot;scripted teaching example (pre-written turns, not a model)&quot;, &quot;ev&quot;: [{&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Look up HSKY on 2026-07-10.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;get_prices(ticker='HSKY', start='2026-07-10', end='2026-07-10')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;error&quot;, &quot;text&quot;: &quot;no data after 2026-06-30&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Maybe that day is missing. Try a wider window.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;get_prices(ticker='HSKY', start='2026-07-09', end='2026-07-10')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;error&quot;, &quot;text&quot;: &quot;no data after 2026-06-30&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Still nothing. Widen the window again.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;get_prices(ticker='HSKY', start='2026-07-06', end='2026-07-10')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;error&quot;, &quot;text&quot;: &quot;no data after 2026-06-30&quot;}, {&quot;node&quot;: &quot;llm&quot;, &quot;kind&quot;: &quot;thought&quot;, &quot;text&quot;: &quot;Try starting right after the last date.&quot;}, {&quot;node&quot;: &quot;tool&quot;, &quot;kind&quot;: &quot;call&quot;, &quot;text&quot;: &quot;get_prices(ticker='HSKY', start='2026-07-01', end='2026-07-10')&quot;}, {&quot;node&quot;: &quot;obs&quot;, &quot;kind&quot;: &quot;error&quot;, &quot;text&quot;: &quot;no data after 2026-06-30&quot;}, {&quot;node&quot;: &quot;loop&quot;, &quot;kind&quot;: &quot;stopped&quot;, &quot;text&quot;: &quot;hit max_steps=4&quot;}]}" data-prevent-swipe="" style="height:470px">
+<style>
+.agent-player{display:flex;flex-direction:column;gap:10px;font-size:20px;
+  line-height:1.3;text-align:left;font-family:inherit;position:relative}
+.agent-player .ap-bar{height:4px;background:#e2e8f0;border-radius:2px;
+  overflow:hidden}
+.agent-player .ap-bar i{display:block;height:100%;width:0;
+  background:#2563eb;transition:width .35s}
+.agent-player .ap-q{display:flex;gap:10px;align-items:baseline}
+.agent-player .ap-tag{font-weight:800;font-size:15px;letter-spacing:.06em;
+  text-transform:uppercase;color:#7c3aed;white-space:nowrap}
+.agent-player .qt{font-weight:600;color:#0f172a}
+.agent-player .ap-body{display:flex;gap:16px;flex:1;min-height:0}
+.agent-player .ap-side{flex:0 0 250px;display:flex;flex-direction:column;
+  gap:10px}
+.agent-player svg{width:250px;height:250px}
+.agent-player .nd rect{fill:#fff;stroke:#cbd5e1;stroke-width:2.5;
+  transition:all .3s}
+.agent-player .nd text{font-size:18px;font-weight:800;fill:#334155;
+  text-anchor:middle;dominant-baseline:middle}
+.agent-player .nd.on rect{stroke-width:4;animation:apPulse 1.2s ease infinite}
+.agent-player .nd.llm.on rect{fill:#dbeafe;stroke:#2563eb}
+.agent-player .nd.tool.on rect{fill:#fef3c7;stroke:#f59e0b}
+.agent-player .nd.obs.on rect{fill:#d1fae5;stroke:#10b981}
+.agent-player .ar{stroke:#cbd5e1;stroke-width:2.5;fill:none;
+  transition:stroke .3s}
+.agent-player .ar.flow{stroke:#7c3aed;stroke-width:3.5;
+  stroke-dasharray:8 7;animation:apFlow .6s linear infinite}
+.agent-player .al{font-size:14px;fill:#94a3b8;text-anchor:middle;
+  font-family:"JetBrains Mono",Consolas,monospace}
+.agent-player .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.agent-player .st{background:#f8fafc;border:1px solid #e2e8f0;
+  border-radius:10px;padding:4px 0;text-align:center}
+.agent-player .st b{display:block;font-size:24px;color:#0f172a;
+  font-weight:800;line-height:1.1}
+.agent-player .st span{font-size:12px;color:#64748b;text-transform:uppercase;
+  letter-spacing:.05em}
+.agent-player .st.err b{color:#dc2626}
+.agent-player .ap-log{flex:1;overflow-y:auto;border:1px solid #e2e8f0;
+  border-radius:12px;padding:10px 12px;background:#fff;
+  box-shadow:0 4px 18px rgba(15,23,42,.05)}
+.agent-player .ev{border-left:5px solid #94a3b8;padding:4px 10px;
+  margin:0 0 7px 0;border-radius:6px;animation:apIn .3s ease;display:flex;
+  gap:10px}
+.agent-player .ev b{flex:0 0 118px;font-size:16px;text-transform:uppercase;
+  letter-spacing:.04em;padding-top:2px}
+.agent-player .ev code{font-size:16.5px;background:none;white-space:pre-wrap;
+  word-break:break-word;font-family:"JetBrains Mono",Consolas,monospace}
+.agent-player .ev.thought{border-color:#2563eb;background:#eff6ff}
+.agent-player .ev.thought b{color:#1d4ed8}
+.agent-player .ev.call{border-color:#f59e0b;background:#fffbeb}
+.agent-player .ev.call b{color:#b45309}
+.agent-player .ev.obs{border-color:#10b981;background:#ecfdf5}
+.agent-player .ev.obs b{color:#047857}
+.agent-player .ev.error{border-color:#dc2626;background:#fef2f2}
+.agent-player .ev.error b{color:#b91c1c}
+.agent-player .ev.final{border-color:#7c3aed;background:#f5f3ff;
+  font-weight:700;box-shadow:0 0 0 3px #ede9fe}
+.agent-player .ev.final b{color:#6d28d9}
+.agent-player .ev.stopped{border-color:#ea580c;background:#fff7ed;
+  font-weight:700;box-shadow:0 0 0 3px #ffedd5}
+.agent-player .ev.stopped b{color:#c2410c}
+.agent-player .ap-ctl{display:flex;gap:8px;align-items:center}
+.agent-player button{font-size:17px;padding:6px 16px;border-radius:999px;
+  border:1px solid #cbd5e1;background:#fff;cursor:pointer;font-family:inherit;
+  font-weight:600;color:#334155}
+.agent-player button.pri{background:#2563eb;color:#fff;border:none}
+.agent-player button:disabled{opacity:.35;cursor:default}
+.agent-player .ap-src{margin-left:auto;color:#64748b;font-size:14px}
+.agent-player.halt .ap-log{box-shadow:0 0 0 3px #fdba74}
+.agent-player.notools .nd.tool,.agent-player.notools .nd.obs,
+.agent-player.notools .ar,.agent-player.notools .al{opacity:.18}
+.agent-player .nt{display:none;font-size:13px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;color:#64748b;
+  background:#f1f5f9;border-radius:999px;padding:2px 10px;margin-left:auto}
+.agent-player.notools .nt{display:inline-block}
+.agent-player .ev.bare{border-color:#64748b;background:#f8fafc;
+  font-weight:600}
+.agent-player .ev.bare b{color:#475569}
+@keyframes apIn{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+@keyframes apFlow{to{stroke-dashoffset:-15}}
+@keyframes apPulse{50%{stroke-width:7}}
+</style>
+<div class="ap-bar"><i></i></div>
+<div class="ap-q"><span class="ap-tag">Task</span><span class="qt"></span>
+<span class="nt">No tools connected</span></div>
+<div class="ap-body">
+<div class="ap-side">
+<svg viewbox="0 0 250 250" aria-label="Agent loop: the LLM decides, the tool
+ runs, the result is read back by the LLM">
+ <defs><marker id="p-loop-m" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="6" markerheight="6" orient="auto-start-reverse">
+  <path d="M0,0L10,5L0,10z" fill="#94a3b8"></path></marker></defs>
+ <path class="ar decide" d="M168,62 Q232,100 205,168" marker-end="url(#p-loop-m)"></path>
+ <path class="ar run" d="M155,205 L97,205" marker-end="url(#p-loop-m)"></path>
+ <path class="ar read" d="M45,168 Q18,100 82,62" marker-end="url(#p-loop-m)"></path>
+ <text class="al" x="226" y="112">decide</text>
+ <text class="al" x="126" y="232">run</text>
+ <text class="al" x="24" y="112">read</text>
+ <g class="nd llm"><rect x="78" y="14" width="94" height="48" rx="12"></rect>
+  <text x="125" y="39">LLM</text></g>
+ <g class="nd tool"><rect x="158" y="168" width="86" height="48" rx="12"></rect>
+  <text x="201" y="193">Tool</text></g>
+ <g class="nd obs"><rect x="6" y="168" width="86" height="48" rx="12"></rect>
+  <text x="49" y="193">Result</text></g>
+</svg>
+<div class="stats">
+ <div class="st"><b class="c-turn">0</b><span>LLM turns</span></div>
+ <div class="st"><b class="c-call">0</b><span>Tool calls</span></div>
+ <div class="st err"><b class="c-err">0</b><span>Errors</span></div>
+</div>
+</div>
+<div class="ap-log" aria-live="polite"></div>
+</div>
+<div class="ap-ctl">
+ <button class="pri nx">Next step ▶</button>
+ <button class="all">Run all</button>
+ <button class="rs">Reset</button>
+ <span class="ap-src"></span>
+</div>
+<script>
+(function(){
+  const root = document.getElementById("p-loop");
+  const d = JSON.parse(root.dataset.trace);
+  const $ = s => root.querySelector(s);
+  const log = $(".ap-log"), nx = $(".nx"), all = $(".all");
+  const label = {thought:"Thinks", call:"Calls tool", obs:"Result",
+    error:"Error", final:"✓ Answer", bare:"Answer",
+    stopped:"■ Stopped"};
+  const arrow = {call:"decide", obs:"run", error:"run"};
+  let i = 0, timer = null, typing = null, prev = null;
+  $(".qt").textContent = d.q;
+  $(".ap-src").textContent = "Model turns: " + d.src;
+  function light(n, a){
+    root.querySelectorAll(".nd").forEach(g =>
+      g.classList.toggle("on", g.classList.contains(n)));
+    root.querySelectorAll(".ar").forEach(p =>
+      p.classList.toggle("flow", p.classList.contains(a)));
+  }
+  function stats(){
+    const seen = d.ev.slice(0, i), c = k => seen.filter(e => k.includes(e.kind)).length;
+    $(".c-turn").textContent = c(["call", "final", "bare"]);
+    $(".c-call").textContent = c(["call"]);
+    $(".c-err").textContent = c(["error"]);
+    $(".ap-bar i").style.width = (100 * i / d.ev.length) + "%";
+    nx.disabled = all.disabled = i >= d.ev.length;
+  }
+  function type(el, text){
+    if (typing) typing();
+    let k = 0, id = setInterval(() => {
+      el.textContent = text.slice(0, k += 2);
+      log.scrollTop = log.scrollHeight;
+      if (k >= text.length) done();
+    }, 14);
+    function done(){ clearInterval(id); el.textContent = text; typing = null; }
+    typing = done;
+  }
+  function step(){
+    if (i >= d.ev.length) { clearInterval(timer); return; }
+    const e = d.ev[i++], div = document.createElement("div");
+    div.className = "ev " + e.kind;
+    const b = document.createElement("b"); b.textContent = label[e.kind];
+    const code = ["call", "obs", "error"].includes(e.kind);
+    const body = document.createElement(code ? "code" : "span");
+    div.append(b, body); log.append(div);
+    if (code) body.textContent = e.text; else type(body, e.text);
+    log.scrollTop = log.scrollHeight;
+    const a = arrow[e.kind] || (e.kind === "thought" && prev ? "read" : "");
+    light(e.node, a); prev = e.kind;
+    root.classList.toggle("halt", e.kind === "stopped");
+    stats();
+  }
+  function reset(){
+    clearInterval(timer); if (typing) typing();
+    i = 0; prev = null; log.innerHTML = ""; light("none", "");
+    root.classList.remove("halt"); stats();
+  }
+  const on = (el, f) => el.onclick = ev => { f(); ev.currentTarget.blur(); };
+  on(nx, step);
+  on(all, () => { clearInterval(timer); step(); timer = setInterval(step, 900); });
+  on($(".rs"), reset);
+  reset();
+})();
+</script>
+</div>
+
+<p>Fix: cap the steps and let tools say when a task is impossible. <strong>Scripted teaching example.</strong></p>
+</section>
+<section id="other-ways-agents-fail" class="slide level2">
+<h2>Other Ways Agents Fail</h2>
+<ul>
+<li><strong>Bad arguments:</strong> tools should return errors that say how to recover</li>
+</ul>
+<div id="5ff73493" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    get_prices(<span class="st">"HSKY"</span>, <span class="st">"2026-01-03"</span>, <span class="st">"2026-01-04"</span>)   <span class="co"># a weekend</span></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>no trading days from 2026-01-03 to 2026-01-04; data covers weekdays 2026-01-02 to 2026-06-30, so try a wider window</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Tool cost:</strong> a step cap limits LLM calls, not how long one tool call runs, so tools need their own limits</li>
+<li><strong>Untrusted tool output:</strong> text in a file or web page can hijack the agent (prompt injection) <span class="citation" data-cites="greshake2023compromising">(<a href="#/references" role="doc-biblioref" onclick="">Greshake et al. 2023</a>)</span></li>
+<li><strong>Overkill:</strong> a fixed pipeline may be enough <span class="citation" data-cites="schluntz2024building">(<a href="#/references" role="doc-biblioref" onclick="">Schluntz and Zhang 2024</a>)</span></li>
+</ul>
+</section>
+<section id="evaluating-an-agent" class="slide level2">
+<h2>Evaluating an Agent</h2>
+<ul>
+<li><strong>Success criterion:</strong> a task passes if the final answer names the correct winner and a gap within 0.01 points of the pandas value</li>
+<li><strong>Task selection:</strong> write a pool of questions (tickers, windows) before testing, then draw tasks from it at random</li>
+<li><strong>Model:</strong> each of <em>n</em> tasks is an independent Bernoulli trial with a common success probability <em>p</em>, so passes <em>k</em> ~ Binomial(<em>n</em>, <em>p</em>)</li>
+<li><strong>Estimate:</strong> p̂ = <em>k</em>/<em>n</em> with a 95% Wilson interval <span class="citation" data-cites="wilson1927probable nist2012confidence">(<a href="#/references" role="doc-biblioref" onclick="">Wilson 1927</a>; <a href="#/references" role="doc-biblioref" onclick="">NIST/SEMATECH 2012</a>)</span></li>
+</ul>
+<p>Hypothetical example: 17 of 20 passes gives p̂ = 0.85 with interval 0.640 to 0.948.</p>
+</section>
+<section id="try-it-interval-width" class="slide level2">
+<h2>Try It: Interval Width</h2>
+<div class="ci-x" id="cix" data-prevent-swipe="">
+<style>
+.ci-x{font-size:20px;text-align:left;display:flex;flex-direction:column;
+  gap:10px}
+.ci-x .row{display:flex;align-items:center;gap:14px}
+.ci-x label{flex:0 0 300px;font-weight:600}
+.ci-x input[type=range]{flex:1}
+.ci-x .v{flex:0 0 120px;text-align:right;font-weight:700;
+  font-family:monospace}
+.ci-x svg{width:100%;height:120px}
+.ci-x .tick{font-size:15px;fill:#555;text-anchor:middle;font-family:monospace}
+.ci-x .out{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ci-x .box{border:1px solid #ccc;border-radius:6px;padding:8px 12px}
+.ci-x .k{font-size:15px;color:#555}
+.ci-x .big{font-size:26px;font-weight:700}
+.ci-x .note{font-size:15px;color:#555}
+</style>
+<div class="row"><label>Number of test tasks, <i>n</i></label>
+ <input class="n" type="range" min="0" max="6" value="2" aria-label="Number of test tasks">
+ <span class="v vn"></span></div>
+<div class="row"><label>Tasks passed, <i>k</i></label>
+ <input class="k" type="range" min="0" max="20" value="17" aria-label="Tasks passed">
+ <span class="v vk"></span></div>
+<svg viewbox="0 0 1000 120" aria-label="Observed pass rate and its 95
+ percent Wilson interval on a 0 to 100 percent axis, with a dashed line at
+ an illustrative 70 percent threshold">
+ <line x1="40" x2="960" y1="70" y2="70" stroke="#999" stroke-width="2"></line>
+ <g class="ticks"></g>
+ <line class="base" y1="20" y2="85" stroke="#b45309" stroke-width="3" stroke-dasharray="7 6"></line>
+ <text class="tick bl" y="14" fill="#b45309">70% (illustrative threshold)</text>
+ <rect class="ci" y="58" height="24" rx="4" fill="#2563eb" opacity=".35"></rect>
+ <circle class="pt" cy="70" r="9" fill="#2563eb"></circle>
+</svg>
+<div class="out">
+ <div class="box"><div class="k">Observed rate and 95% Wilson interval</div>
+  <div class="big civ"></div><div class="note verdict"></div></div>
+ <div class="box"><div class="k">Plug-in estimate that
+  <input class="m" type="range" min="1" max="10" value="5" style="width:110px;vertical-align:middle" aria-label="Number of runs">
+  <span class="mv"></span> independent runs all pass</div>
+  <div class="big pk"></div><div class="note pki"></div></div>
+</div>
+<script>
+(function(){
+  const r = document.getElementById("cix"), $ = s => r.querySelector(s);
+  const NS = [5, 10, 20, 30, 50, 100, 200];
+  const x = v => 40 + v * 920;
+  const tg = $(".ticks");
+  for (let t = 0; t <= 100; t += 10) {
+    tg.insertAdjacentHTML("beforeend",
+      `<line x1="${x(t/100)}" x2="${x(t/100)}" y1="64" y2="76" stroke="#999"/>
+       <text class="tick" x="${x(t/100)}" y="106">${t}%</text>`);
+  }
+  $(".base").setAttribute("x1", x(.7)); $(".base").setAttribute("x2", x(.7));
+  $(".bl").setAttribute("x", x(.7));
+  function wilson(k, n, z = 1.96){
+    const p = k / n, d = 1 + z*z/n;
+    const m = (p + z*z/(2*n)) / d;
+    const h = z * Math.sqrt(p*(1-p)/n + z*z/(4*n*n)) / d;
+    return [Math.max(0, m - h), Math.min(1, m + h)];
+  }
+  const pct = v => (100 * v).toFixed(1) + "%";
+  let rate = 17 / 20;
+  function draw(fromN){
+    const n = NS[$(".n").value], ks = $(".k");
+    ks.max = n;
+    if (fromN) ks.value = Math.round(rate * n);
+    const k = +ks.value, p = k / n, m = +$(".m").value;
+    rate = p;
+    const [lo, hi] = wilson(k, n);
+    $(".vn").textContent = "n = " + n;
+    $(".vk").textContent = "k = " + k;
+    $(".ci").setAttribute("x", x(lo));
+    $(".ci").setAttribute("width", Math.max(2, x(hi) - x(lo)));
+    $(".pt").setAttribute("cx", x(p));
+    $(".civ").textContent = k + "/" + n + " = " + pct(p) +
+      ", CI " + pct(lo) + " to " + pct(hi);
+    $(".verdict").textContent = lo > .7
+      ? "The whole interval is above the 70% threshold."
+      : "The interval includes rates at or below 70%.";
+    $(".mv").textContent = m;
+    $(".pk").textContent = pct(p ** m);
+    $(".pki").textContent = "Using the interval endpoints instead: " +
+      pct(lo ** m) + " to " + pct(hi ** m);
+  }
+  $(".n").oninput = () => draw(true);
+  $(".k").oninput = () => draw(false);
+  $(".m").oninput = () => draw(false);
+  r.querySelectorAll("input").forEach(el => el.onchange = () => el.blur());
+  draw(true);
+})();
+</script>
+</div>
+
+<p>p̂<sup><em>m</em></sup> is a plug-in estimate: it treats the observed rate as the true <em>p</em> and assumes independent runs. The 70% line is illustrative, not an evaluated baseline.</p>
+</section>
+<section id="takeaways" class="slide level2">
+<h2>Takeaways</h2>
+<ol type="1">
+<li>An agent is an <strong>LLM in a loop with tools</strong>: the LLM chooses steps, and your code does the work.</li>
+<li>Put facts and arithmetic in <strong>tools</strong>, give them clear errors and limits, and keep the <strong>trace</strong> so every number is checkable.</li>
+<li>Judge an agent with a defined success criterion and an <strong>interval</strong>, not one demo.</li>
+</ol>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-greshake2023compromising" class="csl-entry" role="listitem">
+Greshake, Kai, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, and Mario Fritz. 2023. <em>Not What You’ve Signed up for: Compromising Real-World <span>LLM</span>-Integrated Applications with Indirect Prompt Injection</em>. <a href="https://arxiv.org/abs/2302.12173">https://arxiv.org/abs/2302.12173</a>.
+</div>
+<div id="ref-nist2012confidence" class="csl-entry" role="listitem">
+NIST/SEMATECH. 2012. <span>“7.2.4.1. Confidence Intervals.”</span> <span>NIST/SEMATECH</span> e-Handbook of Statistical Methods. <a href="https://doi.org/10.18434/M32189">https://doi.org/10.18434/M32189</a>.
+</div>
+<div id="ref-schick2023toolformer" class="csl-entry" role="listitem">
+Schick, Timo, Jane Dwivedi-Yu, Roberto Dessì, et al. 2023. <span>“Toolformer: Language Models Can Teach Themselves to Use Tools.”</span> <em>Advances in Neural Information Processing Systems</em>. <a href="https://arxiv.org/abs/2302.04761">https://arxiv.org/abs/2302.04761</a>.
+</div>
+<div id="ref-schluntz2024building" class="csl-entry" role="listitem">
+Schluntz, Erik, and Barry Zhang. 2024. <span>“Building Effective <span>AI</span> Agents.”</span> Anthropic Engineering Blog. <a href="https://www.anthropic.com/engineering/building-effective-agents">https://www.anthropic.com/engineering/building-effective-agents</a>.
+</div>
+<div id="ref-wilson1927probable" class="csl-entry" role="listitem">
+Wilson, Edwin B. 1927. <span>“Probable Inference, the Law of Succession, and Statistical Inference.”</span> <em>Journal of the American Statistical Association</em> 22 (158): 209–12.
+</div>
+<div id="ref-yao2023react" class="csl-entry" role="listitem">
+Yao, Shunyu, Jeffrey Zhao, Dian Yu, et al. 2023. <span>“<span>ReAct</span>: Synergizing Reasoning and Acting in Language Models.”</span> <em>International Conference on Learning Representations</em>. <a href="https://arxiv.org/abs/2210.03629">https://arxiv.org/abs/2210.03629</a>.
+</div>
+</div>
+</section>
+<section id="further-readings" class="slide level2">
+<h2>Further Readings</h2>
+<ul>
+<li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Claude tool use documentation</a>: the request and response format used by <code>record.py</code></li>
+<li><a href="https://arxiv.org/abs/2310.06770">SWE-bench</a>: a benchmark that grades agents on real GitHub issues</li>
+</ul>
+</section>
+<section id="resources" class="slide level2 smaller">
+<h2>Resources</h2>
+<ul>
+<li><code>agent.py</code>: tools, the agent loop, the scripted stand-in for the LLM (<code>ReplayLLM</code>), and helpers for the demos</li>
+<li><code>player.tpl</code>, <code>ci.tpl</code>: HTML and JavaScript for the in-slide demos</li>
+<li><code>make_data.py</code>: simulated prices and the scripted traces (fixed seed)</li>
+<li><code>record.py</code> (optional): records a real model run into <code>data/traces.json</code>; needs <code>ANTHROPIC_API_KEY</code> and never runs during rendering</li>
+<li><strong>AI use:</strong> Claude (Anthropic) helped draft the slide text, wrote first versions of the Python (<code>agent.py</code>, <code>make_data.py</code>, <code>record.py</code>) and the HTML and JavaScript demos, and suggested the layout. I chose the topic and example, revised the content after review, checked the returns, winner, and gap against pandas, and tested the demos and sliders in a browser.</li>
+</ul>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
