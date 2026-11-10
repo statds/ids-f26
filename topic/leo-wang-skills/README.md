@@ -62,8 +62,8 @@ there. In the CLI or IDE extension, use `$stat3255-learning-coach` with
 the three-line example shown in the slides. See the cited official
 build-skills guide for discovery and invocation.
 
-The response image contains exact excerpts from an earlier explicit
-Learning Coach test in Codex. It is a screenshot of a formatted saved
+The response slide contains exact excerpts from an earlier explicit
+Learning Coach test in Codex. It presents selected text from a saved
 transcript, not the app interface. The earlier prompt requested line-by-line
 explanations of the same code and variations using `>= 4` and `> 8`.
 The slides use a shorter practice prompt; a new run can produce different

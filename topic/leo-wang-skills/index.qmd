@@ -4,13 +4,14 @@ subtitle: "Stop Explaining the Same Task Every Time"
 author: "Leo Wang"
 format:
   revealjs:
+    width: 1280
+    height: 720
     slide-number: true
     preview-links: auto
 bibliography: references.bib
 resources:
   - examples/**
   - fixtures/**
-  - figures/**
 jupyter: python3
 execute:
   echo: true
@@ -69,7 +70,7 @@ You keep asking them to:
 +----------------------------------+----------------------------------+
 
 ::: {.smaller}
-Skill structure: @openai-nd-build-skills.
+Skill structure: @openaindbuild.
 :::
 
 
@@ -94,7 +95,7 @@ Optional folders: `references/`, `scripts/`, and `assets/`.
 :::
 
 ::: {.smaller}
-Structure: @openai-nd-build-skills. Short teaching excerpt.
+Structure: @openaindbuild. Short teaching excerpt.
 :::
 
 
@@ -108,7 +109,7 @@ Structure: @openai-nd-build-skills. Short teaching excerpt.
 **Then check: did it actually do what you asked?**
 
 ::: {.smaller}
-Skill selection: @openai-nd-build-skills.
+Skill selection: @openaindbuild.
 This describes the Codex example; product details can differ.
 :::
 
@@ -146,7 +147,7 @@ End with one useful check or transfer question.
 
 ::: {.smaller}
 [Skill source](examples/stat3255-learning-coach/SKILL.md) ·
-Course context: @yan-nd-introduction
+Course context: @yanndintroduction
 :::
 
 
@@ -173,11 +174,21 @@ kept = [x for x in values if x > 4]
 mean = sum(kept) / len(kept)
 ```
 
-Local skill discovery and invocation: @openai-nd-build-skills.
+Local skill discovery and invocation: @openaindbuild.
 
 ## What did the coach say? {.smaller}
 
-![Excerpt from a recorded Learning Coach response.](figures/coach-response.png)
+Selected excerpts from the recorded response:
+
+> This code starts with a list of numbers, keeps the numbers that pass a
+> condition, and calculates their average.
+>
+> Only 8 passes, so `kept` becomes `[8]`.
+>
+> The denominator is the number of retained entries, not the original
+> four entries.
+>
+> With `>= 4`, both copies of 4 count: filtering does not remove duplicates.
 
 Saved response from one explicit invocation in Codex,
 formatted as an excerpt for reading.
@@ -259,7 +270,7 @@ Simulated inbox, as of Nov 16, 2026, 9 a.m. New York time.
 ::: {.smaller}
 Worked example using the simulated inbox and user-supplied estimates.
 [Deadline Planner](examples/deadline-planner/SKILL.md) ·
-Event dates: @csas-nd-symposium (real event; simulated email)
+Event dates: @csasndcsas (real event; simulated email)
 :::
 
 
@@ -303,7 +314,7 @@ Running late? Replan the remaining work; Dec 1 stays fixed.
 :::
 
 ::: {.smaller}
-Deadline: @csas-nd-symposium. Preparation dates are a suggested plan.
+Deadline: @csasndcsas. Preparation dates are a suggested plan.
 :::
 
 
@@ -313,7 +324,7 @@ Deadline: @csas-nd-symposium. Preparation dates are a suggested plan.
 
 **Start:** [Hacker News: past 24 hours][hn24] · **Verify:** original sources
 
-HN readers share links, vote, and discuss. [@ycombinator-nd-faq]
+HN readers share links, vote, and discuss. [@ycombinatorndhacker]
 
 **Find → verify → assess importance → group → summarize**
 
@@ -349,7 +360,7 @@ HN provides stories and discussion; the skill checks and summarizes them.
 Include dates, news links, discussion links, and sources checked.
 
 ::: {.smaller}
-Timestamps and discussion counts: @hackernews-nd-api.
+Timestamps and discussion counts: @hackernewsndhacker.
 Workflow demo; no live brief generated.
 :::
 

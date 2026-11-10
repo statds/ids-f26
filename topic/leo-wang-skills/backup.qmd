@@ -4,13 +4,14 @@ subtitle: "Environment Doctor and Project Handoff"
 author: "Leo Wang"
 format:
   revealjs:
+    width: 1280
+    height: 720
     slide-number: true
     preview-links: auto
 bibliography: references.bib
 resources:
   - examples/**
   - fixtures/**
-  - figures/**
 jupyter: python3
 execute:
   echo: true
@@ -43,7 +44,7 @@ Then check whether **that Python** can find the package.
 
 ::: {.smaller}
 [Skill and diagnostic helper](examples/python-environment-doctor/SKILL.md) ·
-[@python-nd-venv] · [@quarto-nd-python]
+[@pythonndvenv] · [@quartondusing]
 :::
 
 ## Same computer, two environments
