@@ -3,30 +3,25 @@
 Leo Wang — November 16, 2026 topic presentation.
 
 The main deck explains reusable agent instructions through code learning,
-email-based planning, and an AI news brief. Supporting skills are examples
+project handoffs, email-based planning, and an AI news brief.
+Supporting skills are examples
 for explicit use, not automatically installed services.
 
 ## Files
 
-- `index.qmd`: main presentation (22 slides).
-- `backup.qmd`: Environment Doctor and Project Handoff examples (6 slides).
+- `index.qmd`: main presentation (23 slides).
 - `examples/`: skill instructions, references, and supporting files.
 - `fixtures/`: synthetic emails, planning inputs, and a small handoff case.
-- `scripts/`: executable calculations and diagnostic examples.
+- `scripts/`: executable learning and handoff checks.
 - `references.bib`: sources cited in the decks.
-- `figures/`: a screenshot of excerpts from a saved coach response.
 
 ## Render
 
 Use the shared course Python 3.12 environment and its Jupyter dependencies.
-From the course repository root, render each deck separately:
+From the course repository root, render the presentation:
 
 ```sh
 quarto render topic/leo-wang-skills/index.qmd --profile presentations
-```
-
-```sh
-quarto render topic/leo-wang-skills/backup.qmd --profile presentations
 ```
 
 The equivalent `make render-one FILE=...` commands use the same profile.
@@ -42,7 +37,7 @@ CSAS preparation windows and progress scenarios are suggested teaching cases.
 The December 1 abstract deadline comes from the event website.
 
 The Python examples check arithmetic, an empty selection, phase dates,
-calendar capacity, isolated environments, and changed handoff source files.
+calendar capacity, and changed handoff source files.
 Earlier explicit Learning Coach and mail/planning skill tests informed the
 examples. Revised progress scenarios are designed acceptance cases; no new
 independent agent test or deployed daily check-in service is claimed.
