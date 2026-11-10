@@ -4,19 +4,13 @@ subtitle: "Stop Explaining the Same Task Every Time"
 author: "Leo Wang"
 format:
   revealjs:
-    width: 1280
-    height: 720
     slide-number: true
-    preview-links: false
-    theme: default
-    css: slides.css
-    incremental: false
-    transition: none
-    center: false
-    embed-resources: true
+    preview-links: auto
+bibliography: references.bib
 resources:
   - examples/**
   - fixtures/**
+  - figures/**
 jupyter: python3
 execute:
   echo: true
@@ -33,6 +27,15 @@ examples = runpy.run_path("scripts/run_examples.py")
 learning = examples["learning_example"]()
 ```
 
+## About me
+
+- I'm Leo Wang, a UConn sophomore.
+- I double major in Economics and Psychology.
+- I'm studying crash patterns around UConn Storrs with Professor Jun Yan.
+
+I often collaborate with AI. I want to turn methods I use repeatedly
+into reusable skills.
+
 ## A new teaching assistant
 
 ::: {.lead}
@@ -48,37 +51,25 @@ You keep asking them to:
 **What would you put in their handbook?**
 
 
-## Where does a skill fit?
+## Where does a skill fit? {.smaller}
 
-<table>
-<thead>
-<tr>
-<th>Part</th>
-<th>In our teaching-assistant example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Agent</td>
-<td>The assistant doing the work</td>
-</tr>
-<tr>
-<td>Prompt</td>
-<td>"Explain the code line by line"</td>
-</tr>
-<tr>
-<td>Tools</td>
-<td>Python, a terminal, and file access</td>
-</tr>
-<tr>
-<td>Skill</td>
-<td>A reusable guide, with optional supporting files</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| Part                             | In our teaching-assistant        |
+|                                  | example                          |
++==================================+==================================+
+| Agent                            | The assistant doing the work     |
++----------------------------------+----------------------------------+
+| Prompt                           | "Explain the code line by line"  |
++----------------------------------+----------------------------------+
+| Tools                            | Python, a terminal, and file     |
+|                                  | access                           |
++----------------------------------+----------------------------------+
+| Skill                            | A reusable guide, with optional  |
+|                                  | supporting files                 |
++----------------------------------+----------------------------------+
 
-::: {.source}
-Skills structure: [OpenAI documentation][skills].
+::: {.smaller}
+Skill structure: @openai-nd-build-skills.
 :::
 
 
@@ -98,12 +89,12 @@ Show the result and one way to check it.
 
 **Top:** name and description. **Below:** instructions for the agent.
 
-::: {.small}
+::: {.smaller}
 Optional folders: `references/`, `scripts/`, and `assets/`.
 :::
 
-::: {.source}
-[OpenAI: Build skills][skills]. Short teaching excerpt, not the full coach.
+::: {.smaller}
+Structure: @openai-nd-build-skills. Short teaching excerpt.
 :::
 
 
@@ -116,36 +107,26 @@ Optional folders: `references/`, `scripts/`, and `assets/`.
 
 **Then check: did it actually do what you asked?**
 
-::: {.source}
-[OpenAI: skill selection and progressive disclosure][skills].
+::: {.smaller}
+Skill selection: @openai-nd-build-skills.
 This describes the Codex example; product details can differ.
 :::
 
 
 ## Could a skill help with this?
 
-<table>
-<thead>
-<tr>
-<th>When you're stuck</th>
-<th>A skill to try</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"It runs, but I don't understand it"</td>
-<td>Learning Coach</td>
-</tr>
-<tr>
-<td>"What do I need to deal with today?"</td>
-<td>Inbox Brief + Deadline Planner</td>
-</tr>
-<tr>
-<td>"Too much AI news. What important events did I miss?"</td>
-<td>Daily Brief</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| When you're stuck                | A skill to try                   |
++==================================+==================================+
+| "It runs, but I don't understand | Learning Coach                   |
+| it"                              |                                  |
++----------------------------------+----------------------------------+
+| "What do I need to deal with     | Inbox Brief + Deadline Planner   |
+| today?"                          |                                  |
++----------------------------------+----------------------------------+
+| "Too much AI news. What          | Daily Brief                      |
+| important events did I miss?"    |                                  |
++----------------------------------+----------------------------------+
 
 
 ## Learning Coach: help me understand this code
@@ -163,53 +144,58 @@ Use a tiny example with a checkable result.
 End with one useful check or transfer question.
 ```
 
-::: {.source}
+::: {.smaller}
 [Skill source](examples/stat3255-learning-coach/SKILL.md) ·
-[Course guidance on analytical judgment][book]
+Course context: @yan-nd-introduction
 :::
 
 
-## A three-line example
+## Try Learning Coach in Codex {.smaller}
+
+**1. Place the skill in your project:**
+
+```text
+.agents/skills/stat3255-learning-coach/
+  SKILL.md
+  references/sources.md
+```
+
+Copy the [example folder](examples/stat3255-learning-coach/SKILL.md),
+including its references. Open Codex in that project.
+
+**2. In Codex CLI or its IDE extension, select it with `$`:**
+
+```text
+$stat3255-learning-coach
+Explain this code line by line and help me check my understanding.
+values = [0, 4, 4, 8]
+kept = [x for x in values if x > 4]
+mean = sum(kept) / len(kept)
+```
+
+Local skill discovery and invocation: @openai-nd-build-skills.
+
+## What did the coach say? {.smaller}
+
+![Excerpt from a recorded Learning Coach response.](figures/coach-response.png)
+
+Saved response from one explicit invocation in Codex,
+formatted as an excerpt for reading.
+
+**Check next:** run the calculation and try changing the filter.
+
+
+## Learning Coach: check your understanding {.smaller}
+
+**Try a variation:** What changes if we use `>= 4`?
+
+This Python check verifies the numbers in the recorded answer.
 
 ```{python}
 #| echo: true
 values = [0, 4, 4, 8]
 kept = [x for x in values if x > 4]
 mean = sum(kept) / len(kept)
-```
-
-<table>
-<thead>
-<tr>
-<th>Line</th>
-<th>Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>Store four numbers in a list</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Keep numbers strictly greater than 4</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Divide the retained total by the retained count</td>
-</tr>
-</tbody>
-</table>
-
-**Before running it: what remains in `kept`?**
-
-
-## Learning Coach: check your understanding
-
-**The skill asks:** What changes if we use `>= 4`?
-
-```{python}
-#| echo: true
 print("Strict > 4:", kept, "mean =", mean)
 inclusive = [x for x in values if x >= 4]
 print("With >= 4:", inclusive)
@@ -220,92 +206,64 @@ assert values == [0, 4, 4, 8]
 **Changing the filter changes what goes into the average.**
 
 
-## Which emails need me to do something?
+## Which emails need me to do something? {.smaller}
 
 **Inbox Brief:** read the messages, group related ones, and extract actions.
 
-<table>
-<thead>
-<tr>
-<th>Message</th>
-<th>What it says</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>E1: short form</td>
-<td>Due tonight</td>
-</tr>
-<tr>
-<td>E2 + E3: project</td>
-<td>Originally Nov 20, moved to Nov 23</td>
-</tr>
-<tr>
-<td>E7: sports analytics symposium</td>
-<td>Interested in submitting? Abstracts close Dec 1</td>
-</tr>
-<tr>
-<td>E6: review group slides</td>
-<td>Please send comments; no deadline given</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| Message                          | What it says                     |
++==================================+==================================+
+| E1: short form                   | Due tonight                      |
++----------------------------------+----------------------------------+
+| E2 + E3: project                 | Originally Nov 20, moved to Nov  |
+|                                  | 23                               |
++----------------------------------+----------------------------------+
+| E7: sports analytics symposium   | Interested in submitting?        |
+|                                  | Abstracts close Dec 1            |
++----------------------------------+----------------------------------+
+| E6: review group slides          | Please send comments; no         |
+|                                  | deadline given                   |
++----------------------------------+----------------------------------+
 
 **Which of these belongs on your to-do list?**
 
-::: {.source}
+::: {.smaller}
 Simulated inbox, as of Nov 16, 2026, 9 a.m. New York time.
 [All seven messages](fixtures/inbox/messages.json) ·
 [Inbox Brief](examples/inbox-brief/SKILL.md)
 :::
 
 
-## What should I work on today?
+## What should I work on today? {.smaller}
 
 **Deadline Planner** uses the extracted tasks and your available time.
 
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Plan</th>
-<th>Reason</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Short form</td>
-<td>Finish today</td>
-<td>Due Nov 16; estimated 5 minutes</td>
-</tr>
-<tr>
-<td>Project</td>
-<td>Plan work sessions</td>
-<td>Latest deadline is Nov 23</td>
-</tr>
-<tr>
-<td>CSAS 2027</td>
-<td>Explore an abstract idea</td>
-<td>Optional; abstracts due Dec 1</td>
-</tr>
-<tr>
-<td>Review group slides</td>
-<td>Ask: “When do you need comments?”</td>
-<td>Email gives no deadline</td>
-</tr>
-</tbody>
-</table>
++-----------------------+-----------------------+-----------------------+
+| Item                  | Plan                  | Reason                |
++=======================+=======================+=======================+
+| Short form            | Finish today          | Due Nov 16; estimated |
+|                       |                       | 5 minutes             |
++-----------------------+-----------------------+-----------------------+
+| Project               | Plan work sessions    | Latest deadline is    |
+|                       |                       | Nov 23                |
++-----------------------+-----------------------+-----------------------+
+| CSAS 2027             | Explore an abstract   | Optional; abstracts   |
+|                       | idea                  | due Dec 1             |
++-----------------------+-----------------------+-----------------------+
+| Review group slides   | Ask: “When do you     | Email gives no        |
+|                       | need comments?”       | deadline              |
++-----------------------+-----------------------+-----------------------+
 
 **A deadline is a fact. A work estimate is your assumption.**
 
-::: {.source}
+::: {.smaller}
 Worked example using the simulated inbox and user-supplied estimates.
 [Deadline Planner](examples/deadline-planner/SKILL.md) ·
-[CSAS official dates][csas] (real event; simulated email)
+Event dates: @csas-nd-symposium (real event; simulated email)
 :::
 
 
-## Plan ahead: a CSAS 2027 abstract
+## Plan ahead: a CSAS 2027 abstract {.smaller}
 
 **Abstracts close Dec 1.** Suppose you want to start it now.
 
@@ -328,36 +286,24 @@ for phase in phases:
     previous_end = end
 ```
 
-<table>
-<thead>
-<tr>
-<th>Nov 17–21</th>
-<th>Nov 22–26</th>
-<th>Nov 27–30</th>
-<th>Dec 1</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Outline the idea</td>
-<td>Draft the abstract</td>
-<td>Revise and check</td>
-<td>Abstracts close</td>
-</tr>
-</tbody>
-</table>
++-----------------+-----------------+-----------------+-----------------+
+| Nov 17–21       | Nov 22–26       | Nov 27–30       | Dec 1           |
++=================+=================+=================+=================+
+| Outline the     | Draft the       | Revise and      | Abstracts close |
+| idea            | abstract        | check           |                 |
++-----------------+-----------------+-----------------+-----------------+
 
 **Each morning: confirm progress → update today’s next step.**
 
-::: {.small}
+::: {.smaller}
 Outline finished Nov 20? Start drafting Nov 21.
 Running late? Replan the remaining work; Dec 1 stays fixed.
 
 [Into sports and data? Take a look at CSAS 2027.][csas]
 :::
 
-::: {.source}
-Real deadline: [CSAS website][csas]. Preparation dates are a suggested plan.
+::: {.smaller}
+Deadline: @csas-nd-symposium. Preparation dates are a suggested plan.
 :::
 
 
@@ -367,13 +313,13 @@ Real deadline: [CSAS website][csas]. Preparation dates are a suggested plan.
 
 **Start:** [Hacker News: past 24 hours][hn24] · **Verify:** original sources
 
-HN is a tech community where readers share links, vote, and discuss.
+HN readers share links, vote, and discuss. [@ycombinator-nd-faq]
 
 **Find → verify → assess importance → group → summarize**
 
 **Each item:** what happened, why it matters, and links to learn more.
 
-::: {.source}
+::: {.smaller}
 [Hacker News: past 24 hours][hn24] · [Our Daily Brief
 skill](examples/daily-brief/SKILL.md)
 HN provides stories and discussion; the skill checks and summarizes them.
@@ -381,107 +327,68 @@ HN provides stories and discussion; the skill checks and summarizes them.
 
 
 
-## How does the skill choose the five?
+## How does the skill choose the five? {.smaller}
 
-<table>
-<thead>
-<tr>
-<th>Step</th>
-<th>What the agent checks</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Set the window</td>
-<td>The 24 hours before this run</td>
-</tr>
-<tr>
-<td>Find AI stories</td>
-<td>HN’s past-24-hour list; filter out other topics</td>
-</tr>
-<tr>
-<td>Assess importance</td>
-<td>What changed, who is affected, votes and comments</td>
-</tr>
-<tr>
-<td>Verify and group</td>
-<td>Original sources; one item per event</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| Step                             | What the agent checks            |
++==================================+==================================+
+| Set the window                   | The 24 hours before this run     |
++----------------------------------+----------------------------------+
+| Find AI stories                  | HN’s past-24-hour list; filter   |
+|                                  | out other topics                 |
++----------------------------------+----------------------------------+
+| Assess importance                | What changed, who is affected,   |
+|                                  | votes and comments               |
++----------------------------------+----------------------------------+
+| Verify and group                 | Original sources; one item per   |
+|                                  | event                            |
++----------------------------------+----------------------------------+
 
 **Choose stories with meaningful changes and explain why they matter.**
 
 Include dates, news links, discussion links, and sources checked.
 
-::: {.source}
-[HN past 24 hours][hn24] · [HN API][hnapi]
+::: {.smaller}
+Timestamps and discussion counts: @hackernews-nd-api.
 Workflow demo; no live brief generated.
 :::
 
 
-## From one brief to a 7 a.m. routine
+## Set up the 7 a.m. routine {.smaller}
 
-<table>
-<thead>
-<tr>
-<th>Set it up</th>
-<th>Decide</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1. Run once and review</strong></td>
-<td>Are the stories relevant and the links correct?</td>
-</tr>
-<tr>
-<td><strong>2. Choose delivery</strong></td>
-<td>Where should the brief appear: an app or email?</td>
-</tr>
-<tr>
-<td><strong>3. Connect what it needs</strong></td>
-<td>News access and permission for delivery</td>
-</tr>
-<tr>
-<td><strong>4. Set the schedule</strong></td>
-<td>Every day at 7 a.m., America/New_York</td>
-</tr>
-</tbody>
-</table>
+**First, run once and check the brief. Then connect:**
 
-Each run reads fresh news from the preceding 24 hours.
+- **Access:** web tools for news; a mailbox connector for Inbox Brief.
+- **Saved progress:** a file or database for confirmed task status.
+- **Scheduling:** a host scheduler set to 7 a.m., America/New_York.
+- **Delivery:** an app destination, or email access and permission to send.
 
-**Next: how will we know each brief is useful and correct?**
+The skill supplies instructions. These connections must be configured
+in the host separately.
+
+For planning, confirm yesterday's progress before updating today's tasks.
+If no answer arrives, mark progress unknown and ask again.
+
+**Next: check whether each run follows the instructions.**
 
 
 ## How would you test a skill?
 
-<table>
-<thead>
-<tr>
-<th>Test</th>
-<th>What to check</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A small known case</td>
-<td>Does the answer match independent evidence?</td>
-</tr>
-<tr>
-<td>Missing information</td>
-<td>Does it identify the gap instead of inventing facts?</td>
-</tr>
-<tr>
-<td>An unrelated request</td>
-<td>Does the host avoid selecting the wrong skill?</td>
-</tr>
-<tr>
-<td>A repeated run</td>
-<td>What changes, and are the changes acceptable?</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| Test                             | What to check                    |
++==================================+==================================+
+| A small known case               | Does the answer match            |
+|                                  | independent evidence?            |
++----------------------------------+----------------------------------+
+| Missing information              | Does it identify the gap instead |
+|                                  | of inventing facts?              |
++----------------------------------+----------------------------------+
+| An unrelated request             | Does the host avoid selecting    |
+|                                  | the wrong skill?                 |
++----------------------------------+----------------------------------+
+| A repeated run                   | What changes, and are the        |
+|                                  | changes acceptable?              |
++----------------------------------+----------------------------------+
 
 **Read the answer and check whether it does what you asked.**
 
@@ -497,7 +404,7 @@ For a fixed calculation, a script may be enough.
 
 **Old instructions and wrong assumptions can get repeated too.**
 
-::: {.small}
+::: {.smaller}
 **Example: a deadline moves**
 
 Old email: **Nov 20** → New email: **Nov 23**.
@@ -506,71 +413,45 @@ Use the updated deadline, then revise the plan.
 :::
 
 
-## Take away: write it once, reuse it, check it
+## Take away: write it once, reuse it, check it {.smaller}
 
-<table>
-<thead>
-<tr>
-<th>Step</th>
-<th>What you do</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>1. Pick a recurring task</strong></td>
-<td>Explain code, sort emails, or follow news</td>
-</tr>
-<tr>
-<td><strong>2. Write the guide</strong></td>
-<td>Define the input, steps, and expected output</td>
-</tr>
-<tr>
-<td><strong>3. Try one small case</strong></td>
-<td>Check the result against something you know</td>
-</tr>
-<tr>
-<td><strong>4. Keep it current</strong></td>
-<td>Update sources, dates, and instructions</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| Step                             | What you do                      |
++==================================+==================================+
+| **1. Pick a recurring task**     | Explain code, sort emails, or    |
+|                                  | follow news                      |
++----------------------------------+----------------------------------+
+| **2. Write the guide**           | Define the input, steps, and     |
+|                                  | expected output                  |
++----------------------------------+----------------------------------+
+| **3. Try one small case**        | Check the result against         |
+|                                  | something you know               |
++----------------------------------+----------------------------------+
+| **4. Keep it current**           | Update sources, dates, and       |
+|                                  | instructions                     |
++----------------------------------+----------------------------------+
 
 **A skill reuses your process. You still check the result.**
 
 
-## Sources and further reading {.smaller}
+## References {.smaller}
 
-- [OpenAI: Build skills][skills] — structure, selection, and resources.
-- [Hacker News: past 24 hours][hn24] / [About HN][hnfaq] — stories and
-discussion.
-- [HN API][hnapi] — timestamps, scores, and comment counts.
-- [Quarto: using Python][quarto] — running the examples.
-- [Jun Yan: Introduction to Data Science][book] — analytical judgment.
-- [Course contribution guide][contribute] — source slides and revision.
-- [CSAS 2027][csas] — symposium information and submission dates.
-
-Example skills and scripts accompany this presentation's source.
-
-::: {.small}
-AI assistance: OpenAI Codex helped draft the slides and example skills,
-write supporting code, and check results.
+::: {#refs}
 :::
 
+## Materials and AI assistance {.smaller}
+
+[Course book](https://statds.github.io/ids-book/) ·
 [Extra examples: Environment Doctor and Project Handoff](backup.html)
 
+Example skills, synthetic inputs, and scripts accompany the slides.
 
-[skills]: https://learn.chatgpt.com/docs/build-skills
-[venv]: https://docs.python.org/3/library/venv.html
-[quarto]: https://quarto.org/docs/computations/python.html
-[book]: https://github.com/statds/ids-book/blob/main/index.qmd
-[contribute]: https://github.com/statds/ids-f26/blob/main/CONTRIBUTING.md
+OpenAI Codex helped draft the slides and example skills, write supporting
+code, and check results. I reviewed and revised the presentation.
+
+The Python checks verify calculations. The recorded coach response is
+one behavioral example. Further runs are needed to test consistency
+and automatic skill selection.
 
 [csas]: https://statds.org/events/csas2027/index.html
-
 [hn24]: https://news.ycombinator.com/best?h=24
-[hnapi]: https://github.com/HackerNews/API
-
-[hn]: https://news.ycombinator.com/
-[reddit]: https://www.reddit.com/
-
-[hnfaq]: https://news.ycombinator.com/newsfaq.html

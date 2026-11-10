@@ -8,11 +8,13 @@ for explicit use, not automatically installed services.
 
 ## Files
 
-- `index.qmd`: main presentation (19 slides).
-- `backup.qmd`: Environment Doctor and Project Handoff examples (5 slides).
+- `index.qmd`: main presentation (22 slides).
+- `backup.qmd`: Environment Doctor and Project Handoff examples (6 slides).
 - `examples/`: skill instructions, references, and supporting files.
 - `fixtures/`: synthetic emails, planning inputs, and a small handoff case.
 - `scripts/`: executable calculations and diagnostic examples.
+- `references.bib`: sources cited in the decks.
+- `figures/`: a screenshot of excerpts from a saved coach response.
 
 ## Render
 
@@ -51,3 +53,22 @@ mailbox connection, or daily delivery is configured by rendering this deck.
 
 OpenAI Codex helped draft the slides and example skills, write supporting
 code, and check results. Leo reviewed and revised the presentation.
+
+## Learning Coach walkthrough
+
+Copy the complete `examples/stat3255-learning-coach/` folder to
+`.agents/skills/stat3255-learning-coach/` in a practice project. Open Codex
+there. In the CLI or IDE extension, use `$stat3255-learning-coach` with
+the three-line example shown in the slides. See the cited official
+build-skills guide for discovery and invocation.
+
+The response image contains exact excerpts from an earlier explicit
+Learning Coach test in Codex. It is a screenshot of a formatted saved
+transcript, not the app interface. The earlier prompt requested line-by-line
+explanations of the same code and variations using `>= 4` and `> 8`.
+The slides use a shorter practice prompt; a new run can produce different
+wording. The source used in that test was the accompanying Learning Coach.
+Only the selected response text is included; private chat history is omitted.
+
+The examples do not configure a scheduler, mailbox, persistent task store,
+or message delivery. Those host connections need separate configuration.

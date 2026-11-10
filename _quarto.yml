@@ -16,6 +16,7 @@ book:
     - name: Amanda Noe
     - name: Enrico Ong
     - name: Chaoyang Wang
+    - name: Leo Wang
   date: today
   chapters:
     - index.qmd

@@ -4,19 +4,13 @@ subtitle: "Environment Doctor and Project Handoff"
 author: "Leo Wang"
 format:
   revealjs:
-    width: 1280
-    height: 720
     slide-number: true
-    preview-links: false
-    theme: default
-    css: slides.css
-    incremental: false
-    transition: none
-    center: false
-    embed-resources: true
+    preview-links: auto
+bibliography: references.bib
 resources:
   - examples/**
   - fixtures/**
+  - figures/**
 jupyter: python3
 execute:
   echo: true
@@ -30,7 +24,6 @@ execute:
 import runpy
 
 examples = runpy.run_path("scripts/run_examples.py")
-learning = examples["learning_example"]()
 environment = examples["environment_example"]()
 handoff = examples["handoff_example"]()
 ```
@@ -48,9 +41,9 @@ print(sys.executable)
 
 Then check whether **that Python** can find the package.
 
-::: {.source}
+::: {.smaller}
 [Skill and diagnostic helper](examples/python-environment-doctor/SKILL.md) ·
-[Python virtual environments][venv] · [Quarto Python selection][quarto]
+[@python-nd-venv] · [@quarto-nd-python]
 :::
 
 ## Same computer, two environments
@@ -72,41 +65,30 @@ display(Markdown("\n".join(rows)))
 
 If A is the intended environment, run with A's interpreter.
 
-::: {.small}
+::: {.smaller}
 Computed from two temporary environments and a synthetic `demo_course`
 module. No packages were downloaded. Your course environment is unchanged.
 :::
 
-## Project Handoff: where did I leave off?
+## Project Handoff: where did I leave off? {.smaller}
 
 **Request:** "Prepare a handoff so I can continue next week."
 
 The skill checks the project files and Git history before writing a note.
 
-<table>
-<thead>
-<tr>
-<th>Handoff section</th>
-<th>What it answers</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Goal and decisions</td>
-<td>What are we trying to do?</td>
-</tr>
-<tr>
-<td>Evidence and status</td>
-<td>What actually ran or was checked?</td>
-</tr>
-<tr>
-<td>Files and next action</td>
-<td>Where should the next session start?</td>
-</tr>
-</tbody>
-</table>
++----------------------------------+----------------------------------+
+| Handoff section                  | What it answers                  |
++==================================+==================================+
+| Goal and decisions               | What are we trying to do?        |
++----------------------------------+----------------------------------+
+| Evidence and status              | What actually ran or was         |
+|                                  | checked?                         |
++----------------------------------+----------------------------------+
+| Files and next action            | Where should the next session    |
+|                                  | start?                           |
++----------------------------------+----------------------------------+
 
-::: {.source}
+::: {.smaller}
 [Skill and handoff template](examples/project-handoff/SKILL.md).
 The demonstration uses a synthetic STAT 3255 final-project folder.
 :::
@@ -126,10 +108,13 @@ The current result still needs checking.
 
 **Next action:** inspect the change, then run the current analysis.
 
-::: {.small}
+::: {.smaller}
 The fixture runner executes the previous version and compares source hashes.
 It deliberately leaves the current version unexecuted.
 :::
 
-[venv]: https://docs.python.org/3/library/venv.html
-[quarto]: https://quarto.org/docs/computations/python.html
+
+## References {.smaller}
+
+::: {#refs}
+:::
