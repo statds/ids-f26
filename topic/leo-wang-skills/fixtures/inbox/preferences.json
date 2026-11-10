@@ -1,0 +1,63 @@
+{
+  "fixture_notice": "Synthetic user planning preferences, supplied separately from the emails.",
+  "reference_time": "2026-11-16T09:00:00-05:00",
+  "timezone": "America/New_York",
+  "planning_window": "next 7 days, plus later tasks whose preparation must start now",
+  "task_status": {
+    "availability-form": "not started",
+    "project-draft": "not started"
+  },
+  "estimates": [
+    {
+      "thread_id": "availability-form",
+      "duration_minutes": 5,
+      "basis": "User estimate; not stated in the email."
+    },
+    {
+      "thread_id": "project-draft",
+      "work_sessions": 3,
+      "minutes_per_session": 60,
+      "basis": "User estimate: one session for the figure, one for explanation, one for revision."
+    }
+  ],
+  "project_work_availability": {
+    "available_dates": [
+      "2026-11-16",
+      "2026-11-17",
+      "2026-11-18",
+      "2026-11-19",
+      "2026-11-20"
+    ],
+    "maximum_sessions_per_day": 1,
+    "buffer_calendar_days": 2,
+    "buffer_definition": "Leave the two full calendar days immediately before the due date free of planned project work.",
+    "note": "One one-hour project session can fit on each listed weekday. November 21 and 22 are reserved as the full-weekend buffer before the November 23 deadline. The five-minute form can be completed separately today."
+  },
+  "event_preferences": "No commitment to attend the optional lecture has been made.",
+  "csas_plan": {
+    "thread_id": "csas2027",
+    "participation": "For this planning example only, the simulated user chooses to prepare an abstract.",
+    "assumption": "The simulated user wants to start now. Establish existing ideas, analysis and results; adjust scope and effort if research is still needed.",
+    "deadline_date": "2026-12-01",
+    "deadline_source": "https://statds.org/events/csas2027/index.html",
+    "basis": "Suggested preparation windows supplied for the teaching example; not continuous work, measured duration, or confirmed holiday availability.",
+    "phases": [
+      {
+        "task": "Outline the idea",
+        "start": "2026-11-17",
+        "end": "2026-11-21"
+      },
+      {
+        "task": "Draft the abstract",
+        "start": "2026-11-22",
+        "end": "2026-11-26"
+      },
+      {
+        "task": "Revise and check",
+        "start": "2026-11-27",
+        "end": "2026-11-30"
+      }
+    ],
+    "progress_policy": "Confirm yesterday’s phase before each morning report; no reply means unknown. Replan internal dates without moving December 1."
+  }
+}

@@ -1,0 +1,15 @@
+.reveal { font-size: 36px; }
+.reveal h1 { font-size: 2.1em; }
+.reveal h2 { font-size: 1.5em; margin-bottom: 0.6em; }
+.reveal p, .reveal li { line-height: 1.3; }
+.reveal pre { font-size: 0.72em; box-shadow: none; }
+.reveal pre code { max-height: 420px; }
+.reveal table { font-size: 0.82em; }
+.reveal table th, .reveal table td { padding: 0.32em 0.5em; }
+.reveal .source { font-size: 0.53em; color: #555; margin-top: 1.1em; }
+.reveal .small { font-size: 0.7em; }
+.reveal .lead { font-size: 1.2em; margin: 0.75em 0; }
+.reveal strong { color: #1d4e89; }
+.reveal blockquote { box-shadow: none; background: none; width: 95%; }
+.reveal .columns { gap: 1.3em; }
+.reveal .slide-number { font-size: 16px; }

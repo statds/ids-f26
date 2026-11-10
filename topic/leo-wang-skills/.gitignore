@@ -1,0 +1,8 @@
+.build/
+.quarto/
+__pycache__/
+*_files/
+*.html
+*.ipynb
+*.quarto_ipynb*
+evidence/checks.json

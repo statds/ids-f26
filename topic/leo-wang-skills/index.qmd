@@ -1,0 +1,576 @@
+---
+title: "Agent Skills for Data Science"
+subtitle: "Stop Explaining the Same Task Every Time"
+author: "Leo Wang"
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: false
+    theme: default
+    css: slides.css
+    incremental: false
+    transition: none
+    center: false
+    embed-resources: true
+resources:
+  - examples/**
+  - fixtures/**
+jupyter: python3
+execute:
+  echo: true
+  freeze: false
+  cache: false
+  warning: false
+---
+
+```{python}
+#| include: false
+import runpy
+
+examples = runpy.run_path("scripts/run_examples.py")
+learning = examples["learning_example"]()
+```
+
+## A new teaching assistant
+
+::: {.lead}
+They know Python. They do not yet know your workflow.
+:::
+
+You keep asking them to:
+
+- Explain the reasoning behind each line.
+- Find the emails that need a reply or a task.
+- Pick out news that matters to your projects.
+
+**What would you put in their handbook?**
+
+
+## Where does a skill fit?
+
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>In our teaching-assistant example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent</td>
+<td>The assistant doing the work</td>
+</tr>
+<tr>
+<td>Prompt</td>
+<td>"Explain the code line by line"</td>
+</tr>
+<tr>
+<td>Tools</td>
+<td>Python, a terminal, and file access</td>
+</tr>
+<tr>
+<td>Skill</td>
+<td>A reusable guide, with optional supporting files</td>
+</tr>
+</tbody>
+</table>
+
+::: {.source}
+Skills structure: [OpenAI documentation][skills].
+:::
+
+
+## What is inside a skill?
+
+Start with a file called **`SKILL.md`**:
+
+```markdown
+---
+name: explain-small-code
+description: Explain short Python examples.
+---
+
+Explain each line in simple language.
+Show the result and one way to check it.
+```
+
+**Top:** name and description. **Below:** instructions for the agent.
+
+::: {.small}
+Optional folders: `references/`, `scripts/`, and `assets/`.
+:::
+
+::: {.source}
+[OpenAI: Build skills][skills]. Short teaching excerpt, not the full coach.
+:::
+
+
+## How an agent uses the guide
+
+1. The agent sees the skill's name and short description.
+2. You ask for the skill, or the agent picks it for the task.
+3. It opens the instructions and any files it needs.
+4. It follows the steps and uses the tools available to it.
+
+**Then check: did it actually do what you asked?**
+
+::: {.source}
+[OpenAI: skill selection and progressive disclosure][skills].
+This describes the Codex example; product details can differ.
+:::
+
+
+## Could a skill help with this?
+
+<table>
+<thead>
+<tr>
+<th>When you're stuck</th>
+<th>A skill to try</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"It runs, but I don't understand it"</td>
+<td>Learning Coach</td>
+</tr>
+<tr>
+<td>"What do I need to deal with today?"</td>
+<td>Inbox Brief + Deadline Planner</td>
+</tr>
+<tr>
+<td>"Too much AI news. What important events did I miss?"</td>
+<td>Daily Brief</td>
+</tr>
+</tbody>
+</table>
+
+
+## Learning Coach: help me understand this code
+
+**Request:** "Explain each line and help me check my understanding."
+
+Excerpt from `SKILL.md`, shortened for display:
+
+```markdown
+## Explain code line by line
+
+Start with the block's overall purpose.
+Explain what each line does and why it matters.
+Use a tiny example with a checkable result.
+End with one useful check or transfer question.
+```
+
+::: {.source}
+[Skill source](examples/stat3255-learning-coach/SKILL.md) ·
+[Course guidance on analytical judgment][book]
+:::
+
+
+## A three-line example
+
+```{python}
+#| echo: true
+values = [0, 4, 4, 8]
+kept = [x for x in values if x > 4]
+mean = sum(kept) / len(kept)
+```
+
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Store four numbers in a list</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Keep numbers strictly greater than 4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Divide the retained total by the retained count</td>
+</tr>
+</tbody>
+</table>
+
+**Before running it: what remains in `kept`?**
+
+
+## Learning Coach: check your understanding
+
+**The skill asks:** What changes if we use `>= 4`?
+
+```{python}
+#| echo: true
+print("Strict > 4:", kept, "mean =", mean)
+inclusive = [x for x in values if x >= 4]
+print("With >= 4:", inclusive)
+print("New mean:", round(sum(inclusive) / len(inclusive), 3))
+assert values == [0, 4, 4, 8]
+```
+
+**Changing the filter changes what goes into the average.**
+
+
+## Which emails need me to do something?
+
+**Inbox Brief:** read the messages, group related ones, and extract actions.
+
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>What it says</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1: short form</td>
+<td>Due tonight</td>
+</tr>
+<tr>
+<td>E2 + E3: project</td>
+<td>Originally Nov 20, moved to Nov 23</td>
+</tr>
+<tr>
+<td>E7: sports analytics symposium</td>
+<td>Interested in submitting? Abstracts close Dec 1</td>
+</tr>
+<tr>
+<td>E6: review group slides</td>
+<td>Please send comments; no deadline given</td>
+</tr>
+</tbody>
+</table>
+
+**Which of these belongs on your to-do list?**
+
+::: {.source}
+Simulated inbox, as of Nov 16, 2026, 9 a.m. New York time.
+[All seven messages](fixtures/inbox/messages.json) ·
+[Inbox Brief](examples/inbox-brief/SKILL.md)
+:::
+
+
+## What should I work on today?
+
+**Deadline Planner** uses the extracted tasks and your available time.
+
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Plan</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Short form</td>
+<td>Finish today</td>
+<td>Due Nov 16; estimated 5 minutes</td>
+</tr>
+<tr>
+<td>Project</td>
+<td>Plan work sessions</td>
+<td>Latest deadline is Nov 23</td>
+</tr>
+<tr>
+<td>CSAS 2027</td>
+<td>Explore an abstract idea</td>
+<td>Optional; abstracts due Dec 1</td>
+</tr>
+<tr>
+<td>Review group slides</td>
+<td>Ask: “When do you need comments?”</td>
+<td>Email gives no deadline</td>
+</tr>
+</tbody>
+</table>
+
+**A deadline is a fact. A work estimate is your assumption.**
+
+::: {.source}
+Worked example using the simulated inbox and user-supplied estimates.
+[Deadline Planner](examples/deadline-planner/SKILL.md) ·
+[CSAS official dates][csas] (real event; simulated email)
+:::
+
+
+## Plan ahead: a CSAS 2027 abstract
+
+**Abstracts close Dec 1.** Suppose you want to start it now.
+
+Your first plan: **outline → draft → revise**.
+
+```{python}
+#| echo: false
+from datetime import date
+import json
+from pathlib import Path
+prefs = json.loads(Path("fixtures/inbox/preferences.json").read_text())
+csas = prefs["csas_plan"]
+phases = csas["phases"]
+due = date.fromisoformat(csas["deadline_date"])
+previous_end = date(2026, 11, 16)
+for phase in phases:
+    start = date.fromisoformat(phase["start"])
+    end = date.fromisoformat(phase["end"])
+    assert previous_end < start <= end < due
+    previous_end = end
+```
+
+<table>
+<thead>
+<tr>
+<th>Nov 17–21</th>
+<th>Nov 22–26</th>
+<th>Nov 27–30</th>
+<th>Dec 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Outline the idea</td>
+<td>Draft the abstract</td>
+<td>Revise and check</td>
+<td>Abstracts close</td>
+</tr>
+</tbody>
+</table>
+
+**Each morning: confirm progress → update today’s next step.**
+
+::: {.small}
+Outline finished Nov 20? Start drafting Nov 21.
+Running late? Replan the remaining work; Dec 1 stays fixed.
+
+[Into sports and data? Take a look at CSAS 2027.][csas]
+:::
+
+::: {.source}
+Real deadline: [CSAS website][csas]. Preparation dates are a suggested plan.
+:::
+
+
+## Daily Brief: what happened in AI?
+
+**Request:** “Give me 5 important AI news stories from the past 24 hours.”
+
+**Start:** [Hacker News: past 24 hours][hn24] · **Verify:** original sources
+
+HN is a tech community where readers share links, vote, and discuss.
+
+**Find → verify → assess importance → group → summarize**
+
+**Each item:** what happened, why it matters, and links to learn more.
+
+::: {.source}
+[Hacker News: past 24 hours][hn24] · [Our Daily Brief
+skill](examples/daily-brief/SKILL.md)
+HN provides stories and discussion; the skill checks and summarizes them.
+:::
+
+
+
+## How does the skill choose the five?
+
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What the agent checks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Set the window</td>
+<td>The 24 hours before this run</td>
+</tr>
+<tr>
+<td>Find AI stories</td>
+<td>HN’s past-24-hour list; filter out other topics</td>
+</tr>
+<tr>
+<td>Assess importance</td>
+<td>What changed, who is affected, votes and comments</td>
+</tr>
+<tr>
+<td>Verify and group</td>
+<td>Original sources; one item per event</td>
+</tr>
+</tbody>
+</table>
+
+**Choose stories with meaningful changes and explain why they matter.**
+
+Include dates, news links, discussion links, and sources checked.
+
+::: {.source}
+[HN past 24 hours][hn24] · [HN API][hnapi]
+Workflow demo; no live brief generated.
+:::
+
+
+## From one brief to a 7 a.m. routine
+
+<table>
+<thead>
+<tr>
+<th>Set it up</th>
+<th>Decide</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Run once and review</strong></td>
+<td>Are the stories relevant and the links correct?</td>
+</tr>
+<tr>
+<td><strong>2. Choose delivery</strong></td>
+<td>Where should the brief appear: an app or email?</td>
+</tr>
+<tr>
+<td><strong>3. Connect what it needs</strong></td>
+<td>News access and permission for delivery</td>
+</tr>
+<tr>
+<td><strong>4. Set the schedule</strong></td>
+<td>Every day at 7 a.m., America/New_York</td>
+</tr>
+</tbody>
+</table>
+
+Each run reads fresh news from the preceding 24 hours.
+
+**Next: how will we know each brief is useful and correct?**
+
+
+## How would you test a skill?
+
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>What to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A small known case</td>
+<td>Does the answer match independent evidence?</td>
+</tr>
+<tr>
+<td>Missing information</td>
+<td>Does it identify the gap instead of inventing facts?</td>
+</tr>
+<tr>
+<td>An unrelated request</td>
+<td>Does the host avoid selecting the wrong skill?</td>
+</tr>
+<tr>
+<td>A repeated run</td>
+<td>What changes, and are the changes acceptable?</td>
+</tr>
+</tbody>
+</table>
+
+**Read the answer and check whether it does what you asked.**
+
+
+## When a skill is worth using
+
+Use a skill when you keep giving the same instructions for the same kind of
+task.
+
+For a one-time question, a prompt may be enough.
+
+For a fixed calculation, a script may be enough.
+
+**Old instructions and wrong assumptions can get repeated too.**
+
+::: {.small}
+**Example: a deadline moves**
+
+Old email: **Nov 20** → New email: **Nov 23**.
+
+Use the updated deadline, then revise the plan.
+:::
+
+
+## Take away: write it once, reuse it, check it
+
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What you do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Pick a recurring task</strong></td>
+<td>Explain code, sort emails, or follow news</td>
+</tr>
+<tr>
+<td><strong>2. Write the guide</strong></td>
+<td>Define the input, steps, and expected output</td>
+</tr>
+<tr>
+<td><strong>3. Try one small case</strong></td>
+<td>Check the result against something you know</td>
+</tr>
+<tr>
+<td><strong>4. Keep it current</strong></td>
+<td>Update sources, dates, and instructions</td>
+</tr>
+</tbody>
+</table>
+
+**A skill reuses your process. You still check the result.**
+
+
+## Sources and further reading {.smaller}
+
+- [OpenAI: Build skills][skills] — structure, selection, and resources.
+- [Hacker News: past 24 hours][hn24] / [About HN][hnfaq] — stories and
+discussion.
+- [HN API][hnapi] — timestamps, scores, and comment counts.
+- [Quarto: using Python][quarto] — running the examples.
+- [Jun Yan: Introduction to Data Science][book] — analytical judgment.
+- [Course contribution guide][contribute] — source slides and revision.
+- [CSAS 2027][csas] — symposium information and submission dates.
+
+Example skills and scripts accompany this presentation's source.
+
+::: {.small}
+AI assistance: OpenAI Codex helped draft the slides and example skills,
+write supporting code, and check results.
+:::
+
+[Extra examples: Environment Doctor and Project Handoff](backup.html)
+
+
+[skills]: https://learn.chatgpt.com/docs/build-skills
+[venv]: https://docs.python.org/3/library/venv.html
+[quarto]: https://quarto.org/docs/computations/python.html
+[book]: https://github.com/statds/ids-book/blob/main/index.qmd
+[contribute]: https://github.com/statds/ids-f26/blob/main/CONTRIBUTING.md
+
+[csas]: https://statds.org/events/csas2027/index.html
+
+[hn24]: https://news.ycombinator.com/best?h=24
+[hnapi]: https://github.com/HackerNews/API
+
+[hn]: https://news.ycombinator.com/
+[reddit]: https://www.reddit.com/
+
+[hnfaq]: https://news.ycombinator.com/newsfaq.html
