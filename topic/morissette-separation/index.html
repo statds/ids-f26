@@ -289,7 +289,7 @@ Carter Morissette
 <section id="worked-example" class="slide level2">
 <h2>Worked example</h2>
 <p>Simulated data: 40 students, and everyone above 5 hours passes. This is complete separation.</p>
-<div id="02c0f2a6" class="cell" data-execution_count="1">
+<div id="989c96c7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-label="1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="" aria-label="2"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="" aria-label="3"></a></span>
@@ -301,7 +301,7 @@ Carter Morissette
 </section>
 <section id="the-two-groups" class="slide level2">
 <h2>The two groups</h2>
-<div id="4d3cf7ec" class="cell" data-execution_count="2">
+<div id="edf1db84" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-label="1"></a>df.groupby(<span class="st">"passed"</span>)[<span class="st">"hours"</span>].agg([<span class="st">"count"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
@@ -362,7 +362,7 @@ Carter Morissette
 </section>
 <section id="interpretation" class="slide level2">
 <h2>Interpretation</h2>
-<div id="96db0115" class="cell" data-execution_count="5">
+<div id="6ab22148" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-label="1"></a><span class="im">import</span> warnings</span>
 <span id="cb3-2"><a href="" aria-label="2"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb3-3"><a href="" aria-label="3"></a></span>
@@ -375,7 +375,7 @@ Carter Morissette
 </section>
 <section id="the-output" class="slide level2">
 <h2>The output</h2>
-<div id="afc52bf1" class="cell" data-execution_count="6">
+<div id="c990163a" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>==============================================================================
                  coef    std err          z      P&gt;|z|      [0.025      0.975]
@@ -425,7 +425,7 @@ ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check ml
 <li>Pick <code>C</code> by validation when predicting. The cost: the slope is pulled toward zero.</li>
 </ul>
 </div><div class="column" style="width:58%;">
-<div id="573f7da8" class="cell" data-execution_count="9">
+<div id="79af7a7f" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

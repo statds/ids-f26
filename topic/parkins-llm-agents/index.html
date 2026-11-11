@@ -467,7 +467,7 @@ Jack Parkins
 </section>
 <section id="messages-tool-calls-and-results" class="slide level2">
 <h2>Messages, Tool Calls, and Results</h2>
-<div id="bde63074" class="cell" data-execution_count="3">
+<div id="f9363a63" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>messages <span class="op">=</span> [{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: QUESTION}]   <span class="co"># conversation so far</span></span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>turn <span class="op">=</span> {<span class="st">"tool"</span>: <span class="st">"get_prices"</span>,                        <span class="co"># the LLM's request</span></span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"args"</span>: {<span class="st">"ticker"</span>: <span class="st">"HSKY"</span>, <span class="st">"start"</span>: <span class="st">"2026-01-02"</span>,</span>
@@ -741,12 +741,12 @@ Jack Parkins
 <section id="checking-the-answer" class="slide level2">
 <h2>Checking the Answer</h2>
 <p>The same quantities computed directly with pandas:</p>
-<div id="3a28ba94" class="cell" data-execution_count="6">
+<div id="90585a9f" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> PRICES.pivot(index<span class="op">=</span><span class="st">"date"</span>, columns<span class="op">=</span><span class="st">"ticker"</span>, values<span class="op">=</span><span class="st">"close"</span>)</span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>ret <span class="op">=</span> (wide.iloc[<span class="op">-</span><span class="dv">1</span>] <span class="op">/</span> wide.iloc[<span class="dv">0</span>] <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span></span>
 <span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>winner, gap <span class="op">=</span> ret.idxmax(), ret.<span class="bu">max</span>() <span class="op">-</span> ret.<span class="bu">min</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="0b82f848" class="cell" data-execution_count="7">
+<div id="02745b24" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <style scoped="">
@@ -994,7 +994,7 @@ Jack Parkins
 <ul>
 <li><strong>Bad arguments:</strong> tools should return errors that say how to recover</li>
 </ul>
-<div id="0f413836" class="cell" data-execution_count="9">
+<div id="523271d9" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    get_prices(<span class="st">"HSKY"</span>, <span class="st">"2026-01-03"</span>, <span class="st">"2026-01-04"</span>)   <span class="co"># a weekend</span></span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
