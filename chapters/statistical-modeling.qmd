@@ -3,8 +3,11 @@
 Student presentations in this chapter concern statistical reasoning,
 prediction, dimension reduction, clustering, and supervised learning.
 
+**Topic Presentation**
+
 | Presentation | Presenter | Description |
 |:--|:--|:--|
+|[K-Means Clustering](../topic/fontana-k-means) | Adam Fontana | K-Means clustering. |
 | [Decision Trees](../topic/decision-trees/) | Mahiba Mansur | Classification. |
 | [Perfect Separation in Logistic Regression](../topic/morissette-separation/) | Carter Morissette | Limits of logistic regression. |
 
