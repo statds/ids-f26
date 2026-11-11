@@ -16,3 +16,13 @@ service.
 This presentation introduces Census data sources and demonstrates using the
 Census API in Python, loading an API key from a local `.env` file, and
 converting returned data into pandas data frames for plots and maps.
+
+**Topic presentation:**
+[Web Scraping with Python](../topic/distefano-web-scraping/)
+by Cristian Distefano
+
+This presentation demonstrates how to collect information from
+webpages using Python's requests and BeautifulSoup packages.
+It shows how to extract and clean book data, organize the results
+in a pandas DataFrame, and visualize the collected prices.
+It also discusses limitations and responsible web scraping.

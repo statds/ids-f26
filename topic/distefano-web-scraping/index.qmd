@@ -1,0 +1,453 @@
+---
+title: "Web Scraping with Python"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Cristian Distefano"
+bibliography: references.bib
+nocite: |
+  @yan2026
+  @quartoDocs
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    fig-format: svg
+    slide-number: true
+    preview-links: auto
+jupyter: python3
+---
+
+
+## About Me
+
+- I'm a senior at UConn studying Computer Science and
+  Statistical Data Science.
+- I'm interested in machine learning, artificial intelligence,
+  and using data to solve practical problems.
+- I've worked on projects involving data collection, cleaning,
+  analysis, and visualization.
+
+**Why web scraping?**
+
+It provides another way to collect data that we can explore
+and analyze using Python.
+
+## What if the data are only on a webpage?
+
+Suppose we want to compare book prices across an online catalog.
+
+- We can see the titles and prices in our browser.
+- The information is not provided as a downloadable dataset.
+- Copying each value manually would be slow and error-prone.
+
+**Can Python collect this information automatically?**
+
+## What is web scraping?
+
+Web scraping is the process of extracting information from webpages
+and converting it into data that can be stored or analyzed.
+
+- **Input:** A webpage containing information we want.
+- **Process:** Request the page and extract relevant elements.
+- **Output:** Structured data, such as a pandas DataFrame.
+
+## Scraping versus APIs
+
+| Web scraping | API |
+|---|---|
+| Extracts information from webpages | Requests structured data |
+| Often requires parsing HTML | Often returns JSON |
+| Can break when page layouts change | Uses a documented interface |
+
+**When a suitable API is available, it is usually the better choice.**
+
+
+## A small HTML example
+
+Webpages are built from HTML elements that describe their content.
+
+```{.html}
+<article class="book">
+  <h3>Example Book</h3>
+  <p class="price">£19.99</p>
+</article>
+```
+
+- **Tags** (`article`, `h3`, `p`) describe elements.
+- **Classes** (`book`, `price`) help identify specific elements.
+- **Text** contains the information we want to extract.
+
+## The scraping workflow
+
+1. **Request:** Download the webpage's HTML.
+2. **Parse:** Turn the HTML into a searchable structure.
+3. **Extract:** Locate elements and collect their values.
+4. **Organize:** Store the results in a pandas DataFrame.
+
+**Goal:** Turn information on a webpage into structured data.
+
+
+## Books to Scrape
+
+We will use [Books to Scrape](https://books.toscrape.com/), a
+demonstration website designed for practicing web scraping
+[@booksToScrape].
+
+Our goal is to collect information about books from its catalog:
+
+- **Title:** Name of the book.
+- **Price:** Listed price in British pounds.
+- **Rating:** Star rating shown on the webpage.
+- **Availability:** Whether the book is listed as in stock.
+
+We will organize these values into a pandas DataFrame.
+
+
+## Request the page
+
+Python's `requests` package lets us retrieve a webpage using
+HTTP [@requestsDocs].
+
+```{python}
+#| echo: true
+import requests
+
+url = "https://books.toscrape.com/"
+response = requests.get(url, timeout=10)
+response.raise_for_status()
+response.encoding = "utf-8"
+
+print("HTTP status:", response.status_code)
+```
+
+- `requests.get()` sends an HTTP GET request.
+- `timeout=10` limits how long a socket can remain inactive.
+- `raise_for_status()` raises an error for unsuccessful HTTP responses.
+
+## Parse the HTML
+
+The response contains HTML, but we need a way to find specific elements.
+
+```{python}
+#| echo: true
+from bs4 import BeautifulSoup
+
+soup = BeautifulSoup(response.text, "html.parser")
+
+print("Page title:", soup.title.get_text(strip=True))
+```
+
+BeautifulSoup turns the HTML into a searchable structure.
+
+- `response.text` contains the downloaded HTML.
+- `"html.parser"` tells BeautifulSoup how to parse it.
+- `soup.title` finds the page's `<title>` element.
+
+
+## Understanding CSS selectors
+
+CSS selectors help BeautifulSoup find HTML elements
+[@beautifulSoupDocs].
+
+| Selector | What it finds |
+|---|---|
+| `article.product_pod` | An article with class `product_pod` |
+| `h3 a` | A link inside an `h3` element |
+| `.price_color` | An element with class `price_color` |
+| `p.star-rating` | A paragraph with class `star-rating` |
+
+- `select_one()` returns the first matching element.
+- `select()` returns all matching elements.
+
+
+## Extract one book
+
+First, locate a book and the elements containing its information.
+
+```{python}
+#| echo: true
+book = soup.select_one("article.product_pod")
+assert book is not None
+
+link = book.select_one("h3 a")
+price_tag = book.select_one(".price_color")
+assert link is not None and price_tag is not None
+
+title = link["title"]
+price = price_tag.get_text(strip=True)
+
+print("Title:", title)
+print("Price:", price)
+```
+
+- `["title"]` retrieves the full title from an HTML attribute.
+- `get_text(strip=True)` extracts visible text without extra whitespace.
+
+
+## Extract rating and availability
+
+The book listing also contains a star rating and stock status.
+
+```{python}
+#| echo: true
+rating_tag = book.select_one("p.star-rating")
+stock_tag = book.select_one(".availability")
+
+assert rating_tag is not None and stock_tag is not None
+
+rating = rating_tag["class"][-1]
+availability = stock_tag.get_text(strip=True)
+
+print("Rating:", rating)
+print("Availability:", availability)
+```
+
+- The rating is stored in an HTML class, such as `Three`.
+- The stock status is extracted from the visible text.
+
+
+## Extract all books
+
+`select()` returns all matching elements instead of just the first.
+
+```{python}
+#| echo: true
+books = soup.select("article.product_pod")
+
+print("Books found:", len(books))
+
+for book in books[:3]:
+    title = book.select_one("h3 a")["title"]
+    price = book.select_one(".price_color").get_text(strip=True)
+    print(f"{title}: {price}")
+```
+
+We found **20 books** and displayed the first three.
+
+
+## Collect book information
+
+We can collect titles and prices for every book.
+
+```{python}
+#| echo: true
+records = []
+
+for book in books:
+    link = book.select_one("h3 a")
+    price_tag = book.select_one(".price_color")
+
+    assert link is not None and price_tag is not None
+
+    records.append({
+        "title": link["title"],
+        "price_text": price_tag.get_text(strip=True),
+    })
+```
+
+Each book becomes a dictionary in the `records` list.
+
+
+## Convert prices to numbers
+
+Scraped prices are strings, so we need to clean them before analysis.
+
+```{python}
+#| echo: true
+price_text = books[0].select_one(".price_color").get_text(
+    strip=True
+)
+
+price_gbp = float(price_text.replace("£", ""))
+
+print("Original:", repr(price_text))
+print("Converted:", price_gbp)
+print("Data type:", type(price_gbp).__name__)
+```
+
+- `replace("£", "")` removes the currency symbol.
+- `float()` converts the remaining text to a number.
+- The result can now be used in calculations and plots.
+
+
+## Add rating and availability
+
+We can add the remaining fields to each book's record.
+
+```{python}
+#| echo: true
+for book, record in zip(books, records):
+    rating_tag = book.select_one("p.star-rating")
+    stock_tag = book.select_one(".availability")
+
+    assert rating_tag is not None and stock_tag is not None
+
+    record["rating"] = rating_tag["class"][-1]
+    record["availability"] = stock_tag.get_text(strip=True)
+```
+
+Each dictionary now contains a title, price string, rating,
+and availability.
+
+The HTML elements and records are matched in their original order.
+
+
+## Clean and check the records
+
+Convert each price string to a numeric value.
+
+```{python}
+#| echo: true
+assert len(books) == len(records)
+
+for record in records:
+    price_text = record.pop("price_text")
+    record["price_gbp"] = float(
+        price_text.replace("£", "")
+    )
+
+assert len(records) == 20
+assert all(len(record) == 4 for record in records)
+
+print("Records:", len(records))
+print("Fields:", list(records[0]))
+```
+
+The checks confirm 20 records with four fields each. The price
+conversion also completed successfully.
+
+
+## Build a DataFrame
+
+Now we can turn our list of dictionaries into a pandas DataFrame.
+
+```{python}
+#| echo: true
+import pandas as pd
+
+df = pd.DataFrame(records)
+
+print("Shape:", df.shape)
+```
+
+Each dictionary becomes a row, and each field becomes a column.
+
+## Explore the scraped data
+
+Our webpage is now a table with 20 rows and four columns.
+
+```{python}
+#| echo: true
+df[["title", "price_gbp", "rating", "availability"]].head(3)
+```
+
+- `price_gbp` is numeric and ready for analysis.
+- `rating` and `availability` are categorical variables.
+- Each row represents one book from the catalog.
+
+
+## Create a histogram
+
+We can use Matplotlib to visualize the distribution of prices.
+
+```{python}
+#| echo: true
+#| output: false
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(7, 2.6))
+ax.hist(df["price_gbp"], bins=6, edgecolor="black")
+ax.set(
+    xlabel="Book price (£)",
+    ylabel="Number of books"
+)
+```
+
+- `ax.hist()` groups prices into bins and counts the books.
+- `bins=6` divides the observed price range into six intervals.
+- Axis labels explain what the values represent.
+
+
+## Visualize the book prices
+
+```{python}
+#| label: fig-book-prices
+#| echo: false
+#| fig-cap: "Prices of 20 books from the first catalog page"
+#| fig-alt: "Histogram of 20 demonstration book prices in pounds."
+#| fig-align: center
+#| out-width: "75%"
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(7, 2.6))
+ax.hist(df["price_gbp"], bins=6, edgecolor="black")
+ax.set(
+    xlabel="Book price (£)",
+    ylabel="Number of books"
+)
+plt.show()
+```
+
+**Interpretation:** Prices are concentrated near both ends of the
+observed range, with fewer books in the middle.
+
+These are demonstration prices, not representative market data.
+
+## What about multiple pages?
+
+The catalog contains more books than can fit on one page.
+
+- Each catalog page displays up to **20 books**.
+- The full catalog contains **1,000 books across 50 pages**.
+- To collect everything, we would repeat the process for each page.
+
+The general workflow stays the same:
+
+**Request page → Parse HTML → Extract books → Add records**
+
+Pagination allows us to scale beyond the first 20 books.
+
+
+## When scraping becomes difficult
+
+Web scraping can be fragile because websites change over time.
+
+- **Changing HTML:** Updated tags or classes can break selectors.
+- **Dynamic content:** JavaScript may load data after the initial request.
+- **Missing data:** Pages may contain incomplete information.
+- **Reproducibility:** Websites can change or become unavailable.
+
+## Scrape responsibly
+
+Before collecting data from a website:
+
+- **Check site policies:** Review terms of use and `robots.txt`.
+- **Limit requests:** Avoid unnecessary traffic or excessive request rates.
+- **Respect privacy:** Do not collect or expose sensitive personal data.
+- **Prefer APIs:** Use an official API when a suitable one is available.
+
+**Just because data are visible does not mean we should collect them.**
+
+
+## Three things to remember
+
+1. **Web scraping turns webpage content into structured data.**
+   Python can retrieve HTML and extract useful information.
+
+2. **Structured data can be analyzed with familiar tools.**
+   We used pandas and Matplotlib to explore book prices.
+
+3. **Scraped data are not automatically reliable.**
+   Websites change, and extracted values may be incomplete.
+
+**A successful request does not guarantee good data.**
+
+## References
+
+::: {#refs}
+:::
+
+## AI Use Disclosure
+
+ChatGPT was used to assist with research and organization,
+troubleshooting rendering issues,
+and a final review of the slides for clarity.
