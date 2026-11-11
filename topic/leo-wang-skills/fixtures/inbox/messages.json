@@ -1,0 +1,92 @@
+{
+  "fixture_notice": "Synthetic teaching emails; no messages were actually received. E1–E6 are invented scenarios. E7 is a simulated notice using verified CSAS 2027 event dates, not an actual organizer email.",
+  "messages": [
+    {
+      "id": "E1",
+      "thread_id": "availability-form",
+      "from": "course-office@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-16T08:00:00-05:00",
+      "subject": "Please complete the availability form today",
+      "body": "Please submit your availability form by November 16, 2026 at 11:59 p.m. Eastern Standard Time. We use it to assign your discussion group. The form has three questions.",
+      "source_uri": "fixture://inbox/E1"
+    },
+    {
+      "id": "E2",
+      "thread_id": "project-draft",
+      "from": "instructor@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-12T10:00:00-05:00",
+      "subject": "Project draft due Friday",
+      "body": "Please send your project draft by Friday, November 20, 2026 at 5:00 p.m. Eastern Standard Time. Include your question, one figure, and a short explanation.",
+      "source_uri": "fixture://inbox/E2"
+    },
+    {
+      "id": "E3",
+      "thread_id": "project-draft",
+      "from": "instructor@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-13T16:30:00-05:00",
+      "subject": "Re: Project draft due Friday",
+      "body": "The project draft deadline is extended to Monday, November 23, 2026 at 5:00 p.m. Eastern Standard Time. This replaces the November 20 deadline. The requested draft contents are unchanged.",
+      "source_uri": "fixture://inbox/E3"
+    },
+    {
+      "id": "E4",
+      "thread_id": "guest-lecture",
+      "from": "events@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-16T08:10:00-05:00",
+      "subject": "Optional guest lecture tomorrow",
+      "body": "Join us on November 17, 2026 at 4:00 p.m. Eastern Standard Time for a guest lecture on data visualization. Attendance is optional. No registration or response is needed.",
+      "source_uri": "fixture://inbox/E4"
+    },
+    {
+      "id": "E5",
+      "thread_id": "weekly-news",
+      "from": "newsletter@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-16T08:15:00-05:00",
+      "subject": "This week's campus newsletter",
+      "body": "This issue includes a library exhibit, club profiles, and new study-space hours. Read whenever you have time. No reply is requested.",
+      "source_uri": "fixture://inbox/E5"
+    },
+    {
+      "id": "E6",
+      "thread_id": "review-slides",
+      "from": "classmate@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-16T08:20:00-05:00",
+      "subject": "Please review our group slides",
+      "body": "Could you review our group slides and send me your comments? Thank you.",
+      "source_uri": "fixture://inbox/E6"
+    },
+    {
+      "id": "E7",
+      "thread_id": "csas2027",
+      "from": "events@example.invalid",
+      "to": [
+        "student@example.invalid"
+      ],
+      "sent_at": "2026-11-16T08:30:00-05:00",
+      "subject": "Interested in sports analytics? CSAS 2027 abstracts close December 1",
+      "body": "Interested in sports and data science? The Connecticut Sports Analytics Symposium (CSAS) 2027 will take place April 9–10, 2027 at UConn Storrs. Abstract submission closes December 1, 2026. If you would like to submit, explore an abstract idea and check the official website. Participation is optional; this is not a course requirement. No reply to this simulated notice is needed.",
+      "source_uri": "fixture://inbox/E7",
+      "event_source": "https://statds.org/events/csas2027/index.html",
+      "source_checked": "2026-11-09",
+      "notice": "Simulated email; event facts from the official website. No submission time of day is specified."
+    }
+  ]
+}
