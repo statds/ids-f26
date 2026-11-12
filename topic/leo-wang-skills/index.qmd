@@ -71,7 +71,7 @@ You keep asking them to:
 +----------------------------------+----------------------------------+
 
 ::: {.smaller}
-Skill structure: @openaindbuild.
+Skill structure: @openai2026build.
 :::
 
 
@@ -96,7 +96,7 @@ Optional folders: `references/`, `scripts/`, and `assets/`.
 :::
 
 ::: {.smaller}
-Structure: @openaindbuild. Short teaching excerpt.
+Structure: @openai2026build. Short teaching excerpt.
 :::
 
 
@@ -110,7 +110,7 @@ Structure: @openaindbuild. Short teaching excerpt.
 **Then check: did it actually do what you asked?**
 
 ::: {.smaller}
-Skill selection: @openaindbuild.
+Skill selection: @openai2026build.
 This describes the Codex example; product details can differ.
 :::
 
@@ -148,7 +148,7 @@ End with one useful check or transfer question.
 
 ::: {.smaller}
 [Skill source](examples/stat3255-learning-coach/SKILL.md) ·
-Course context: @yanndintroduction
+Course context: @yan2026introduction
 :::
 
 
@@ -175,7 +175,7 @@ kept = [x for x in values if x > 4]
 mean = sum(kept) / len(kept)
 ```
 
-Local skill discovery and invocation: @openaindbuild.
+Local skill discovery and invocation: @openai2026build.
 
 ## 2. Read its explanation {.smaller}
 
@@ -303,7 +303,7 @@ Simulated inbox, as of Nov 16, 2026, 9 a.m. New York time.
 ::: {.smaller}
 Worked example using the simulated inbox and user-supplied estimates.
 [Deadline Planner](examples/deadline-planner/SKILL.md) ·
-Event dates: @csasndcsas (real event; simulated email)
+Event dates: @csas2026csas (real event; simulated email)
 :::
 
 
@@ -347,7 +347,7 @@ Running late? Replan the remaining work; Dec 1 stays fixed.
 :::
 
 ::: {.smaller}
-Deadline: @csasndcsas. Preparation dates are a suggested plan.
+Deadline: @csas2026csas. Preparation dates are a suggested plan.
 :::
 
 
@@ -357,7 +357,7 @@ Deadline: @csasndcsas. Preparation dates are a suggested plan.
 
 **Start:** [Hacker News: past 24 hours][hn24] · **Verify:** original sources
 
-HN readers share links, vote, and discuss. [@ycombinatorndhacker]
+HN readers share links, vote, and discuss. [@ycombinator2026hacker]
 
 **Find → verify → assess importance → group → summarize**
 
@@ -393,7 +393,7 @@ HN provides stories and discussion; the skill checks and summarizes them.
 Include dates, news links, discussion links, and sources checked.
 
 ::: {.smaller}
-Timestamps and discussion counts: @hackernewsndhacker.
+Timestamps and discussion counts: @hackernews2026hacker.
 Workflow demo; no live brief generated.
 :::
 
