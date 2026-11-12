@@ -6,11 +6,17 @@ prediction, dimension reduction, clustering, and supervised learning.
 | Presentation | Presenter | Description |
 |:--|:--|:--|
 | [Decision Trees](../topic/decision-trees/) | Mahiba Mansur | Classification. |
+| [Naive Bayes](../topic/nick-tria-naive-bayes/) | Nicholas Tria | Classification | 
 | [Perfect Separation in Logistic Regression](../topic/morissette-separation/) | Carter Morissette | Limits of logistic regression. |
 
 The decision-tree presentation fits a small classifier using request fields
 available at creation, compares it with a majority baseline, and explains
 why accuracy alone can hide missed Illegal Parking requests.
+
+The Naive Bayes presentation introduces the Naive Bayes classifier, which
+uses Bayes' Theorem as the basis for probabilistic classification. It 
+demonstrates Gaussian and Multinomial Naive Bayes using examples, interprets
+results, and explains limitations and takeaways. 
 
 The perfect-separation presentation simulates a pass/fail example where one
 cutoff splits the outcomes perfectly, so logistic regression has no finite

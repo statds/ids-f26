@@ -1,0 +1,714 @@
+---
+title: "Naive Bayes Classifier"
+subtitle: "Topic Presentation | STAT 3255"
+author: "Nicholas Tria"
+format:
+  revealjs:
+   width: 1280
+   height: 720
+   slide-number: true
+   preview-links: auto
+   theme: default
+   incremental: false
+jupyter: python3
+bibliography: references.bib
+---
+
+## About Me
+
+- My name is Nick Tria, and I am from Westerly, Rhode Island.
+
+- I am a junior studying Statistical Data Science with
+a minor in Economics.
+
+- I have an interest in Sports Analytics, I have interned
+for the Ocean State Waves of the NECBL in a Data Analytics role.
+
+- I am currently part of the Sports Statistics Experiential
+Learning Program for the UConn Baseball team.
+
+## Naive Bayes: What is it?
+
+- Naive Bayes is a supervised machine learning classification algorithm.
+
+- It predicts the category of a data point using probability, specifically
+Bayes' Theorem.
+
+- It has many real-world applications, such as classifying spam emails,
+predicting wins/losses in sports, and categorizing documents.
+
+## Bayes' Theorem
+
+$$ 
+P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}.
+$$
+
+| Term | Meaning |
+|:---|:---|
+|$P(A \mid B)$ | **Posterior Probability**: Probability of A given B |
+|$P(B \mid A)$ | **Likelihood**: Probability of B given A |
+|$P(A)$ | **Prior Probability**: Probability of A before observing B |
+|$P(B)$ | **Evidence**: Overall probability of B |
+
+- A is a class & B are features.
+
+## Assumptions
+
+1. **Conditional Independence**:
+
+Naive Bayes assumes that the features are conditionally independent given
+the class. Once the class is known, the value of one feature does not affect
+the probability of another feature -- this is where the "Naive" term comes in
+[@scikit-learn-2026-naive-bayes].
+
+2. **Feature Distribution Depends on Model**:
+
+- Gaussian Naive Bayes: continuous features are normally distributed within
+each class.
+
+- Multinomial Naive Bayes: discrete feature measured in counts.
+
+## Brief Example
+
+Suppose you are scanning a job application, and you want to determine based on
+the content if the applicant is a good fit or a poor fit for the role.
+
+- Suppose $P(Good) = 0.55$ and $P(Poor) = 0.45$.
+
+- These are our prior probabilities.
+
+## Likelihoods
+
+- Assume the following probabilities were invented for this example:
+
+| Word | $P(\text{Word}\mid\text{Good})$ | $P(\text{Word}\mid\text{Poor})$ |
+|:---|:---:|:---:|
+| **Experienced** | 0.80 | 0.15 |
+| **Leadership** | 0.70 | 0.15 |
+| **Beginner** | 0.10 | 0.45 |
+
+- **Likelihoods:** These probabilities show how likely each word is to appear in
+a *Good Fit* or *Poor Fit* application, based on past applications.
+
+- *These are illustrative probabilities, not results from actual data.*
+
+## New Application
+
+We receive a new application that contains the words: "Experienced" and
+"Leadership".
+
+Define:
+
+- $E$ = the event that the word "Experienced" appears.
+- $L$ = the event that the word "Leadership" appears.
+
+## Steps for Calculation
+
+1. Calculate probability of application under each class.
+
+
+- $P(E, L | Good) = P(E \mid Good)P(L \mid Good)P(Good)$
+- $(0.80)(0.70)(0.55) = 0.308$
+
+- $P(E, L | Poor) = P(E \mid Poor)P(L \mid Poor)P(Poor)$
+- $(0.15)(0.15)(0.45) = 0.010125$
+
+2. Calculate total probability of observing both words.
+
+$P(E,L) = 0.308 + 0.010125 = 0.318125$
+
+## Assess Each Class
+
+3. Calculate posterior probabilities.
+
+$$
+P(Good \mid E,L) =
+\frac{0.308}{0.318125}
+\approx 0.968
+$$
+
+$$
+P(Poor \mid E,L) =
+\frac{0.010125}{0.318125}
+\approx 0.032
+$$
+
+- Based on these outputs, we classify the application as Good, as it has a
+higher posterior probability.
+
+## Gaussian Naive Bayes
+
+- Used with continuous numerical features, and assumes each feature
+is normally distributed within each class.
+
+- Estimates the mean ($\mu$) and standard deviation ($\sigma$) of each
+feature in each class.
+
+- Uses these distributions, along with class priors, to calculate
+posterior probability for each class [@scikit-learn-2026-naive-bayes].
+
+## Gaussian PDF
+
+- The Gaussian probability density function calculates the density of
+an observed feature value under each class-specific Gaussian distribution.
+[@scikit-learn-2026-naive-bayes].
+
+- If evaluating multiple features, multiply their densities by class prior.
+
+## PDF Formula
+
+$$
+f(x \mid c) =
+\frac{1}{\sigma_c\sqrt{2\pi}}
+e^{-\frac{1}{2}\left(\frac{x-\mu_c}{\sigma_c}\right)^2}
+$$
+
+- $x$ = observed value of a feature.
+- $\mu_c$ = mean of the feature in class $c$.
+- $\sigma_c$ = standard deviation of feature in class $c$.
+- $f(x \mid c)$ = probability density of observing $x$ given class $c$.
+
+## Classification Formula
+
+$$
+\hat{y} =
+\underset{c}{\operatorname{argmax}}
+\left[
+P(c)\prod_{j=1}^{p} f_j(x_j\mid c)
+\right]
+$$
+
+- $c$ = a possible class.
+- $P(c)$ = prior probability of that class.
+- $p$ = total number of features.
+- $x_j$ = observed value of feature $j$.
+- $f_j(x_j\mid c)$ = Gaussian density of feature $j$ given class $c$.
+- $\operatorname{argmax}$ = selects the class with the highest score.
+
+## Example - Gaussian NB
+
+- Suppose we have a group of pitchers, and we want to classify their
+fastballs as "Good" or "Poor".
+
+- We can analyze each pitcher's fastball using Velocity (MPH) and
+Spin Rate (RPM), calculating the mean and standard deviation of
+each characteristic under each class.
+
+- Using Gaussian Naive Bayes, we can train a model to predict if a
+fastball is "good" or "poor", using its velocity and spin rate likelihoods
+based on Gaussian PDF.
+
+## Required Packages
+
+```{python}
+#| echo: true
+
+import random
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import confusion_matrix
+
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB, MultinomialNB
+from scipy.stats import norm
+
+```
+
+## Generate Dataset
+
+```{python}
+#| echo: true
+
+rng = np.random.default_rng(2006)
+n = 100
+
+low_velocity = rng.normal(90, 2.5, n)
+low_spin = rng.normal(2050, 150, n)
+
+high_velocity = rng.normal(94, 2.5, n)
+high_spin = rng.normal(2350, 140, n)
+
+fastball_df = pd.DataFrame({
+  'velocity' : np.concatenate([low_velocity, high_velocity]).round(1),
+  'spin_rate' : np.concatenate([low_spin, high_spin]).round(1),
+  'label': ['Poor Fastball'] * n + ['Good Fastball'] * n})
+
+```
+
+## Simulated Fastball Data
+
+Simulated dataset of 200 fastballs:
+
+- 100 labeled Good Fastball.
+- 100 labeled Poor Fastball.
+- Features: velocity (mph) and spin rate (rpm).
+
+The simulated features are generated from different normal distributions,
+velocity and spin rate are generated independently within each class.
+
+*Labels are invented for demonstration, they do not reflect real baseball data.*
+
+## Visualize Data
+
+```{python}
+
+velocity_x = np.linspace(82, 102, 300)
+spin_x = np.linspace(1600, 2800, 300)
+
+poor_velocity_curve = norm.pdf(velocity_x, np.mean(low_velocity), np.std(low_velocity))
+good_velocity_curve = norm.pdf(velocity_x, np.mean(high_velocity), np.std(high_velocity))
+
+poor_spin_curve = norm.pdf(spin_x, np.mean(low_spin), np.std(low_spin))
+good_spin_curve = norm.pdf(spin_x, np.mean(high_spin), np.std(high_spin))
+
+```
+
+```{python}
+#| fig-format: svg
+#| fig-alt: "Density plots comparing simulated fastball velocity and spin rate distributions for Good and Poor classes."
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+axes[0].plot(velocity_x, poor_velocity_curve, label="Poor Fastball")
+axes[0].plot(velocity_x, good_velocity_curve, label="Good Fastball")
+axes[0].set_title("Fastball Velocity Distribution")
+axes[0].set_xlabel("Velocity (mph)")
+axes[0].set_ylabel("Density")
+axes[0].legend()
+
+axes[1].plot(spin_x, poor_spin_curve, label="Poor Fastball")
+axes[1].plot(spin_x, good_spin_curve, label="Good Fastball")
+axes[1].set_title("Fastball Spin Rate Distribution")
+axes[1].set_xlabel("Spin Rate (RPM)")
+axes[1].set_ylabel("Density")
+axes[1].legend()
+
+plt.tight_layout()
+plt.show()
+
+```
+
+## Split Data
+
+```{python}
+#| echo: true
+
+X = fastball_df[['velocity', 'spin_rate']]
+y = fastball_df['label']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.25,
+    random_state=2026,
+    stratify=y)
+
+```
+
+- **`train_test_split()`**: Splits our data into training and testing sets.
+
+- Training set (75%): Used to estimate feature distribution and prior probabilities.
+
+- Testing set (25%): Held out to evaluate predictions on untrained pitches.
+
+- **`GaussianNB()`**: provides the Gaussian Naive Bayes Classifier
+[@scikit-learn-2026-naive-bayes].
+
+## Fit Model
+
+```{python}
+#| echo: true
+
+gaussian_nb = GaussianNB()
+
+gaussian_nb.fit(X_train, y_train)
+
+predictions = gaussian_nb.predict(X_test)
+
+```
+
+- **`fit()`**: Estimates distribution of each feature for each class, using mean and
+standard deviation.
+
+- **`predict()`**: Predicts the class of each pitch in the test set, using Bayes
+Theorem and comparing the posterior probabilities [@geeksforgeeks-undated-gaussian-naive-bayes].
+
+## Confusion Matrix
+
+```{python}
+
+cm = confusion_matrix(y_test, predictions, labels = ['Good Fastball', 'Poor Fastball'])
+
+cm_df = pd.DataFrame(
+    cm,
+    index=["Actual: Good FB", "Actual: Poor FB"],
+    columns=["Predicted: Good FB", "Predicted: Poor FB"])
+
+cm_df
+```
+
+- **Accuracy**: 90% of test fastballs were correctly classified.
+$\frac{24 + 21}{24 + 1 + 21 + 4} = \frac{45}{50} = 0.90$.
+
+- Baseline: always predicting majority class would yield 50% accuracy,
+since there is an even split of Good/Poor Fastballs in testing set.
+Our model outperforms this simple baseline.
+
+## Confusion Matrix
+
+```{python}
+
+cm = confusion_matrix(y_test, predictions, labels = ['Good Fastball', 'Poor Fastball'])
+
+cm_df = pd.DataFrame(
+    cm,
+    index=["Actual: Good FB", "Actual: Poor FB"],
+    columns=["Predicted: Good FB", "Predicted: Poor FB"])
+
+cm_df
+```
+
+- **Precision (Good Fastball)**: 86% of fastballs predicted as Good were
+actually labeled Good. $\frac{24}{24 + 4} = \frac{24}{28} = 0.86$.
+
+- **Recall (Good Fastball)**: 96% of labeled Good fastballs were correctly
+identified. $\frac{24}{24 + 1} = \frac{24}{25} = 0.96$.
+
+## New Fastball
+
+- We have been given a new fastball with velocity of 93 MPH and a spin rate
+of 2250 RPM.
+
+- How does Gaussian Naive Bayes decide whether it's a Good Fastball or Poor Fastball?
+
+## Predict New Fastball
+
+```{python}
+#| echo: true
+
+new_fastball = pd.DataFrame({
+    "velocity": [93.0],
+    "spin_rate": [2250.0]
+})
+
+fastball_probabilities = pd.DataFrame(
+    gaussian_nb.predict_proba(new_fastball),
+    columns=gaussian_nb.classes_)
+
+print(fastball_probabilities)
+
+```
+
+- **`predict_proba()`**: returns the posterior probability calculated for
+each class.
+
+- The model outputs estimated probability for each class. These values
+reflect the model's predictions, not confidence in real-world outcomes.
+
+## Multinomial Naive Bayes
+
+- Used with discrete count data rather than continuous features.
+
+- Used commonly in text classification, specifically for spam emails
+or resume scanners.
+
+- The model estimates how likely words are to appear in each class.
+
+## Example - Multinomial NB
+
+- Let's use our application example again, however, this time using python 
+to create a Multinomial Naive Bayes classifier.
+
+- We are scanning applications in search of a Data Scientist, and are
+classifying each application as a "Good Fit" or "Poor Fit" based upon
+common words that appear in their application.
+
+## Generate Dataset
+
+```{python}
+#| echo: true
+
+random.seed(4732342341)
+
+strong_words = [
+    "python", "sql", "statistics", "data", "analysis", "machine learning", 
+    "excel", "modeling", "research", "programming", "visualization", "regression"]
+
+weak_words = [
+    "retail", "cashier", "restaurant", "sales", "inventory", "food service", 
+    "customer service", "warehouse", "shipping", "receiving", "food preparation"]
+
+general_words = [
+    "communication", "teamwork", "organization", "leadership", "problem solving",
+    "excel", "reporting", "data", "research", "sales", "customer service"]
+
+```
+
+## Generate Dataset
+
+```{python}
+#| echo : true
+
+applications = []
+
+for i in range(300):
+    if i < 150:
+        classification = "Good Fit"
+        relevant_words = strong_words
+        misleading_words = weak_words
+    else:
+        classification = "Poor Fit"
+        relevant_words = weak_words
+        misleading_words = strong_words
+
+    words = random.sample(relevant_words, k=3)
+    words += random.sample(general_words, k=4)
+    words += random.sample(misleading_words, k=2)
+
+    random.shuffle(words)
+
+    applications.append({
+        "resume": " ".join(words),
+        "label": classification})
+
+applications = pd.DataFrame(applications)
+
+```
+
+## Generate Dataset
+
+This example uses a simulated dataset with 300 applications:
+
+- 150 labeled as Good Fit.
+- 150 labeled as Poor Fit.
+- Features: word counts from application text.
+
+Applications generated from different word distributions for each class,
+each application has 9 focused words.
+
+*Labels are invented for demonstration, does not reflect actual hiring decisions.*
+
+## Split Data
+
+```{python}
+#| echo: true
+
+X = applications['resume']
+y = applications['label']
+
+X_train_text, X_test_text, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.25,
+    random_state=2026,
+    stratify=y)
+
+```
+
+- **`train_test_split()`**: splits the data into 75% training and 25% testing,
+the same as the Gaussian Naive Bayes classifier.
+
+- **`MultinomialNB()`**: provides the Multinomial Naive Bayes Classifier
+[@scikit-learn-2026-naive-bayes].
+
+## Prepare Word Counts
+
+```{python}
+#| echo: true
+
+vectorizer = CountVectorizer()
+
+X_train = vectorizer.fit_transform(X_train_text)
+X_test = vectorizer.transform(X_test_text)
+
+```
+
+- **`CountVectorizer()`**: converts the resumes into a numerical matrix,
+in which the columns are each word, and the rows are each resume
+[@geeksforgeeks-2026-countvectorizer-features].
+
+- **`fit_transform()`**: learns the vocabulary from training resumes
+and converts them into word counts.
+
+- **`transform()`**: converts testing resumes into word counts, using
+vocabulary learned from training data.
+
+## Fit Model
+
+```{python}
+#| echo: true
+
+multi_nb = MultinomialNB()
+
+multi_nb.fit(X_train, y_train) 
+
+predictions_mnb = multi_nb.predict(X_test)
+
+```
+
+- **`MultinomialNB()`**: initializes the Multinomial Naive Bayes Classifier.
+
+- **`fit()`**: learns the likelihood of each word appearing in each application class.
+
+- **`predict()`**: uses the learned probabilities to classify the testing set as either
+a Good Fit or a Poor Fit [@geeksforgeeks-undated-multinomial-naive-bayes].
+
+## Confusion Matrix
+
+```{python}
+
+cm_mnb = confusion_matrix(y_test, predictions_mnb, labels = ['Good Fit', 'Poor Fit'])
+
+cm_mnb_df = pd.DataFrame(
+    cm_mnb,
+    index =["Actual: Good Fit", "Actual: Poor Fit"],
+    columns=["Predicted: Good Fit", "Predicted: Poor Fit"])
+
+cm_mnb_df
+
+```
+
+- **Accuracy**: 76% of test applications were classified correctly.
+$\frac{27 + 30}{27 + 8 + 30 + 10} = \frac{57}{75} = 0.76$.
+
+- Baseline: Our testing data had 37/75 (49.33%) Good Fit, so always predicting
+Good Fit yields an accuracy of 49.33%. Our model outperformed this baseline,
+as it had a higher accuracy.
+
+## Confusion Matrix
+
+```{python}
+
+cm_mnb = confusion_matrix(y_test, predictions_mnb, labels = ['Good Fit', 'Poor Fit'])
+
+cm_mnb_df = pd.DataFrame(
+    cm_mnb,
+    index =["Actual: Good Fit", "Actual: Poor Fit"],
+    columns=["Predicted: Good Fit", "Predicted: Poor Fit"])
+
+cm_mnb_df
+
+```
+
+- **Precision (Good Fit)**: 77% of applications predicted as a Good Fit
+were actually labeled Good Fit. $\frac{27}{27 + 8} = \frac{27}{35} = 0.77$.
+
+- **Recall (Good Fit)**: 73% of applications labeled as Good Fit were correctly
+identified. $\frac{27}{27 + 10} = \frac{27}{37} = 0.73$.
+
+## New Application
+
+- Say we receive a new application containing these words: python,
+sql, teamwork, leadership, customer service, sales, regression, research.
+
+- We can use our model to classify it as a Good or Poor Fit.
+
+## New Application
+
+```{python}
+# | echo: true
+
+new_resume = [
+    "python sql teamwork leadership customer service sales regression research"]
+
+X_new = vectorizer.transform(new_resume)
+
+application_probabilities = pd.DataFrame(
+    multi_nb.predict_proba(X_new),
+    columns=multi_nb.classes_)
+
+print(application_probabilities)
+
+```
+
+- **`predict_proba()`**: returns the posterior probability for each class.
+
+- The model outputs estimated probability for each class. These values
+reflect the model's predictions, not confidence in real-world outcomes.
+
+## Limitations - Independence Assumption
+
+- The major limitation to Naive Bayes Classifiers is the conditional
+independence assumption, or that features are conditionally independent
+given the class [@bathula-2023-limitations-naive-bayes].
+
+- Features may still be correlated when pooling observations from different
+classes.
+
+- This assumption allows us to simplify probability calculations.
+
+## Limitations - Imbalanced Classes
+
+- If the prior probability of a given class is much higher than another class,
+it can create bias toward the majority class.
+
+- Example: prior probabilities of applications are $P(Poor Fit) = 0.90$,
+$P(Good Fit) = 0.10.$
+
+- Can impact the accuracy measurement: if the model predicts every application
+as a poor fit, accuracy will be 90%, however, recall for the good fit class
+will be 0%.
+
+## Limitations - Zero-Frequency Problem
+
+- For multinomial Naive Bayes, a word may appear in training vocabulary,
+but has zero occurrences within one class.
+
+- Without smoothing, word receives likelihood of zero for that class,
+and can cause entire class score to equal zero.
+
+- A word that does not appear in the training vocabulary is ignored by
+the current `CountVectorizer()` when transforming an application.
+
+## Adjust with Laplace Smoothing
+
+- Adjusted using Laplace smoothing, which adds a small count to prevent
+zero likelihoods [@scikit-learn-2026-naive-bayes].
+
+$P(w \mid c) = \frac{N_{w, c} + \alpha}{N_c + \alpha \cdot V}$.
+
+- $N_{w, c}$ = the number of times word $w$ appears in training set belonging
+to class $c$.
+
+- $N_c$ = total number of word occurrences across training set in class $c$.
+
+- $V$ = number of unique words in vocabulary.
+
+- $\alpha$ = smoothing parameter, scikit-learn Multinomial uses
+$\alpha = 1.0$ by default.
+
+## Common Mistakes
+
+1. Ignoring features correlation.
+
+2. Applying Gaussian Naive Bayes to Non-Gaussian Features.
+
+3. Not adjusting for zero-frequency problem (Smoothing prevents this;
+scikit-learn's MultinomialNB() uses $\alpha=1.0$ by default.).
+
+## Takeaways
+
+- Naive Bayes is a simple classification model based on Bayes' Theorem.
+
+- Two main types of Naive Bayes are Gaussian and Multinomial.
+
+- It gives fast training and predictions, and even when the independence
+assumption is imperfect, is fairly effective at predicting correct classes.
+
+## Further Readings
+
+- [@fernandez-2021-naive-bayes-python]
+
+- [@towards-data-science-2021-gaussian-naive-bayes]
+
+## AI Disclosure
+
+- ChatGPT was used to review statistical explanations, debug code, and
+provide clarification on certain machine learning concepts.
+
+## References
+
+::: {{#refs}}
+:::
