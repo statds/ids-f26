@@ -26,6 +26,7 @@ import runpy
 
 examples = runpy.run_path("scripts/run_examples.py")
 learning = examples["learning_example"]()
+handoff = examples["handoff_example"]()
 ```
 
 ## About me
@@ -70,7 +71,7 @@ You keep asking them to:
 +----------------------------------+----------------------------------+
 
 ::: {.smaller}
-Skill structure: @openaindbuild.
+Skill structure: @openai2026build.
 :::
 
 
@@ -95,7 +96,7 @@ Optional folders: `references/`, `scripts/`, and `assets/`.
 :::
 
 ::: {.smaller}
-Structure: @openaindbuild. Short teaching excerpt.
+Structure: @openai2026build. Short teaching excerpt.
 :::
 
 
@@ -109,7 +110,7 @@ Structure: @openaindbuild. Short teaching excerpt.
 **Then check: did it actually do what you asked?**
 
 ::: {.smaller}
-Skill selection: @openaindbuild.
+Skill selection: @openai2026build.
 This describes the Codex example; product details can differ.
 :::
 
@@ -147,11 +148,11 @@ End with one useful check or transfer question.
 
 ::: {.smaller}
 [Skill source](examples/stat3255-learning-coach/SKILL.md) ·
-Course context: @yanndintroduction
+Course context: @yan2026introduction
 :::
 
 
-## Try Learning Coach in Codex {.smaller}
+## 1. Ask the coach {.smaller}
 
 **1. Place the skill in your project:**
 
@@ -168,15 +169,15 @@ including its references. Open Codex in that project.
 
 ```text
 $stat3255-learning-coach
-Explain this code line by line and help me check my understanding.
+Explain each line. What changes if I use >= 4?
 values = [0, 4, 4, 8]
 kept = [x for x in values if x > 4]
 mean = sum(kept) / len(kept)
 ```
 
-Local skill discovery and invocation: @openaindbuild.
+Local skill discovery and invocation: @openai2026build.
 
-## What did the coach say? {.smaller}
+## 2. Read its explanation {.smaller}
 
 Selected excerpts from the recorded response:
 
@@ -193,12 +194,14 @@ Selected excerpts from the recorded response:
 Saved response from one explicit invocation in Codex,
 formatted as an excerpt for reading.
 
-**Check next:** run the calculation and try changing the filter.
+**Its explanation:** the filter decides which values enter the average.
+
+**Next:** check both results yourself.
 
 
-## Learning Coach: check your understanding {.smaller}
+## 3. Check the answer {.smaller}
 
-**Try a variation:** What changes if we use `>= 4`?
+**Our check:** run the original filter and the `>= 4` variation.
 
 This Python check verifies the numbers in the recorded answer.
 
@@ -215,6 +218,36 @@ assert values == [0, 4, 4, 8]
 ```
 
 **Changing the filter changes what goes into the average.**
+
+
+## Project Handoff: where did I leave off? {.smaller}
+
+**You've understood the code. Now pause the project for a week.**
+
+**Request:** "Save a handoff so I know where to resume."
+
+The skill reads the files and available Git history, then records:
+
+- **Goal:** what the project is trying to answer.
+- **Status:** what ran, what changed, and what still needs checking.
+- **Next step:** the file to open and the action to take.
+
+```{python}
+#| include: false
+assert handoff["previous_run_exit_code"] == 0
+assert handoff["same_source"] is False
+assert handoff["current_executed_by_this_runner"] is False
+```
+
+**Example handoff**
+
+**Last session:** the previous version ran successfully.
+
+**Next session:** review the changes in `analysis.py`
+and run the updated code.
+
+Synthetic final-project example; handoff wording written for teaching.
+[Skill and template](examples/project-handoff/SKILL.md)
 
 
 ## Which emails need me to do something? {.smaller}
@@ -270,7 +303,7 @@ Simulated inbox, as of Nov 16, 2026, 9 a.m. New York time.
 ::: {.smaller}
 Worked example using the simulated inbox and user-supplied estimates.
 [Deadline Planner](examples/deadline-planner/SKILL.md) ·
-Event dates: @csasndcsas (real event; simulated email)
+Event dates: @csas2026csas (real event; simulated email)
 :::
 
 
@@ -314,7 +347,7 @@ Running late? Replan the remaining work; Dec 1 stays fixed.
 :::
 
 ::: {.smaller}
-Deadline: @csasndcsas. Preparation dates are a suggested plan.
+Deadline: @csas2026csas. Preparation dates are a suggested plan.
 :::
 
 
@@ -324,7 +357,7 @@ Deadline: @csasndcsas. Preparation dates are a suggested plan.
 
 **Start:** [Hacker News: past 24 hours][hn24] · **Verify:** original sources
 
-HN readers share links, vote, and discuss. [@ycombinatorndhacker]
+HN readers share links, vote, and discuss. [@ycombinator2026hacker]
 
 **Find → verify → assess importance → group → summarize**
 
@@ -360,7 +393,7 @@ HN provides stories and discussion; the skill checks and summarizes them.
 Include dates, news links, discussion links, and sources checked.
 
 ::: {.smaller}
-Timestamps and discussion counts: @hackernewsndhacker.
+Timestamps and discussion counts: @hackernews2026hacker.
 Workflow demo; no live brief generated.
 :::
 
@@ -452,8 +485,7 @@ Use the updated deadline, then revise the plan.
 
 ## Materials and AI assistance {.smaller}
 
-[Course book](https://statds.github.io/ids-book/) ·
-[Extra examples: Environment Doctor and Project Handoff](backup.html)
+[Course book](https://statds.github.io/ids-book/)
 
 Example skills, synthetic inputs, and scripts accompany the slides.
 

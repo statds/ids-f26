@@ -1,18 +1,10 @@
-"""Run isolated teaching checks; do not claim to evaluate agent behavior.
-
-Creates two temporary venvs without pip or network installation. The small
-demo_course module is a synthetic stand-in for an environment-specific package.
-Writes sanitized evidence under evidence/ and leaves real projects untouched.
-"""
+"""Check synthetic learning and handoff examples; save local evidence."""
 
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
-import venv
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,11 +12,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def run(command):
     return subprocess.run(command, capture_output=True, text=True, check=False)
-
-
-def python_path(environment):
-    return environment / ("Scripts/python.exe" if os.name == "nt"
-                          else "bin/python")
 
 
 def learning_example():
@@ -50,51 +37,6 @@ def learning_example():
         "inclusive_mean": sum(inclusive) / len(inclusive),
         "empty_input_result": edge_case,
     }
-
-
-def environment_example():
-    helper = (ROOT / "examples/python-environment-doctor/scripts"
-              / "inspect_env.py")
-    build = ROOT / ".build"
-    build.mkdir(exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="skills-teaching-", dir=build) as temp:
-        assert Path(temp).resolve().parent == build.resolve()
-        environments = {}
-        for name in ("A", "B"):
-            folder = Path(temp) / name
-            venv.EnvBuilder(with_pip=False).create(folder)
-            environments[name] = python_path(folder)
-        package_dir = run([
-            str(environments["A"]), "-c",
-            "import sysconfig; print(sysconfig.get_path('purelib'))",
-        ])
-        assert package_dir.returncode == 0, package_dir.stderr
-        module = Path(package_dir.stdout.strip()) / "demo_course.py"
-        module.write_text('VALUE = "available in A"\n', encoding="utf-8")
-        results = {}
-        for name, interpreter in environments.items():
-            report = run([str(interpreter), str(helper), "demo_course"])
-            assert report.returncode == 0, report.stderr
-            diagnostics = json.loads(report.stdout)
-            imported = run([
-                str(interpreter), "-c",
-                "import demo_course; print(demo_course.VALUE)",
-            ])
-            results[name] = {
-                "interpreter_label": "Environment " + name,
-                "virtual_environment": diagnostics["virtual_environment"],
-                "package_found": diagnostics["packages"]["demo_course"]
-                ["discoverable"],
-                "import_exit_code": imported.returncode,
-                "import_result": imported.stdout.strip() if
-                imported.returncode == 0 else imported.stderr.splitlines()[-1],
-            }
-        assert results["A"]["package_found"] is True
-        assert results["A"]["import_exit_code"] == 0
-        assert results["B"]["package_found"] is False
-        assert results["B"]["import_exit_code"] != 0
-        assert "ModuleNotFoundError" in results["B"]["import_result"]
-        return results
 
 
 def handoff_example():
@@ -125,7 +67,6 @@ if __name__ == "__main__":
         "scope": "Synthetic fixture and helper checks, not agent evals",
         "python_version": sys.version.split()[0],
         "learning": learning_example(),
-        "environment": environment_example(),
         "handoff": handoff_example(),
     }
     output = ROOT / "evidence"
