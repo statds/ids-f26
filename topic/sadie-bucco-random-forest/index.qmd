@@ -1,0 +1,493 @@
+---
+title: "Random Forest"
+subtitle: "Topic Presentation | STAT 3255"
+author: "Sadie Bucco"
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+    echo: true
+jupyter: python3
+bibliography: references.bib
+nocite: '@*'
+---
+
+## Introduction
+My name is Sadie Bucco and I am a senior Statistical Data Science major.
+I am studying Biological Data Science and am pursuing an MCB minor.\
+\
+**Why I chose this topic**:\
+I currently work in a microbiology research lab and I want to use random forest
+for data analysis.
+
+## What is Random Forest?
+
+Random forest is a supervised machine learning algorithm.\
+It uses decision trees to make predictions for classification and regression
+problems [@breiman2001random].\
+\
+**Classification:** Predicts a categorical outcome (e.g. Yes or No)\
+**Regression:** Predicts a continuous outcome (e.g. Income)
+
+## How Decision Trees Work
+
+- A single decision tree scans every predictor and chooses the one that splits
+the data most cleanly
+- Higher purity = cleaner split
+  - Classification: Gini impurity, entropy, log loss
+  - Regression: MSE, MAE
+
+## Decision Tree Limitations
+
+**Overfitting and High Variance**\
+
+- Decision tree algorithm is **greedy** [@james2023introduction]
+  - The tree picks the best split at each step, never looking ahead
+  - A split that looks good now may not lead to the best tree overall
+  - Result: the tree fits noise in its training data
+
+## Solution: Random Forest
+
+Rather than relying on a single decision tree, random forest introduces
+**randomization** and uses **multiple randomized decision trees** to make a
+prediction [@breiman2001random].\
+
+- Bootstrapping
+- Feature Subsampling\
+\
+
+## Randomization
+\
+**Bootstrapping**:
+Resamples rows with replacement to create each tree's training set -->
+randomizes the rows\
+\
+**Feature Subsampling**:
+Randomly restricts which predictors can be considered at each split -->
+randomizes the columns
+
+## Main Ideas
+
+Forest trees still make greedy splits. Bootstrapping and feature
+subsampling make the trees less correlated, so averaging their predictions
+reduces variance [@breiman2001random].\
+\
+**Ensemble Learning** [@scikitlearn2026ensembles]\
+Classification: `scikit-learn` averages the class probabilities across trees\
+Regression: `scikit-learn` averages the numerical predictions\
+\
+Random forest is an extension of **bagging**: bootstrap + aggregating
+
+## Bias-Variance Tradeoff
+
+| Type | Bias | Variance |
+|---|---|---|
+|Single decision tree | Low | High|
+|Individual forest tree | Slightly higher | Typically high|
+|Full forest | About same as individual tree | Lower than individual tree|
+
+Exact values depend on the data and settings.
+
+## Using Random Forest in Python
+
+Random Forest is implemented using the `scikit-learn` package in Python
+[@scikitlearn2026randomforestclassifier].
+
+- Classification: `RandomForestClassifier`
+- Regression: `RandomForestRegressor`
+
+## Parameters
+
+|Parameter| Function|
+|---|---|
+|`n_estimators` (default = 100) | number of trees|
+|`max_depth` | controls the maximum number of levels in each tree|
+|`max_features` (default = sqrt) | controls how many predictors available|
+|`random_state` | controls randomness, similar to random.seed()|
+
+## Other Parameters
+
+- `min_samples_split`
+- `min_samples_leaf`
+- `max_leaf_nodes`
+- `criterion`
+- `n_jobs`
+
+## Example: NYC 311 Parking Requests
+\
+**Using random forest, how accurately can we predict a long closure request?**\
+\
+Data: NYC Open Data's 311 Service Requests [@cityofnewyork2026311]\
+\
+Filtered for illegal parking requests created September 6–12, 2026
+(Labor Day week)
+
+## Setting up the Data
+
+```{python}
+#| echo: false
+import pandas as pd
+pct = lambda x: f"{x:.1%}"
+```
+```{python}
+# import data
+df = pd.read_parquet("../../data/parking_requests_with_zcta.parquet")
+
+# fixed seed used throughout presentation for reproducibility
+SEED = 2026
+
+# create copy of the data to use for model
+model_data = df.dropna(
+    subset=["closure_hours", "created_at", "borough", "problem_detail"]
+).copy()
+```
+- 13,040 eligible illegal parking requests created September 6–12, 2026
+- Data file provided in the course notes and no further rows were removed
+- The four fields used have no missing values, so `dropna` removed no rows
+- Closure time is when the request was closed, not necessarily when the
+parking problem was resolved
+
+## Step 1: Defining Variables
+
+```{python}
+#| echo: false
+# create interval variable by splitting days into four 6-hour intervals
+model_data["hour_group"] = pd.cut(
+    model_data["created_at"].dt.hour,
+    bins=[-1, 5, 11, 17, 23],
+    labels=["00_05", "06_11", "12_17", "18_23"],
+)
+# add snake_case values for borough and problem detail
+for col in ["borough", "problem_detail"]:
+    model_data[col] = (model_data[col].str.lower()
+                       .str.replace(r"[^a-z0-9]+", "_", regex=True)
+                       .str.strip("_"))
+
+# create categorical variable for day of the week
+model_data["day_of_week"] = model_data["created_at"].dt.day_name().str.lower()
+```
+
+```{python}
+# create binary variable for long closure time at least 2 hours
+model_data["long_closure"] = model_data["closure_hours"].ge(2).astype(int)
+
+# one-hot encode categorical predictors
+X = pd.get_dummies(
+    model_data[['hour_group', 'problem_detail', 'borough', 'day_of_week']],
+    prefix = {'hour_group': 'hr', 'problem_detail': 'prob',
+              'borough': 'boro', 'day_of_week': 'day'})
+y = model_data['long_closure']
+```
+- **Response**: `long_closure = 1` if the request took 2 or more hours to
+close, `long_closure = 0` if the request took less than 2 hours to close
+- **Predictors**: time of day (four 6-hour blocks), day of week, borough,
+problem detail
+- 2-hour cutoff was chosen to give fairly balanced classes (55/45 split)
+
+## Why Dummy Variables?
+
+- `scikit-learn` models need numeric inputs [@pedregosa2011scikit]
+  - Categories are converted to 0/1 columns
+- Works well for variables with few categories
+- With many levels, dummies create many columns, and alternatives can be
+considered
+  - Alternatives have trade-offs: ordinal coding imposes an order, and
+  target encoding must be fit within training/CV folds to avoid leakage
+
+## Step 2: Splitting the Data
+
+```{python}
+# import train_test_split from scikit-learn
+from sklearn.model_selection import train_test_split
+
+# split data into training and test set, stratify split by outcome
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size = 0.2, random_state = SEED, stratify = y)
+```
+- Hold out 20% for testing (stratified by outcome), train on the other 80%
+
+## Step 3: Fitting the Model
+
+```{python}
+# import RandomForestClassifier from scikit-learn
+from sklearn.ensemble import RandomForestClassifier
+
+# set parameters for the random forest model
+model = RandomForestClassifier(
+    n_estimators = 100,
+    random_state = SEED)
+
+# fit the random forest model on the training data
+model.fit(X_train, y_train);
+```
+- Fit model using `RandomForestClassifier` function
+
+## Step 4: Assessing the Model
+
+```{python}
+#| echo: false
+from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.dummy import DummyClassifier
+
+# Random forest model
+predictions = model.predict(X_test)
+
+# Single decision tree
+tree = DecisionTreeClassifier(random_state=SEED)
+tree.fit(X_train, y_train)
+tree_pred = tree.predict(X_test)
+
+# Baseline model
+baseline = DummyClassifier(strategy="most_frequent")
+baseline.fit(X_train, y_train)
+baseline_pred = baseline.predict(X_test)
+
+# accuracy of each model (used in the table and the bullets below)
+acc_rf = accuracy_score(y_test, predictions)
+acc_tree = accuracy_score(y_test, tree_pred)
+acc_base = accuracy_score(y_test, baseline_pred)
+
+# print accuracy results to a DataFrame
+results = pd.DataFrame({
+    "Model": ["RF", "Decision Tree", "Baseline"],
+    "Accuracy": [acc_rf, acc_tree, acc_base]
+})
+results
+```
+- Random forest (`{python} pct(acc_rf)`) beats the majority-class baseline
+(`{python} pct(acc_base)`)
+- It has the same rounded value as a single decision tree
+(`{python} pct(acc_tree)`)
+
+## Is Accuracy the Best Metric?
+
+- Accuracy is vague and doesn't specify which errors the model makes
+- Classes are fairly balanced, so always predicting the majority class already
+gets `{python} pct(acc_base)` accuracy\
+\
+**Evaluation Goal**: Compare models on recall and F1 for long closures\
+\
+**Assumption**: a missed long closure is costlier than a false alarm. An agency
+relying on the model would not prioritize a request it predicts will
+close quickly, while a false alarm only costs a quick check. This is an
+assumption about the application, not something the data shows.
+
+## Additional Metrics to Consider
+
+Positive class: long closure (`long_closure = 1`)
+
+- **TP:** predicted long, actually long
+- **FP:** predicted long, actually under 2 hours
+- **FN:** predicted under 2 hours, actually long
+- **Precision** = TP / (TP + FP)
+- **Recall** = TP / (TP + FN)
+
+$$F_1 = \frac{2\,\text{TP}}{2\,\text{TP} + \text{FP} + \text{FN}}$$
+
+## Results
+
+```{python}
+#| echo: false
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+def summarize(name, pred):
+    return {"Model": name,
+            "Accuracy": accuracy_score(y_test, pred),
+            "Precision": precision_score(y_test, pred, zero_division=0),
+            "Recall": recall_score(y_test, pred, zero_division=0),
+            "F1": f1_score(y_test, pred, zero_division=0)}
+
+results = pd.DataFrame([
+    summarize("RF", predictions),
+    summarize("Decision Tree", tree_pred),
+    summarize("Baseline", baseline_pred),
+])
+
+m = results.set_index("Model")
+
+results.style.hide().format(precision=4)
+```
+- Assumption: missed long closures are costlier, so recall matters
+- F1 balances precision and recall, so it is high only when both
+are high
+- RF has a higher F1 than a single decision tree
+(`{python} pct(m.loc['RF', 'F1'])` vs
+`{python} pct(m.loc['Decision Tree', 'F1'])`)
+
+## Tuning with Hyperparameters
+
+- Random forest models are often tuned using grid search cross validation
+  - Implemented using `GridSearchCV` from `scikit-learn`
+- Evaluates each combination of hyperparameters with cross validation
+- Selects best performing combination
+- Tune on F1: balances precision and recall for the positive class (long
+closure)
+
+## Step 5: Tuning
+
+```{python}
+# import GridSearchCV from scikit-learn
+from sklearn.model_selection import GridSearchCV
+
+# define parameters to test
+param_grid = {
+    'min_samples_leaf': [10, 20, 50], # min number of samples needed for a leaf
+    'max_depth': [5, 10, 20], # total number of levels
+    'max_features': ['sqrt', 0.5] # how many predictors at each split
+}
+```
+- Larger leaves and shallower trees limit how closely each tree fits the
+training data, which can reduce overfitting
+- With `{python} X.shape[1]` encoded predictors, `'sqrt'` tries about 5 per
+split and `0.5` tries about half, giving two distinct choices
+- These are starting candidates for training-set CV, not known best values
+
+## Step 6: Cross-Validation
+
+```{python}
+# grid search with 5-fold cross validation on the training set
+grid_search = GridSearchCV(
+    estimator = model,
+    param_grid = param_grid,
+    cv = 5,
+    scoring = 'f1', # balances precision and recall for long_closure = 1
+    n_jobs = 1
+)
+```
+- Each of the 18 combinations is evaluated with 5-fold CV
+
+## Step 7: Re-Fit Model
+
+```{python}
+# run cross validation training data and define chosen best model
+grid_search.fit(X_train, y_train)
+best_model = grid_search.best_estimator_
+
+print(grid_search.best_params_) # parameters for chosen model
+print(round(grid_search.best_score_, 4)) # mean F1 score across training folds
+
+new_pred = best_model.predict(X_test)
+```
+- `GridSearchCV` selects the combination with the highest CV F1 among the
+18 candidates (test results were not used to choose it)
+- It then refits the chosen configuration on all training data by default
+(`refit=True`)
+
+## Checking Tree-Count Stability
+
+```{python}
+from sklearn.base import clone
+from sklearn.model_selection import cross_val_score
+
+for n in [100, 200]:
+    rf_n = clone(best_model).set_params(n_estimators = n)
+    f1 = cross_val_score(rf_n, X_train, y_train, cv = 5, scoring = "f1").mean()
+    print(n, round(f1, 4))
+```
+- CV F1 was 0.519 with 100 trees and 0.523 with 200
+- Small change indicates that 100 trees is sufficient for the model
+
+## New Results
+
+```{python}
+#| echo: false
+results = pd.DataFrame([
+    summarize("Tuned RF", new_pred),
+    summarize("RF", predictions),
+    summarize("Decision Tree", tree_pred),
+    summarize("Baseline", baseline_pred),
+])
+
+m = results.set_index("Model")
+
+results.style.hide().format(precision=4)
+```
+- Tuning did not improve test F1 here (`{python} pct(m.loc['Tuned RF', 'F1'])`
+vs `{python} pct(m.loc['RF', 'F1'])` for the original RF)
+- By test F1, the original RF is the best of these candidates on this split
+  - Its recall is only `{python} pct(m.loc['RF', 'Recall'])` but still higher
+  than the other models
+
+## Interpretation
+
+- The difference between RF and tuned RF is small and comes from only one
+split, so it could be due to noise
+- Stronger regularization (larger leaves, shallower trees) from tuning does not
+automatically improve held-out performance
+- Fully grown trees often work well in forests because averaging already
+reduces variance [@scikitlearn2026ensembles]
+
+## Important Considerations
+
+- Tuning choices are made with training-set CV only
+  - Further tuning based on test results would turn the test set into part of
+the training process, so no further tuning is done
+- This random split within one week evaluates requests from that period and
+does not show how the model would forecast future weeks
+
+## Confusion Matrices
+
+```{python}
+#| echo: false
+from sklearn.metrics import confusion_matrix
+
+rows = {}
+for name, pred in [("Tuned RF", new_pred), ("RF", predictions),
+                   ("Decision Tree", tree_pred)]:
+    tn, fp, fn, tp = confusion_matrix(y_test, pred).ravel()
+    rows[name] = {"TN": int(tn), "FP": int(fp), "FN": int(fn), "TP": int(tp)}
+pd.DataFrame(rows).T
+```
+- Positive class: long closure (2 hours or more)
+- Assumption: false negatives (actually long, predicted under 2 hours) are
+costlier
+- False negatives: tuned RF `{python} rows['Tuned RF']['FN']`, RF
+`{python} rows['RF']['FN']`, decision tree
+`{python} rows['Decision Tree']['FN']`
+- RF misses the fewest long closures
+
+## Random Forest Limitations
+
+:::{.incremental}
+1. **Inability to Extrapolate:**\
+Random forest cannot predict a value beyond what it was trained on.\
+This limits its prediction capabilities for regression problems.\
+
+2. **Challenges with High-Cardinality Categorical Variables:**\
+Predictors with many unique labels (e.g. ZIP codes) create many splits and
+many dummy columns.\
+This can raise the risk of overfitting and make results harder to interpret.\
+:::
+
+## Limitations (Cont.)
+
+3. **No Built-In Handling of Time-Series Data:**\
+Treats every row as an independent observation.\
+Temporal patterns need engineered features (e.g. lag or calendar variables)
+and time-aware validation.
+
+## Key Takeaways
+
+:::{.incremental}
+1. **Reduces variance**: Averaging many less-correlated trees reduces the
+overfitting of a single tree\
+2. **Versatile**: Handles both classification and regression
+  - Captures complex, non-linear relationships
+3. **Strong with rich data**: Performs well on historical data with many
+variables\
+4. **Evaluate beyond accuracy**: Accuracy can mask uneven errors
+  - Important to check F1 and the confusion matrix
+:::
+
+## Sources
+
+::: {#refs}
+:::
+AI Use Disclosure: Claude was used to help reformat output tables, edit
+grammar, shorten sections, and revise code and slide text in response to
+instructor feedback.
