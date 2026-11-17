@@ -39,7 +39,7 @@ predicting wins/losses in sports, and categorizing documents.
 
 ## Bayes' Theorem
 
-$$ 
+$$
 P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}.
 $$
 
@@ -459,7 +459,7 @@ or resume scanners.
 
 ## Example - Multinomial NB
 
-- Let's use our application example again, however, this time using python 
+- Let's use our application example again, however, this time using python
 to create a Multinomial Naive Bayes classifier.
 
 - We are scanning applications in search of a Data Scientist, and are
