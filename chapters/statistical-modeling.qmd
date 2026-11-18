@@ -12,6 +12,8 @@ prediction, dimension reduction, clustering, and supervised learning.
 | [Naive Bayes](../topic/nick-tria-naive-bayes/) | Nicholas Tria | Classification |
 | [Perfect Separation in Logistic Regression](../topic/morissette-separation/) | Carter Morissette | Limits of logistic regression. |
 | [Random Forest](../topic/sadie-bucco-random-forest/) | Sadie Bucco | Ensemble Classification. |
+| [Multidimensional Scaling](../topic/hartman-mds/) | Mikaela Hartman | Dimension Reduction. |
+
 The decision-tree presentation fits a small classifier using request fields
 available at creation, compares it with a majority baseline, and explains
 why accuracy alone can hide missed Illegal Parking requests.
@@ -31,3 +33,8 @@ improves on single decision trees through bootstrapping and feature
 subsampling. It walks through a classification example in Python using NYC 311
 Service Request data, covering evaluation metrics and grid search tuning, and
 closes with the method's key limitations.
+
+The multidimensional scaling presentation introduces multidimensional scaling,
+a tool for modeling high-dimensional pairwise data in a low-dimensional space.
+It includes one low-dimensional and one high-dimensional example of metric
+multidimensional scaling and discusses limitations of the method.

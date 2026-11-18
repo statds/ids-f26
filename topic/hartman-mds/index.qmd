@@ -1,0 +1,413 @@
+---
+title: "Multidimensional Scaling"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Mikaela Hartman"
+bibliography: references.bib
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+    fig-format: svg
+jupyter: python3
+---
+
+## Who I Am
+
+- Junior double majoring in Applied Mathematical Sciences and Political Science
+with a dual degree in Statistical Data Science (American Political
+Representation concentration)
+- Studying abroad in Amsterdam next semester!
+- Chose this topic because it is widely applicable to politics (NOMINATE)
+
+## What is Multidimensional Scaling?
+
+- Also known as MDS
+- Used to quantitatively estimate and visualize similarity among items within a
+group
+- Takes proximity measurements, ratings, or perceptual measurements of
+similarity as input and outputs a map of data points
+- Similar items are located closer together [@hout2013]
+- Several types of MDS [@young1985]
+- Algorithms iteratively map points to minimize stress [@hout2013]
+
+## Applications
+
+1. Mapping [@young1985]
+2. Political Science 
+   - NOMINATE: an MDS tool used to estimate spatial coordinates between
+     political choices, notably voting history of legislators
+      - Differs from the MDS discussed here, instead assuming probabilistic
+      voting based on a spatial utility function [@poole1985]
+3. Cognition and Psychology [@hornberger2009]
+4. Marketing and Brand Strategy [@carroll1997]
+5. Ecology [@kenkel1986]
+
+## MDS Notation
+- $S$ is the input dissimilarity matrix, where each entry $s_{ij}$ is the
+dissimilarity between items $i$ and $j$ [@young1985]
+  - larger entries = less similar items
+- $X$ is an $n \times r$ matrix of coordinates with one row per item for $n$
+items and one column per dimension for $r$ dimensions
+- $D$ is the fitted distance matrix, where each entry $d_{ij}$ is the distance
+between points $i$ and $j$ on the map
+
+## Choosing X
+- The goal of MDS is to choose $X$ so that $D$ matches $S$ as closely as
+possible (i.e. minimizes stress) [@young1985]
+- Generally uses Euclidean distance for the distance between points $i$ and
+$j$, $d_{ij}=\sqrt{\sum_{a=1}^{r}(x_{ia}-x_{ja})^2}$, where $a$ indexes the
+dimensions from 1 to $r$ and $x_{ia}$ is the coordinate of item $i$ in the
+$a\text{th}$ dimension
+- Each distance $d_{ij}$ is an entry in $D$ [@young1985]
+
+## Metric vs Nonmetric MDS
+
+<style>
+.reveal .tchart table {
+  table-layout: fixed;
+  width: 100%;
+}
+.reveal .tchart table td,
+.reveal .tchart table th {
+  width: 50%;
+}
+.reveal .tchart table td:first-child,
+.reveal .tchart table th:first-child {
+  border-right: 2px solid gray !important;
+}
+</style>
+
+::: {.tchart}
+| Metric | Nonmetric |
+|:-:|:-:|
+| Ratio or interval data | Ordinal data allowed |
+| Linear function | Positive monotonic function |
+| Preserves magnitudes | Preserves rank order |
+:::
+
+::: {style="text-align: center; margin-top: 1em;"}
+We'll be going through two examples of metric MDS, since each takes numeric
+distances as input.
+:::
+
+::: footer
+Sources: [@hout2013], [@young1985]
+:::
+
+## Example 1: Creating S {.smaller}
+
+$S$, the dissimilarity matrix, contains the great-circle distances in miles
+between cities I'd like to visit when I'm abroad, specifically: Paris, Munich,
+Brussels, Zurich, Stockholm, Prague, Dubrovnik, and, of course, Amsterdam.
+
+```{python}
+#| echo: true
+import numpy as np
+from geopy.distance import great_circle
+coords = [ # (latitude, longitude)
+  (48.8534, 2.3488), (48.1374, 11.5755),    # Paris, Munich
+  (50.8505, 4.3488), (47.3667, 8.5500),    # Brussels, Zurich
+  (59.3294, 18.0687), (50.0880, 14.4208),   # Stockholm, Prague
+  (42.6413, 18.1091), (52.3740, 4.8897),   # Dubrovnik, Amsterdam
+]
+S = np.array([[great_circle(a, b).miles for b in coords] for a in coords])
+print("S:", np.array2string(np.round(S).astype(int), prefix="S: "))
+```
+
+::: footer
+Source: [@geonames]
+:::
+
+## Example 1: Creating X
+
+```{python}
+#| echo: true
+from sklearn.manifold import MDS
+
+X = MDS(
+  n_components=2, metric="precomputed", random_state=3255
+).fit_transform(S)
+np.round(X).astype(int)
+```
+
+::: {style="font-size: 0.8em;"}
+**n_components**: dimensions of visualization
+
+**metric**: "euclidean" (default) or "precomputed" (S is already a square
+dissimilarity matrix)
+
+**random_state**: determines the random number generator that sets the random
+arrangement of points, allowing for reproducible results [@scikitlearnmds]
+:::
+
+
+## Example 1: Creating D
+
+```{python}
+#| echo: true
+from scipy.spatial.distance import pdist, squareform
+
+D = squareform(pdist(X))
+
+print("Paris and Munich Rows of S (input dissimilarities):")
+print(np.round(S[:2]).astype(int))
+
+print("\nParis and Munich Rows of D (fitted distances):")
+print(np.round(D[:2]).astype(int))
+print(f"\nRMSE (in mi): {np.sqrt(np.mean((S - D) ** 2)):.0f}")
+```
+
+::: {style="font-size: 0.8em;"}
+$D$ is an approximation of $S$ computed from $X$, so $s_{ij} \approx d_{ij}$.
+The root-mean-square error is about 1 mile compared to input distances ranging
+from 108 to 1153 miles, indicating a strong fit.
+:::
+
+## Example 1: Plotting the Map {.smaller}
+```{python}
+#| echo: true
+#| output: false
+import matplotlib.pyplot as plt
+
+cities = [
+  "Paris", "Munich", "Brussels", "Zurich",
+  "Stockholm", "Prague", "Dubrovnik", "Amsterdam"
+]
+
+def plot_map(matrix, labels, margins=(0.35, 0.15), offsets=None):
+  offsets = offsets or {}
+  fig, ax = plt.subplots()
+  ax.scatter(matrix[:, 0], matrix[:, 1])
+  ax.margins(x=margins[0], y=margins[1])
+  ax.set_aspect("equal")
+  for (x, y), label in zip(matrix, labels):
+    plt.annotate(
+      label, (x, y), textcoords="offset points",
+      xytext=offsets.get(label, (5, 5))
+    )
+  plt.close(fig)
+  return fig
+
+fig1 = plot_map(X, cities)
+```
+
+## Example 1: Reading the Map
+::::: {style="font-size: 0.8em;"}
+:::: {.columns .align-center}
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| output: true
+#| fig-align: center
+#| fig-alt: "MDS map of eight European cities. Amsterdam, Brussels, and Paris are clustered together and Stockholm is far from all other cities."
+fig1
+```
+
+:::
+::: {.column width="50%"}
+**What this plot tells us:**
+
+- Amsterdam, Brussels, and Paris are geographically similar
+  - It will likely be easier for me to travel from Amsterdam to Brussels or
+  Paris than it will be for me to travel to Stockholm or Dubrovnik
+- Stockholm is geographically dissimilar to all of the other cities
+  - It is likely that Stockholm experiences the seasons differently than
+  Amsterdam or the other cities I visit; I may have to pack differently
+:::
+::::
+:::::
+
+## A Note on Orientation
+
+- The raw orientation of an MDS map is arbitrary
+- Choosing a north-up orientation requires outside geographical knowledge,
+like knowing that Stockholm is in the north and Dubrovnik is almost due south
+of Stockholm
+- For visualizing abstract similarity data, the orientation of the points
+doesn't matter because the distances between them remain the same
+
+## Example 1: Transforming the Map
+
+```{python}
+#| echo: true
+#| output: false
+theta = np.radians(140)
+R = np.array([
+  [np.cos(theta), -np.sin(theta)],
+  [np.sin(theta), np.cos(theta)],
+])
+X_rotated = X @ R.T
+
+fig2 = plot_map(
+  X_rotated, cities, margins=(0.5, 0.1), offsets={"Zurich": (-30, -14)}
+)
+```
+
+Above, `theta` is the counterclockwise rotation angle in radians, $R$ is a
+standard rotation matrix that rotates each point by `theta`, and `.T` produces
+the transpose, which swaps the rows and columns of the rotation matrix.
+
+## Example 1: New Orientation
+```{python}
+#| echo: false
+#| output: true
+#| fig-align: center
+#| fig-alt: "The same eight city MDS map rotated 140 degrees; orientation has changed, but distances have not."
+fig2
+```
+
+## A Note on Dimensionality
+
+- The city example created a 2-dimensional map from data that was already in
+two dimensions
+- MDS is most useful for visualizing high-dimensional data
+- We'll go through another example using a dataset built into scikit-learn
+that includes 178 samples of 3 different classes of wine [@scikitlearnloadwine], each with 13 chemical
+or physical attributes as dimensions [@scikitlearnuserguide]
+  - MDS does **not** use the 3 existing classes within the data when plotting
+    points
+
+## Example 2: Creating S
+```{python}
+#| echo: true
+from sklearn.datasets import load_wine
+from sklearn.preprocessing import StandardScaler
+
+wine = load_wine()
+standardized = StandardScaler().fit_transform(wine.data)
+S2 = squareform(pdist(standardized, metric="euclidean"))
+print("First 5 rows and columns of S2:")
+print(np.round(S2[:5, :5], 4))
+```
+
+::: {style="font-size: 0.8em;"}
+$S$ is now a unitless dissimilarity matrix containing the Euclidean distances
+between every pair of wine samples based on all 13 standardized features of the
+sample. Standardization keeps larger numerical features from dominating the
+distances.
+:::
+
+## Example 2: Creating X and D
+
+```{python}
+#| echo: true
+X2 = MDS(
+  n_components=2, metric="precomputed", random_state=3255
+).fit_transform(S2)
+D2 = squareform(pdist(X2))
+
+print("First 2 rows of X2:")
+print(np.round(X2[:2], 4))
+print("First 2 rows and 5 columns of S2:")
+print(np.round(S2[:2, :5], 4))
+print("First 2 rows and 5 columns of D2:")
+print(np.round(D2[:2, :5], 4))
+```
+
+## Example 2: Assessing Fit
+::::: {style="font-size: 0.9em;"}
+:::: {.columns .align-center}
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| fig-alt: "Scatter plot of fitted distances against input dissimilarities for all pairs of wines. Fitted distance generally rises with input dissimilarity."
+upper_entries = np.triu_indices_from(S2, k=1)
+fig3, ax3 = plt.subplots()
+ax3.scatter(S2[upper_entries], D2[upper_entries], s=6, alpha=0.4)
+ax3.set_aspect("equal")
+ax3.axline((0, 0), slope=1, color="black", linestyle="--")
+ax3.set_xlabel("Input Dissimilarity, $s_{ij}$")
+ax3.set_ylabel("Fitted Distance, $d_{ij}$")
+plt.show()
+```
+
+:::
+::: {.column width="50%"}
+ - Points along the dashed line were fitted perfectly
+ - Points below the dashed line were fitted closer together than they really
+ are
+ - Points above the dashed line were fitted further apart than they really are
+ - Overall trend is preserved, but many individual distances were distorted by
+ the dimension reduction
+:::
+::::
+:::::
+
+## Example 2: Plotting the Map
+```{python}
+#| echo: true
+#| output: false
+fig4, ax4 = plt.subplots()
+for k, name in enumerate(wine.target_names):
+  m = wine.target == k
+  ax4.scatter(X2[m, 0], X2[m, 1], s=20, alpha=0.8, label=name)
+ax4.set_aspect("equal")
+ax4.legend(title="Class")
+plt.show()
+```
+
+## Example 2: Reading the Map
+::::: {style="font-size: 0.9em;"}
+:::: {.columns .align-center}
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| fig-alt: "2-Dimensional MDS map of 178 wine samples colored by class. Class 2 forms a distinct group in the upper right, Class 0 is grouped to the left, and Class 1 is the most spread out."
+fig4
+```
+
+:::
+::: {.column width="50%"}
+ - Wine samples falling into Class 2 are the most distinct
+ - Class 0 wine samples also form a relatively tight group
+ - Class 1 is the most spread out, and even includes some outliers that are
+ shown to be more similar to Class 0 or Class 2
+ - The exact distinction between the three classes gets lost in the dimension
+ reduction, but groups remain largely separated
+:::
+::::
+:::::
+
+## Limitations
+
+- Using MDS for locations risks creating a plot where data points aren't in
+their cardinal positions
+- MDS maps relative relationships, not absolute measurements
+- MDS doesn't eliminate the subjectivity of similarity measurements
+[@grover2010]
+- Information from high-dimensional data can get lost in reduction
+
+## Key Takeaways
+
+- There are many types of MDS, and metric MDS is the strictest since it assumes
+distances are meaningful as numbers
+- MDS helps quantify and visualize abstract similarity data and relative
+position data for locations
+- Even MDS maps for locations that don't output data points in their cardinal
+position can be useful
+- MDS allows us to reduce high-dimensional data to lower, more comprehensible
+dimensions
+
+## Sources
+
+::: {style="font-size: 0.85em; line-height: 1.2;"}
+::: {#refs}
+:::
+:::
+
+## AI Disclosure {.smaller}
+
+I used Claude to:
+
+- find sources to conduct research,
+- format slides with tables and plots,
+- properly implement geopy,
+- find a high-dimensional dataset,
+- color code points in Example 2,
+- debug code (particularly the `plot_map()` function),
+- create my BibTeX entries, and
+- proofread my text.
