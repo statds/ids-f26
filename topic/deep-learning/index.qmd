@@ -1,0 +1,1206 @@
+---
+title: "Deep Learning"
+subtitle: "Introduction to Data Science | Fall 2026"
+author: "Ruhama Choudhury"
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    auto-stretch: false
+    fig-format: svg
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+    include-in-header:
+      text: |
+        <style>
+        .v-center-container {
+          display: flex; flex-direction: column;
+          justify-content: center; height: 90%;
+        }
+        .reveal .column img {
+          width: 100%; height: auto; max-height: 560px; object-fit: contain;
+        }
+        .reveal .r-stack img {
+          width: 100%; height: auto; max-height: 560px; object-fit: contain;
+        }
+        </style>
+    include-after-body:
+      text: |
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const refs = document.querySelector("#refs");
+          const more = document.querySelector("#refs-continued");
+          if (!refs || !more) return;
+          const entries = Array.from(refs.querySelectorAll(".csl-entry"));
+          const half = Math.ceil(entries.length / 2);
+          entries.slice(half).forEach(e => more.appendChild(e));
+        });
+        </script>
+bibliography: references.bib
+nocite: |
+  @*
+jupyter: python3
+---
+
+```{python}
+#| include: false
+"""
+Diagrams of the 8 deep learning architectures.
+
+Model names: "feedforward", "cnn", "rnn", "autoencoder",
+             "transformer", "mamba", "gan", "gnn"
+"""
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import (
+    Circle,
+    FancyArrowPatch,
+    FancyBboxPatch,
+    Rectangle,
+)
+
+# ---- colors -------------------
+BLUE, ORANGE, GREEN = "#4C72B0", "#DD8452", "#55A868"
+PURPLE, RED, GRAY, LIGHT = "#8172B3", "#C44E52", "#8C8C8C", "#D9D9D9"
+
+
+# ---- small drawing helpers ---------------------------------------------------
+def _setup(ax):
+    """Every panel uses the same 10 x 6 canvas."""
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 6)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+
+def _node(ax, x, y, color, r=0.28, text="", fs=8):
+    ax.add_patch(
+        Circle((x, y), r, facecolor=color, edgecolor="black", lw=1, zorder=3)
+    )
+    if text:
+        ax.text(
+            x,
+            y,
+            text,
+            ha="center",
+            va="center",
+            fontsize=fs,
+            color="white",
+            zorder=4,
+        )
+
+
+def _line(ax, p, q, color=GRAY, lw=0.7, alpha=0.6):
+    ax.plot(
+        [p[0], q[0]], [p[1], q[1]], color=color, lw=lw, alpha=alpha, zorder=1
+    )
+
+
+def _arrow(ax, p, q, color="black", lw=1.4, ls="-", rad=0.0):
+    ax.add_patch(
+        FancyArrowPatch(
+            p,
+            q,
+            arrowstyle="-|>",
+            mutation_scale=12,
+            color=color,
+            lw=lw,
+            linestyle=ls,
+            zorder=2,
+            connectionstyle=f"arc3,rad={rad}",
+        )
+    )
+
+
+def _box(ax, x, y, w, h, color, text="", fs=9, tc="white"):
+    ax.add_patch(
+        FancyBboxPatch(
+            (x - w / 2, y - h / 2),
+            w,
+            h,
+            boxstyle="round,pad=0.04,rounding_size=0.12",
+            facecolor=color,
+            edgecolor="black",
+            lw=1,
+            zorder=3,
+        )
+    )
+    if text:
+        ax.text(
+            x,
+            y,
+            text,
+            ha="center",
+            va="center",
+            fontsize=fs,
+            color=tc,
+            zorder=4,
+        )
+
+
+def _layers(ax, sizes, xs, colors, ymid=3.0, gap=1.0, r=0.28):
+    """Fully connected layers of neurons."""
+    pos = [
+        [(x, ymid + (j - (n - 1) / 2) * gap) for j in range(n)]
+        for x, n in zip(xs, sizes)
+    ]
+    for left, right in zip(pos[:-1], pos[1:]):
+        for p in left:
+            for q in right:
+                _line(ax, p, q)
+    for layer, c in zip(pos, colors):
+        for x, y in layer:
+            _node(ax, x, y, c, r)
+    return pos
+
+
+def _grid(ax, x0, y0, n, cell, color):
+    for i in range(n):
+        for j in range(n):
+            ax.add_patch(
+                Rectangle(
+                    (x0 + i * cell, y0 + j * cell),
+                    cell,
+                    cell,
+                    facecolor=color,
+                    edgecolor="white",
+                    lw=0.8,
+                    zorder=2,
+                )
+            )
+
+
+# ---- the 8 diagrams ----------------------------------------------------------
+def draw_feedforward(ax):
+    _setup(ax)
+    xs = [1.5, 4, 6.5, 9]
+    _layers(ax, [3, 4, 4, 2], xs, [BLUE, ORANGE, ORANGE, GREEN], ymid=3.1)
+    for x, t in zip(xs, ["Input", "Hidden", "Hidden", "Output"]):
+        ax.text(x, 0.6, t, ha="center", fontsize=9)
+    _arrow(ax, (3, 5.4), (7.5, 5.4))
+    ax.text(5.25, 5.6, "information flows one way", ha="center", fontsize=9)
+
+
+def draw_cnn(ax):
+    _setup(ax)
+    # input image with the filter window highlighted
+    _grid(ax, 0.3, 1.2, 6, 0.55, BLUE)
+    ax.add_patch(
+        Rectangle(
+            (0.3, 2.85), 1.65, 1.65, fill=False, edgecolor=RED, lw=2.5, zorder=4
+        )
+    )
+    ax.text(1.1, 4.75, "filter", ha="center", fontsize=9, color=RED)
+    # stack of feature maps (back to front)
+    for k in [2, 1, 0]:
+        _grid(ax, 4.6 + k * 0.3, 1.7 + k * 0.3, 4, 0.45, ORANGE)
+    ax.add_patch(
+        Rectangle(
+            (4.6, 3.05), 0.45, 0.45, fill=False, edgecolor=RED, lw=2, zorder=4
+        )
+    )
+    _line(ax, (1.95, 4.5), (4.6, 3.5), color=RED, lw=1, alpha=0.8)
+    _line(ax, (1.95, 2.85), (4.6, 3.05), color=RED, lw=1, alpha=0.8)
+    # pooling and output
+    _arrow(ax, (7.05, 3.0), (7.4, 3.0))
+    _grid(ax, 7.5, 2.55, 2, 0.45, PURPLE)
+    _arrow(ax, (8.45, 3.0), (9.05, 3.0))
+    _node(ax, 9.45, 3.0, GREEN, r=0.35, text="cat", fs=7)
+    for x, t in [
+        (1.95, "Image"),
+        (5.4, "Feature maps"),
+        (7.95, "Pooled"),
+        (9.45, "Label"),
+    ]:
+        ax.text(x, 0.6, t, ha="center", fontsize=9)
+
+
+def draw_rnn(ax):
+    _setup(ax)
+    xs = [1.5, 4, 6.5, 9]
+    words = ["The", "cat", "sat", "down"]
+    for i, (x, w) in enumerate(zip(xs, words), start=1):
+        _node(ax, x, 1.3, BLUE, r=0.35, text=f"x{i}")
+        ax.text(x, 0.45, w, ha="center", fontsize=9)
+        _box(ax, x, 3.0, 1.1, 0.75, ORANGE, f"h{i}")
+        _node(ax, x, 4.8, GREEN, r=0.35, text=f"y{i}")
+        _arrow(ax, (x, 1.65), (x, 2.6))
+        _arrow(ax, (x, 3.4), (x, 4.43))
+    for a, b in zip(xs[:-1], xs[1:]):
+        _arrow(ax, (a + 0.58, 3.0), (b - 0.58, 3.0), color=ORANGE, lw=2.2)
+        ax.text(
+            (a + b) / 2, 3.4, "memory", ha="center", fontsize=8, color=ORANGE
+        )
+    ax.text(5.25, 5.55, "reads one step at a time", ha="center", fontsize=9)
+
+
+def draw_autoencoder(ax):
+    _setup(ax)
+    xs = [1, 3, 5, 7, 9]
+    _layers(
+        ax,
+        [5, 3, 2, 3, 5],
+        xs,
+        [BLUE, ORANGE, PURPLE, ORANGE, GREEN],
+        ymid=3.0,
+        gap=0.9,
+    )
+    ax.text(
+        5, 4.0, "code", ha="center", fontsize=9, color=PURPLE, fontweight="bold"
+    )
+    ax.text(1, 5.3, "Input", ha="center", fontsize=9)
+    ax.text(9, 5.3, "Output ≈ Input", ha="center", fontsize=9)
+    ax.text(2.5, 0.35, "Encoder (compress)", ha="center", fontsize=9)
+    ax.text(7.5, 0.35, "Decoder (rebuild)", ha="center", fontsize=9)
+
+
+def draw_transformer(ax):
+    _setup(ax)
+    words = ["The", "cat", "sat", "on", "the", "mat"]
+    xs = [1 + i * 1.6 for i in range(len(words))]
+    focus = 2  # "sat"
+    # how much "sat" attends to each word
+    weights = [0.3, 0.9, None, 0.45, 0.15, 0.65]
+    for i, (x, w) in enumerate(zip(xs, words)):
+        if i != focus:
+            rad = -0.7 if x > xs[focus] else 0.7  # arcs bend upward
+            _arrow(
+                ax,
+                (xs[focus], 1.95),
+                (x, 1.95),
+                color=ORANGE,
+                lw=0.8 + 4 * weights[i],
+                rad=rad,
+            )
+    for i, (x, w) in enumerate(zip(xs, words)):
+        _box(ax, x, 1.55, 1.3, 0.7, ORANGE if i == focus else BLUE, w)
+    ax.text(
+        5,
+        5.3,
+        'Attention: how much should "sat"\nlook at each other word?',
+        ha="center",
+        fontsize=9,
+    )
+    ax.text(
+        5,
+        0.6,
+        "thicker arrow = more attention · all words processed at once",
+        ha="center",
+        fontsize=8,
+    )
+
+
+def draw_mamba(ax):
+    _setup(ax)
+    words = ["The", "um", "cat", "uh", "sat", "down"]
+    keep = [True, False, True, False, True, True]
+    xs = [1 + i * 1.6 for i in range(len(words))]
+    for x, w, k in zip(xs, words, keep):
+        _box(
+            ax,
+            x,
+            1.2,
+            1.2,
+            0.7,
+            BLUE if k else LIGHT,
+            w,
+            tc="white" if k else "dimgray",
+        )
+        _arrow(
+            ax,
+            (x, 1.6),
+            (x, 2.8),
+            color="black" if k else GRAY,
+            ls="-" if k else "--",
+            lw=1.4 if k else 1,
+        )
+        ax.text(
+            x + 0.25,
+            2.15,
+            "keep" if k else "skip",
+            fontsize=7,
+            color="black" if k else GRAY,
+        )
+        _box(ax, x, 3.2, 0.75, 0.75, ORANGE)
+    for a, b in zip(xs[:-1], xs[1:]):
+        _arrow(ax, (a + 0.42, 3.2), (b - 0.42, 3.2), color=ORANGE, lw=2.2)
+    ax.text(
+        5,
+        4.0,
+        "small running memory (state)",
+        ha="center",
+        fontsize=9,
+        color=ORANGE,
+    )
+    ax.text(
+        5,
+        5.2,
+        "Selective: chooses what to remember,\none pass, cost grows linearly",
+        ha="center",
+        fontsize=9,
+    )
+
+
+def draw_gan(ax):
+    _setup(ax)
+    _box(ax, 1.0, 4.0, 1.4, 0.8, GRAY, "Noise")
+    _box(ax, 3.5, 4.0, 2.0, 0.9, ORANGE, "Generator")
+    _box(ax, 6.0, 4.0, 1.5, 0.8, RED, "Fake")
+    _box(ax, 6.0, 1.6, 1.5, 0.8, BLUE, "Real")
+    _box(ax, 8.55, 2.8, 2.5, 0.9, PURPLE, "Discriminator", fs=8)
+    _arrow(ax, (1.72, 4.0), (2.48, 4.0))
+    _arrow(ax, (4.52, 4.0), (5.23, 4.0))
+    _arrow(ax, (6.77, 3.85), (7.7, 3.15))
+    _arrow(ax, (6.77, 1.75), (7.7, 2.45))
+    ax.text(8.6, 1.75, "real or fake?", ha="center", fontsize=9)
+    _arrow(ax, (8.6, 3.28), (3.5, 4.48), color=GRAY, ls="--", rad=0.35)
+    ax.text(
+        5.6,
+        5.55,
+        "feedback: generator learns to fool the discriminator",
+        ha="center",
+        fontsize=8,
+        color="dimgray",
+    )
+
+
+def draw_gnn(ax):
+    _setup(ax)
+    pos = {
+        "c": (5, 3),
+        "a": (3.2, 4.4),
+        "b": (3.0, 1.6),
+        "d": (6.9, 4.5),
+        "e": (7.1, 1.7),
+        "f": (1.2, 3.1),
+        "g": (8.9, 3.3),
+        "h": (5.2, 5.3),
+    }
+    neighbors = ["a", "b", "d", "e"]
+    other_edges = [
+        ("a", "f"),
+        ("b", "f"),
+        ("d", "g"),
+        ("e", "g"),
+        ("a", "h"),
+        ("d", "h"),
+        ("a", "b"),
+    ]
+    for u, v in other_edges:
+        _line(ax, pos[u], pos[v], lw=1.2, alpha=0.8)
+    # messages flow into the center node
+    for n in neighbors:
+        x, y = pos[n]
+        cx, cy = pos["c"]
+        dx, dy = cx - x, cy - y
+        d = (dx**2 + dy**2) ** 0.5
+        _arrow(
+            ax,
+            (x + dx / d * 0.4, y + dy / d * 0.4),
+            (cx - dx / d * 0.45, cy - dy / d * 0.45),
+            color=ORANGE,
+            lw=2.2,
+        )
+    for n, (x, y) in pos.items():
+        _node(ax, x, y, ORANGE if n == "c" else BLUE, r=0.4)
+    ax.text(
+        5,
+        0.4,
+        "each node gathers messages from its neighbors",
+        ha="center",
+        fontsize=9,
+    )
+
+
+# ---- public functions --------------------------------------------------------
+MODELS = {
+    "feedforward": ("Feedforward network", draw_feedforward),
+    "cnn": ("Convolutional network (CNN)", draw_cnn),
+    "rnn": ("Recurrent network (RNN)", draw_rnn),
+    "autoencoder": ("Autoencoder", draw_autoencoder),
+    "transformer": ("Transformer", draw_transformer),
+    "mamba": ("Mamba (state space model)", draw_mamba),
+    "gan": ("Generative adversarial network (GAN)", draw_gan),
+    "gnn": ("Graph neural network (GNN)", draw_gnn),
+}
+
+
+def show_model(name, figsize=(5.5, 3.3), title=False):
+    """Draw one model on its own figure."""
+    label, draw = MODELS[name]
+    fig, ax = plt.subplots(figsize=figsize)
+    draw(ax)
+    if title:
+        ax.set_title(label, fontsize=13, fontweight="bold")
+    plt.tight_layout()
+    plt.show()
+```
+
+## About Me
+
+- **Education:** Dual-degree in Statistical Data Science (concentration in
+  Financial Analysis) and Economics, minor in History, (graduating May 2028).
+- **Interests:** Sports analytics (association football/soccer), financial
+  analysis, marketing analytics
+- **Why Deep Learning?** Understanding deep learning is crucial to understanding
+  artificial intelligence, which is incredibly relevant in the world of data
+  science and economics.
+
+## What Is Deep Learning?
+
+**Deep Learning** is a subset of machine learning driven by mutilayered neural
+networks inspired by the structure of the human brain. [@ibm2025]
+
+It is responsible for powering many forms of modern artificial intelligence,
+such as image recognition, speech recognition, and chatbots.
+
+## What Is a Neural Network?
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+**Neural network:** a model that takes input data, recognizes patterns, then
+produces an output
+
+- Consists of **neurons** (or **nodes**), arranged in layers that form
+  connections
+- Each connection has a **weight** that scales how much its input contributes
+- Each node adds a **bias** that constantly offsets the weighted input
+- Weights and biases are adjusted during training to improve the model
+
+[@islp2023]
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+```{python}
+#| echo: false
+#| fig-align: center
+#| fig-alt: "Diagram of a neural network: an input layer of 3 nodes, 2 hidden layers of 5 nodes each, and an output layer of 2 nodes, each node connecting to the nodes in the next layer."
+import matplotlib.pyplot as plt
+
+
+def draw_nn(layers, labels, figsize=(8, 4.5)):
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.axis("off")
+    colors = ["#4C72B0"] + ["#DD8452"] * (len(layers) - 2) + ["#55A868"]
+
+    # (x, y) position of every neuron, centered vertically in its layer
+    pos = [
+        [(i, j - (n - 1) / 2) for j in range(n)] for i, n in enumerate(layers)
+    ]
+
+    # connections: every neuron to every neuron in the next layer
+    for left, right in zip(pos[:-1], pos[1:]):
+        for x1, y1 in left:
+            for x2, y2 in right:
+                ax.plot(
+                    [x1, x2],
+                    [y1, y2],
+                    color="gray",
+                    lw=0.6,
+                    alpha=0.5,
+                    zorder=1,
+                )
+
+    # neurons
+    for i, layer in enumerate(pos):
+        xs, ys = zip(*layer)
+        ax.scatter(xs, ys, s=600, color=colors[i], edgecolor="black", zorder=2)
+        ax.text(i, -max(layers) / 2 - 0.4, labels[i], ha="center", fontsize=12)
+
+    plt.show()
+
+
+draw_nn(
+    [3, 5, 5, 2],
+    ["Input layer", "Hidden layer 1", "Hidden layer 2", "Output layer"],
+)
+```
+
+:::
+
+::::
+
+## Inside One Neuron
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+- **Weights** scale each input; the **bias** shifts the total up or down
+- The **activation function** adds non-linearity, so stacked layers can learn
+  complex patterns
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of one neuron: input nodes are multiplied by weights and summed together with a bias, passed through an activation function, and produce an output."
+def draw_neuron(figsize=(7, 3.6)):
+    """One neuron: weighted inputs, plus a bias, through an activation."""
+    fig, ax = plt.subplots(figsize=figsize)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 5)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    for k, y in enumerate([4.0, 2.5, 1.0], start=1):
+        _node(ax, 1.0, y, BLUE, r=0.38, text=f"x{k}", fs=10)
+        end_y = 2.5 + (y - 2.5) * 0.15
+        _arrow(ax, (1.4, y), (4.05, end_y))
+        # height of the arrow at x = 2.3
+        line_y = y + (end_y - y) * (2.3 - 1.4) / (4.05 - 1.4)
+        ax.text(
+            2.3, line_y + 0.18, f"× w{k}", fontsize=10, ha="center", va="bottom"
+        )
+    _node(ax, 4.6, 2.5, ORANGE, r=0.55, text="Σ + b", fs=10)
+    ax.text(4.6, 3.35, "weighted sum\n+ bias (offset)", ha="center", fontsize=9)
+    _arrow(ax, (5.17, 2.5), (6.3, 2.5))
+    _box(ax, 7.1, 2.5, 1.5, 0.8, PURPLE, "activation", fs=9)
+    _arrow(ax, (7.88, 2.5), (8.7, 2.5))
+    _node(ax, 9.15, 2.5, GREEN, r=0.4, text="out", fs=9)
+    ax.text(
+        5,
+        0.25,
+        "output = activation(w1·x1 + w2·x2 + w3·x3 + b)",
+        ha="center",
+        fontsize=11,
+    )
+    plt.show()
+
+draw_neuron()
+```
+
+:::
+
+::::
+
+## Brief History of Neural Networks
+
+- **Late 1980s:** Popularized before other methods/models (e.g. SVMs, boosting,
+  random forests) were developed
+- **2000s:** New methods and models outperformed and were thus preferred over
+  neural networks
+- **2010s:** Repopularized after being redeveloped into *deep learning*
+
+[@islp2023]
+
+## Deep Learning and Neural Networks
+
+**Deep** means the network stacks multiple hidden layers between input and
+output.
+
+- Describes models that learn through several layers of representation
+- Each layer builds on the one before it
+- **Deep learning** is the field of training these multi-layered networks, along
+  with the architectures and techniques that make it work
+
+## How Does Deep Learning Fit Into Machine Learning?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{python}
+#| echo: false
+#| fig-align: center
+#| fig-alt: "Diagram of nested circles: A Deep Learning circle is nested within a Machine Learning circle which is nested within an Artificial Intelligence circle."
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+
+fig, ax = plt.subplots(figsize=(6, 6))
+
+# (radius, fill color, label, label y-position)
+circles = [
+    (3, "#C9D8F0", "Artificial Intelligence", 5),
+    (2.2, "#F6C9A8", "Machine Learning", 3),
+    (1.2, "#B9E0C1", "Deep Learning", 1),
+]
+
+# largest first, so smaller ones sit on top
+for r, color, label, label_y in circles:
+    ax.add_patch(Circle((0, r), r, facecolor=color, edgecolor="black", lw=1.5))
+    ax.text(
+        0,
+        label_y,
+        label,
+        ha="center",
+        va="center",
+        fontsize=14,
+        fontweight="bold",
+    )
+
+ax.set_xlim(-3.3, 3.3)
+ax.set_ylim(-0.3, 6.3)
+ax.set_aspect("equal")  # keeps circles round instead of oval
+ax.axis("off")
+plt.show()
+```
+
+:::
+
+::: {.column width="50%" .v-center-container}
+- **Artificial intelligence:** systems that perform tasks we associate with
+  human intelligence
+- **Machine learning:** AI that learns patterns from data instead of following
+  hand-written rules
+- **Deep learning:** machine learning with multi-layered neural networks
+:::
+
+::::
+
+
+## Deep Learning versus Traditional Machine Learning {.smaller}
+
+| | Machine Learning | Deep Learning |
+|---|---|---|
+| **Data** | Tends to work best with small to medium datasets | Tend to work best with large datasets |
+| **Feature Engineering** | Usually designed by humans | Usually learned from raw data |
+| **Training Time**| Tends to be faster | Tends to be slower |
+| **Hardware & Computing Power** | Usually needs less power; CPU is fine | Large models are usually trained on GPU; small networks run fine on CPU |
+| **Interpretability** | Tends to be easier to interpret and explain | Tends to be harder to interpret and explain (often considered a *black box*) |
+
+: *Note:* Describes general tendencies, not strict rules
+  {tbl-colwidths="[22,39,39]"}
+
+[@gfg2026; @ibm2025]
+
+## Types of Deep Learning {#types .smaller}
+
+| Type | Purpose/Application |
+|---|---|
+| [**Feedforward neural networks (FNNs)**](#fnn) | Classification and regression |
+| [**Convolutional neural networks (CNNs)**](#cnn) | Processing image/grid-shaped data |
+| [**Recurrent neural networks (RNNs)**](#rnn) | Processing sequential data: one step at a time |
+| [**Transformer models**](#transformer) | Processing sequential data: using attention |
+| [**Mamba models**](#mamba) | Processing sequential data: using longer data |
+| [**Autoencoders**](#autoencoder) | Compressing (encoding) and reconstructing (decoding) input data |
+| [**Generative adversarial networks (GANs)**](#gan) | Creating new data that resembles training data |
+| [**Graph neural networks (GNNs)**](#gnn) | Data defined by complex relationships (*networks*) |
+
+: {tbl-colwidths="[40,60]"}
+
+## [Feedforward Neural Networks (FNNs)][src-fnn] {#fnn .smaller}
+
+[src-fnn]: https://www.geeksforgeeks.org/deep-learning/feedforward-neural-network/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+**How It Works**
+
+1. Each neuron takes a weighted sum of its inputs, adds its bias, and applies an
+   activation function
+2. Information only flows forwards: each layer's outputs becomes the next
+   layer's inputs
+3. **Loss function** measures how far predictions are from the true answers
+4. **Backpropagation** works out how each weight and bias affected the loss;
+   **gradient descent** then adjusts the weights and biases to reduce the loss
+   function
+5. Steps 3-4 repeats until the loss function is sufficiently minimized
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a FNN: input layer of 3 nodes is connected to 2 hidden layers consisting of 5 nodes each, which is itself connected to an output layer of 2 nodes."
+show_model("feedforward")
+```
+
+:::
+
+::: {.fragment .fade-in fragment-index=2 style="width: 100%;"}
+### FNN Summary
+
+| Feature | Explanation |
+|---|---|
+| **Process** | Information flows in one direction directly from input layer to hidden layer(s) to output layer |
+| **Purpose** | General-purpose method, typically used for classification and regression |
+| **Example(s) of Application** | Predicting loan default |
+| **How it Differs** | Simplest type of deep learning |
+| **Other Information** | Also known as *multi-layer perceptron MLP* |
+
+: {tbl-colwidths="[25,75]"}
+
+Source: [@gfg_fnn]
+
+[← Back](#types)
+
+:::
+
+::::
+
+## [Convolutional Neural Networks (CNNs)][src-cnn] {#cnn .smaller}
+
+[src-cnn]: https://www.geeksforgeeks.org/machine-learning/introduction-convolution-neural-network/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+**How It Works**
+
+1. **Filter:** Small grid of weights that slides across the image,
+2. At each position, it multiplies and sums the pixels it covers, producing a
+   **feature map**.
+3. Each layer learns multiple filters during training,
+4. **Pooling** layers shrink the feature maps.
+5. Recognized patterns become increasingly complex as the model moves through
+   the layers.
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a CNN: a grid representing image data contains a filter that produces a stack of feature maps, which are pooled into a smaller grid to create an output label."
+show_model("cnn")
+```
+
+:::
+
+::: {.fragment .fade-in fragment-index=2 style="width: 100%;"}
+### CNN Summary
+
+| Feature | Explanation |
+|---|---|
+| **Process** | Filters across an image to identify local patterns, slowly identifying increasingly complex patterns |
+| **Purpose** | Handles grid-shaped data (specifically images) |
+| **Example(s) of Application** | Facial identification, image grouping in photo apps |
+| **How it Differs** | Uses the spatial structure of the data; the same filter is reused everywhere in the dataset |
+| **Other Information** | Pooling layers in the network shrink the image throughout the process |
+
+Source: [@gfg_cnn]
+
+[← Back](#types)
+
+:::
+
+::::
+
+## [Recurrent Neural Networks (RNNs)][src-rnn] {#rnn .smaller}
+
+[src-rnn]: https://www.geeksforgeeks.org/machine-learning/introduction-to-recurrent-neural-network/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+**How It Works**
+
+1. Reads a sequence one element at a time
+2. Keeps a **hidden state**, a running memory: each new state combines the current input with the previous state
+3. The same weights are reused at every step
+4. Can produce an output at every step (e.g. the next word) or only at the end (e.g. whether a review is positive)
+5. Trained with **backpropagation through time**
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a RNN: the words 'The', 'cat', 'sat', 'down' are read one at a time, each feeding into a hidden state from h1-h4; each hidden state passes memory to the next and each produces an output of y1-y4."
+show_model("rnn")
+```
+
+:::
+
+::: {.fragment .fade-in fragment-index=2 style="width: 100%;"}
+### RNN Summary
+
+| Feature | Explanation |
+|---|---|
+| **Process** | Reads a sequence one step at a time while running a memory of what it has seen up to that point |
+| **Purpose** | Handles sequential data |
+| **Example(s) of Application** | Speech recognition, forecasting time series (weather, stock prices) |
+| **How it Differs** | Earlier inputs influence later outputs |
+| **Other Information** | Struggle to remember things from far back; tend to be slow |
+
+Source: [@gfg_rnn]
+
+[← Back](#types)
+
+:::
+
+::::
+
+## [Transformer Models][src-transformer] {#transformer .smaller}
+
+[src-transformer]: https://www.geeksforgeeks.org/machine-learning/getting-started-with-transformers/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+| Feature | Explanation |
+|---|---|
+| **Process** | Processes the whole sequence at once, using positional encodings to keep track of word order |
+| **Purpose** | Handles sequential data (especially language) |
+| **Example(s) of Application** | Chatbots and large language models |
+| **How it Differs** | Much faster than RNNs, better at long-range connections |
+| **Other Information** | Tends to be costly |
+
+Source: [@gfg_transformer]
+
+[← Back](#types)
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a Transformer model: in the sentence 'The cat sat on the mat', arrows of different thickness go from the word sat to every other word; the thickest go to 'cat' and 'mat', showing where the model pays the most attention."
+show_model("transformer")
+```
+
+:::
+
+::::
+
+## [Mamba Models][src-mamba] {#mamba .smaller}
+
+[src-mamba]: https://www.geeksforgeeks.org/artificial-intelligence/what-is-a-mamba-model/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+| Feature | Explanation |
+|---|---|
+| **Process** | Selectively moves through a sequences while keeping a running memory |
+| **Purpose** | Handles (very long) sequential data |
+| **Example(s) of Application** | DNA and genomics sequences, audio, long time series |
+| **How it Differs** | Cost tends to grow linearly, tends to train faster and remember better |
+| **Other Information** | Very new (introduced in 2023 by Albert Gu and Tri Dao) |
+
+Source: [@gfg_mamba]
+
+[← Back](#types)
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a Mamba model: the words 'The', 'um', 'cat', 'uh', 'sat', 'down' feed a chain of memory states; the filler words 'um' and 'uh' are grayed out and skipped, while the other words are kept."
+show_model("mamba")
+```
+
+:::
+
+::::
+
+## [Autoencoders][src-autoencoder] {#autoencoder .smaller}
+
+[src-autoencoder]: https://www.geeksforgeeks.org/machine-learning/auto-encoders/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+| Feature | Explanation |
+|---|---|
+| **Process** | *Encoder* compresses input into a summary, *decoder* tries to rebuild the original from the summary |
+| **Purpose** | Learning the most important features of data without labels |
+| **Example(s) of Application** | Fraud and anomaly detection |
+| **How it Differs** | No "right answer" since the data itself is the intended output |
+| **Other Information** | *Variational autoencoders (VAEs)* can generate new data |
+
+Source: [@gfg_autoencoder]
+
+[← Back](#types)
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of an Autoencoder: layers narrow from 5 input nodes down to a 2-node code in the middle, then widen back to 5 output nodes; the left half is labeled encoder (compress) and the right half decoder (rebuild)."
+show_model("autoencoder")
+```
+
+:::
+
+::::
+
+## [Generative Adversarial Networks (GANs)][src-gan] {#gan .smaller}
+
+[src-gan]: https://www.geeksforgeeks.org/deep-learning/generative-adversarial-network-gan/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+| Feature | Explanation |
+|---|---|
+| **Process** | *Generator* network creates fake data from random noise, *discriminator* network tries to tell real data from fake data |
+| **Purpose** | Generating new data |
+| **Example(s) of Application** | Creating synthetic training data, turning sketches into photos, deepfakes |
+| **How it Differs** | Creates new data rather than predicting labels |
+| **Other Information** | Hard to train, typically unstable |
+
+Source: [@gfg_gan]
+
+[← Back](#types)
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a GAN: noise goes into the generator, which produces fake data; fake and real data both go into a discriminator that tries to discern if the data is real or fake, and a dashed feedback arrow returns from the discriminator to the generator."
+show_model("gan")
+```
+
+:::
+
+::::
+
+## [Graph Neural Networks (GNNs)][src-gnn] {#gnn .smaller}
+
+[src-gnn]: https://www.geeksforgeeks.org/deep-learning/what-are-graph-neural-networks/
+  {target="_blank"}
+
+:::: {.r-stack}
+
+::: {.fragment .fade-out fragment-index=1 style="width: 100%;"}
+
+| Feature | Explanation |
+|---|---|
+| **Process** | The data is a graph (network); nodes update their inputs by collecting information from neighboring nodes |
+| **Purpose** | Learning from data defined by relationships |
+| **Example(s) of Application** | Traffic and arrival-time predictions in map apps |
+| **How it Differs** | Handles any network shape |
+| **Other Information** | Tend to have fairly few layers |
+
+Source: [@gfg_gnn]
+
+[← Back](#types)
+
+:::
+
+::: {.fragment .fade-in-then-out fragment-index=1 style="width: 100%;"}
+
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of a GNN: a network of blue nodes connected by lines, with orange arrows pointing from four neighboring nodes into a central orange node, showing messages passed from neighbors."
+show_model("gnn")
+```
+
+:::
+
+::::
+
+## A Practical Application: Reading Handwritten Digits {.smaller}
+
+```{python}
+#| echo: true
+import numpy as np
+from sklearn.datasets import load_digits
+
+digits = load_digits()
+fig, axes = plt.subplots(1, 10, figsize=(10, 2))
+for ax, img, label in zip(axes, digits.images, digits.target):
+    ax.imshow(img, cmap="gray_r")
+    ax.set_title(label)
+    ax.axis("off")
+plt.show()
+```
+
+Using **scikit-learn's** built-in *digits dataset* (contains 1,797 images of
+handwritten digits)
+
+- Each digit is represented by an 8x8 = 64-pixel image
+- **Goal:** predict which of the digits each image represents
+
+## Preparing the Data
+
+```{python}
+#| echo: true
+from sklearn.model_selection import train_test_split
+
+X = digits.data / 16  # pixel scaling
+y = digits.target  # true digit, 0-9
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=3255
+)
+print("Training:", X_train.shape, " Test:", X_test.shape)
+```
+
+- **Pixel scaling:** every input is rescaled from 0-16 to 0-1
+   - Neural networks train more reliably when inputs are small and similarly
+     scaled
+- **Train/Test split:** the model trains on 75% (1,347) of the images and is
+  tested on the other 25% (450)
+- `random_state`: random split is fixed
+
+## The Network {.smaller}
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- **Input layer (64):** one input per pixel; each image is flattened into a row
+  of 64 numbers
+- **Hidden layer 1 (64 neurons)** and **hidden layer 2 (32 neurons):** each
+  applies weights, a bias, and the ReLU activation (scikit-learn's default)
+- **Output layer (10 neurons):** one per digit; *softmax* turns them into
+  probabilities that add up to 1, and the prediction is the most likely digit
+- In total, the model learns **6,570** weights and biases
+:::
+
+::: {.column width="55%" .v-center-container}
+```{python}
+#| echo: false
+#| fig-alt: "Diagram of the example network: 64 input nodes, a hidden layer of 64 ReLU neurons, a hidden layer of 32 ReLU neurons, and 10 output nodes for the digits 0 to 9; only a few nodes per layer are drawn."
+def draw_digit_net(figsize=(7, 4.2)):
+    """The 64 -> 64 -> 32 -> 10 network used in the digits example."""
+    fig, ax = plt.subplots(figsize=figsize)
+    _setup(ax)
+    xs = [1.3, 3.9, 6.5, 9.0]
+    shown = [5, 5, 4, 4]
+    pos = _layers(
+        ax, shown, xs, [BLUE, ORANGE, ORANGE, GREEN], ymid=3.3, gap=0.75, r=0.24
+    )
+    for x, layer in zip(xs, pos):
+        ax.text(x, layer[0][1] - 0.55, "⋮", ha="center", fontsize=14)
+    labels = [
+        "64 inputs\n(one per pixel)",
+        "64 neurons\n(ReLU)",
+        "32 neurons\n(ReLU)",
+        "10 outputs\n(digits 0–9)",
+    ]
+    for x, t in zip(xs, labels):
+        ax.text(x, 0.35, t, ha="center", fontsize=9)
+    ax.text(
+        5.15,
+        5.75,
+        "Hidden layers",
+        ha="center",
+        fontsize=10,
+        color=ORANGE,
+        fontweight="bold",
+    )
+    plt.show()
+
+
+draw_digit_net()
+```
+
+:::
+
+::::
+
+
+## Training a Neural Network
+
+```{python}
+#| echo: true
+from sklearn.neural_network import MLPClassifier
+
+model = MLPClassifier(
+    hidden_layer_sizes=(64, 32), max_iter=500, random_state=3255
+)
+model.fit(X_train, y_train)
+
+preds = model.predict(X_test)
+correct = (preds == y_test).sum()
+acc = correct / len(y_test)
+print(f"{correct} of {len(y_test)} test images correct ({acc:.1%})")
+```
+
+- `hidden_layer_sizes=(64,32)` creates the two hidden layers from the previous
+  slide
+- `max_iter=500` allows up to 500 passes through the training data; training
+  stops earlier once the improvement levels off
+- Only **8 of 450** test images are misclassified
+
+## Results
+
+```{python}
+#| echo: false
+preds = model.predict(X_test)
+fig, axes = plt.subplots(2, 8, figsize=(10, 3))
+for ax, img, p, t in zip(axes.flat, X_test, preds, y_test):
+    ax.imshow(img.reshape(8, 8), cmap="gray_r")
+    ax.set_title(f"pred {p}", color="green" if p == t else "red")
+    ax.axis("off")
+plt.show()
+```
+
+- **Green** = the prediction matches the true digit
+- **Red** = the prediction is wrong
+
+## Where the Model Went Wrong
+
+```{python}
+#| echo: false
+probs = model.predict_proba(X_test)
+wrong = np.where(preds != y_test)[0]
+fig, axes = plt.subplots(1, len(wrong), figsize=(10, 2))
+for ax, i in zip(axes, wrong):
+    ax.imshow(X_test[i].reshape(8, 8), cmap="gray_r")
+    ax.set_title(
+        f"true {y_test[i]}\npred {preds[i]} ({probs[i].max():.0%})",
+        fontsize=9,
+        color="red",
+    )
+    ax.axis("off")
+plt.show()
+```
+
+- Errors cluster in a few digits: mispredicted **0s** and **5s** seem to account
+  for most of the mistakes
+- The model can be confidently wrong: some mistakes had over 90% predicted
+  probability
+
+## Limitations
+
+- **Small, unrealistic example:** real images are larger and messier
+- **Model ignores spatial structure:** flattening each image means we can't
+  examine which pixels are neighbors (like a CNN would)
+- **One train/test split:** a different split or random seed would yield
+  different accuracy
+- **scikit-learn is for small networks:** has no GPU support; large DL models
+  use frameworks like PyTorch or Tensorflow
+
+## Key Takeaways
+
+- Deep learning uses **neural networks with multiple layers**, which learn
+  patterns directly from data
+- Each neuron applies **weights, a bias, and an activation function**
+   - Training adjusts the weights and biases to reduce error
+- Different **shapes of data** require different architectures; the right choice
+  depends on the data, interpretability/complexity needs, and the computing
+  resources available
+
+## AI Use Disclosure:
+
+**Tool:** Anthropic, claude.ai
+
+**Used For:** Navigating how to use revealjs, suggesting and debugging code
+(mostly the worked examples and polishing the diagrams), and reviewing the final
+product for submission
+
+## Sources {.smaller}
+
+::: {#refs}
+:::
+
+## Sources (continued) {.smaller}
+
+::: {#refs-continued .references .csl-bib-body .hanging-indent}
+:::

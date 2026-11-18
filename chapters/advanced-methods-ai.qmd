@@ -30,3 +30,12 @@ to evaluate an agent using a binomial model and Wilson intervals.
 Explains reusable agent instructions through code learning, email-based
 planning, and a brief of important AI events. Small executable examples
 connect the workflows to checks, limitations, and practical takeaways.
+
+## Deep Learning
+
+[Presentation](../topic/deep-learning/) by **Ruhama Choudhury**.
+
+Explains what makes a neural network "deep,", examines eight architectures and 
+the shapes of data each suits. A reproducible handwritten-digit example trains
+a small network in scikit-learn and interprets the errors before closing with
+limitations and takeaways.
