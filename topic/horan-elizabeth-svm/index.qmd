@@ -1,0 +1,372 @@
+---
+title: "Support Vector Machines"
+author: "Elizabeth Horan"
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    preview-links: auto
+    theme: default
+    incremental: false
+    embed-resources: true
+    fig-format: svg
+jupyter: python3
+bibliography: references.bib
+nocite: | 
+  @*
+---
+
+## Background
+
+- Senior Statistical Data Science major with a concentration in American 
+Political Representation
+- Intern for the Sports Experiential Learning Program for UConn Women's Soccer
+- Last semester, I studied abroad on a ship and went to 12 different countries
+
+## Support Vector Machines Overview
+
+Support Vector Machines (SVMs) are used mainly for classification, for example,
+on a graph like this one, and also 
+for regression in machine learning (@islr_lab)
+```{python}
+import numpy as np
+from matplotlib.pyplot import subplots, cm
+from sklearn.svm import SVC
+from ISLP.svm import plot as plot_svm
+from matplotlib.collections import PathCollection
+
+rng = np.random.default_rng(1)
+X = rng.standard_normal((50, 2))
+y = np.array([-1]*25 + [1]*25)
+X[y == 1] += 4                   
+
+svm_hard = SVC(C=10, kernel="linear")
+svm_hard.fit(X, y)
+#Larger C means stricter model
+
+fig, ax = subplots(figsize=(8, 7))
+plot_svm(X, y, svm_hard, ax=ax)
+
+for coll in list(ax.collections):
+    if not isinstance(coll, PathCollection):
+        coll.remove()
+```
+
+## Definitions
+
+- Hyperplane: a flat surface that divides the feature space into regions, one 
+for each class.
+- Maximal margin hyperplane: the separating hyperplane that maximizes the 
+distance from the nearest training observations for each class
+- Support vectors: a subset of training observations that are closest to the 
+optimal hyperplane and determine the position of the hyperplane
+- Margin: the distance between the hyperplane and the closest training 
+observations
+
+@islr; @scikit_svm
+
+## Notation
+
+- Binary classification: each label $y_i \in \{-1, +1\}$
+- $n$: number of training observations, indexed by $i = 1, \dots, n$
+- $x_i \in \mathbb{R}^p$: the feature vector of observation $i$ ($p$ features)
+- $w \in \mathbb{R}^p$: weight vector, perpendicular to the boundary
+- $b$: intercept; the boundary is the set where $w \cdot x + b = 0$
+- $\epsilon_i \ge 0$: slack variable; how much observation $i$ violates the margin
+- $C > 0$: the cost of violations (tuning parameter)
+
+@scikit_svm; @islr
+
+## The SVM Optimization Problem
+
+$$
+\min_{w,\,b,\,\epsilon} \;\; \frac{1}{2}\lVert w \rVert^2 + C \sum_{i=1}^{n} \epsilon_i,
+$$
+
+subject to
+
+$$
+y_i \,(w \cdot x_i + b) \ge 1 - \epsilon_i, \quad \epsilon_i \ge 0, \quad i = 1,\dots,n.
+$$
+
+## Optimization Problem Continued
+
+- $\frac{1}{2}\lVert w \rVert^2$: rewards a **wide margin** (width $= 2/\lVert w \rVert$)
+  - Want to minimize $\lVert w \rVert$ to maximize the margin, making the distance between the boundary and the margin edges (and so the closest points) as large as possible
+- $C \sum \epsilon_i$: penalizes **margin violations**
+- $C$: the cost of violations (large C gives a narrow margin and few violations)
+
+## Hard Margin Example
+ 
+```{python}
+#| echo: true
+#| output-location: slide
+import numpy as np
+from matplotlib.pyplot import subplots, cm
+from sklearn.svm import SVC
+from ISLP.svm import plot as plot_svm
+
+rng = np.random.default_rng(1)
+X = rng.standard_normal((50, 2))
+y = np.array([-1]*25 + [1]*25)
+X[y == 1] += 4                   
+
+svm_hard = SVC(C=1e10, kernel="linear")
+svm_hard.fit(X, y)
+#Larger C means stricter model
+
+fig, ax = subplots(figsize=(8, 8))
+plot_svm(X, y, svm_hard, ax=ax)
+scores = y * svm_hard.decision_function(X)   
+# y is coded -1/+1
+print("smallest score:", scores.min())
+```
+@islr_lab
+
+## Soft Margins
+
+- The two classes are not always perfectly separable by a hyperplane, so SVMs 
+allow for some margin violations (which may be misclassifications) to achieve a 
+better overall separation
+- In some cases, a perfectly fitting hyperplane can lead to sensitivity and 
+overfitting 
+  - A single observation addition could drastically change the decision boundary
+- The soft margin classifier allows for some misclassifications instead of 
+seeking a largest possible margin and having every observation be perfectly on 
+the correct side of the hyperplane and margin
+
+## Soft Margins Continued
+
+- Slack $\epsilon_i$ measures how far observation $i$ violates its margin:
+  - $\epsilon_i = 0$: correct side, on or outside the margin
+  - $0 < \epsilon_i \le 1$: inside the margin but still classified correctly
+  - $\epsilon_i > 1$: on the wrong side of the boundary (misclassified)
+- Every misclassified point is a margin violation, but not every violation is a misclassification
+- In scikit-learn, $C$ is the penalty on the total slack
+
+## Soft Margin Example Graph
+
+```{python}
+#| echo: true
+#| output-location: slide
+import sklearn. model_selection as skm
+from ISLP import load_data , confusion_table
+from sklearn.svm import SVC
+from ISLP.svm import plot as plot_svm
+
+rng = np.random.default_rng(1)
+X = rng.standard_normal((50, 2))
+y = np.array([-1]*25+[1]*25)
+X[y == 1] += 1
+
+svm_linear = SVC(C=0.1, kernel='linear')
+svm_linear.fit(X, y)
+fig, ax = subplots(figsize=(8, 8))
+plot_svm(X, y, svm_linear, ax=ax)
+```
+
+## Soft Margin Example Continued
+
+```{python}
+#| echo: true
+#| output-location: slide
+kfold = skm.KFold(5, random_state=0, shuffle=True)
+grid = skm.GridSearchCV(svm_linear, {'C':[0.001, 0.01, 0.1, 1, 5, 10, 100]},
+refit=True, cv=kfold, scoring='accuracy')
+grid.fit(X, y)
+grid.best_params_
+
+X_test = rng.standard_normal((20, 2))
+y_test = np.array([-1]*10+[1]*10)
+X_test[y_test == 1] += 1
+
+best_ = grid.best_estimator_
+y_test_hat = best_.predict(X_test)
+print(confusion_table(y_test_hat, y_test))
+
+acc = best_.score(X_test, y_test)
+print("Chosen C:", grid.best_params_["C"])
+print(f"Test accuracy: {acc:.0%} ({int(acc * 20)} of 20 correct)")
+```
+
+## Soft Margin with Chosen C
+
+```{python}
+import pandas as pd 
+
+best_ = grid.best_estimator_
+fig, ax = subplots(figsize=(8, 8))
+plot_svm(X, y, best_, ax=ax)
+ax.set_title("Linear SVM, C = 1 (chosen by cross-validation)")
+
+print("C = 0.1 test accuracy:", svm_linear.score(X_test, y_test))
+print("C = 1   test accuracy:", best_.score(X_test, y_test))
+```
+
+## Kernel Trick
+
+- The SVM uses the data only through dot products between observations 
+- A kernel computes each dot product in the transformed space from the original 
+features without constructing those features
+
+## Kernel Trick Code
+
+```{python}
+#| echo: true
+#| output-location: slide
+import numpy as np
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(0)
+x = np.concatenate([rng.uniform(-1, 1, 20), rng.uniform(2, 4, 10), rng.uniform(-4, -2, 10)])
+y = np.array([0] * 20 + [1] * 20)
+
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+
+axes[0].scatter(x, np.zeros_like(x), c=y, cmap="coolwarm", edgecolors="k")
+axes[0].set_title("Original space: no single cutoff works")
+axes[0].set_yticks([])
+
+axes[1].scatter(x, x**2, c=y, cmap="coolwarm", edgecolors="k")
+axes[1].axhline(2.5, color="k", linestyle="--")
+axes[1].set_title("Add x² as a feature: a line separates them")
+axes[1].set_xlabel("x"); axes[1].set_ylabel("x²")
+
+plt.show()
+```
+
+## Practical Reminder
+
+- Features with large ranges dominate because kernels are based on dot products
+- SVMs are scale invariant, so scikit-learn recommends scaling the features
+- Put the scaler in a pipeline so it is fit on the training data only (no leakage into test folds)
+
+## Polynomial Kernels
+
+- The boundaries are curves with flexibility set by the degree parameter
+- Degree 1 is linear, and higher degrees allow more complex boundaries
+- Higher degrees can capture more intricate patterns in the data, but risk overfitting and can get numerically unstable
+
+## Radial Basis Function/Gaussian Kernels
+
+- The boundaries are smooth curves with flexibility set by the gamma parameter
+- Higher gamma values allow more complex boundaries, but risk overfitting
+- The similarity between observations decreases with distance
+
+## Kernel Examples
+
+```{python}
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_moons
+from sklearn.svm import SVC
+from sklearn.inspection import DecisionBoundaryDisplay
+
+X, y = make_moons(n_samples=200, noise=0.2, random_state=0)
+
+kernels = ["linear", "poly", "rbf"]
+fig, axes = plt.subplots(1, 3, figsize=(20, 6))
+
+for ax, kernel in zip(axes, kernels):
+    model = SVC(kernel=kernel, C=1).fit(X, y)
+    DecisionBoundaryDisplay.from_estimator(
+        model, X, response_method="predict",
+        plot_method="contourf", alpha=0.3, cmap="coolwarm", ax=ax
+    )
+    ax.scatter(X[:, 0], X[:, 1], c=y, cmap="coolwarm", edgecolors="k", s=20)
+    ax.set_title(f"{kernel} (training accuracy {model.score(X, y):.2f})")
+```
+
+## Nonlinear SVMs
+
+```{python}
+X = rng.standard_normal((200, 2))
+X[:100] += 2
+X[100:150] -= 2
+y = np.array([1]*150+[2]*50)
+
+fig, ax = subplots(figsize=(8, 8))
+ax.scatter(X[:, 0], X[:, 1], c=y, cmap=cm.coolwarm)
+```
+
+## Nonlinear SVMs Continued
+
+```{python}
+#| echo: true
+#| output-location: slide
+(X_train, X_test, y_train, y_test) = skm.train_test_split(X, y, test_size=0.5, random_state=0)
+svm_rbf = SVC(kernel="rbf", gamma=1, C=1)
+svm_rbf.fit(X_train, y_train)
+
+fig, ax = subplots(figsize=(8, 8))
+plot_svm(X_train, y_train, svm_rbf, ax=ax)
+```
+
+## Fit the High-C Model
+
+```{python}
+#| echo: true
+#| output-location: slide
+svm_rbf = SVC(kernel="rbf", gamma=1, C=1e5).fit(X_train, y_train)
+fig, ax = subplots(figsize=(8, 8))
+plot_svm(X_train, y_train, svm_rbf, ax=ax)
+ax.set_title("RBF, C = 1e5, gamma = 1 (before tuning)")
+# Increasing C allows the SVM to fit the training data more closely, reducing 
+# the number of training errors, but this puts us at risk of overfitting
+
+```
+
+## Tuning with Cross-Validation
+
+```{python}
+#| echo: true
+kfold = skm.KFold(5, random_state=0, shuffle=True)
+grid = skm.GridSearchCV(SVC(kernel="rbf"), 
+{"C": [0.1, 1, 10, 100, 1000], "gamma": [0.5, 1, 2, 3, 4]}, refit=True, cv=kfold, 
+scoring="accuracy")
+grid.fit(X_train, y_train)
+print(grid.best_params_)
+```
+
+## Evaluating on Test Data
+```{python}
+#| echo: true
+print("high-C test:", svm_rbf.score(X_test, y_test))
+print("tuned test: ", grid.best_estimator_.score(X_test, y_test))
+```
+
+## Limitations of SVMs
+
+- SVMs can struggle with large datasets because they are computationally 
+expensive to train
+- Using the "wrong" kernel can make the algorithm not perform well, and 
+sometimes choosing which kernel to use can be hard
+- If data is too noisy and has lots of class overlapping, SVMs will not work well
+
+## Key Takeaways
+
+- SVMs find a decision boundary that maximizes the margin between classes
+- The kernel trick allows SVMs to handle nonlinear decision boundaries
+  - Linear: straight boundary
+  - Polynomial: curved boundary with flexibility set by degree
+  - RBF: curved boundary with flexibility set by gamma
+
+## Key Takeaways Continued
+
+- C controls the tradeoff between fitting the training data and avoiding 
+overfitting
+  - Large C values allow the SVM to fit the training data more closely but 
+  increase the risk of overfitting
+  - Small C values allow the SVM to tolerate more training errors but may 
+  underfit the data
+- Validation chooses the settings
+  - Tune C (and gamma or degree) by cross-validation on the training data
+  - Judge the final model on held out test data
+  - Scale features first using a pipeline
+  
+## Sources
+
+AI Disclosure: Claude used for LaTeX math and SVM notation and code debugging/formatting.
+
+::: {#refs}
+:::
