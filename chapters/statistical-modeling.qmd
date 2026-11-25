@@ -7,6 +7,7 @@ prediction, dimension reduction, clustering, and supervised learning.
 
 | Presentation | Presenter | Description |
 |:--|:--|:--|
+| [Support Vector Machines](../topic/horan-elizabeth-svm/index.qmd) | Elizabeth Horan | Classification using maximum-margin boundaries and kernel methods. |
 |[K-Means Clustering](../topic/fontana-k-means) | Adam Fontana | K-Means clustering. |
 | [Decision Trees](../topic/decision-trees/) | Mahiba Mansur | Classification. |
 | [Naive Bayes](../topic/nick-tria-naive-bayes/) | Nicholas Tria | Classification |
