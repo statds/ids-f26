@@ -1,0 +1,388 @@
+---
+title: "False Discovery Rate Control"
+subtitle: "The Benjamini–Hochberg Procedure"
+author: "Ruveyda Maras"
+jupyter: python3
+bibliography: references.bib
+nocite: |
+  @*
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    slide-number: true
+    code-line-numbers: true
+execute:
+  echo: false
+  warning: false
+---
+
+## About Me
+
+**Ruveyda Maras**
+
+- Senior at UConn
+- **Majors:** Economics & Statistical Data Science
+- **Minor:** Spanish
+
+**Why I Chose This Topic**
+
+Testing many hypotheses can make results seem **statistically significant
+by chance**.
+
+Interested in exploring how the **Benjamini–Hochberg** procedure helps
+address this problem.
+
+## Introduction
+
+Statistical significance can be determined through **hypothesis testing**.  
+Testing many hypotheses increases the risk of **false positives**.
+
+- **False Discovery:** Rejecting a true null hypothesis.  
+- **False Discovery Rate:** The expected proportion of false discoveries among
+  rejected hypotheses.  
+- **False Discovery Rate Control:** Limiting the expected proportion of false
+  discoveries while identifying statistically significant results.   
+
+## The Multiple Testing Problem
+
+- Significance level $\alpha = 0.05$ means a **5% chance of a false positive**
+  for each test with a true null. 
+- As more tests are conducted, the **expected number of false positives**
+  increases.
+- If there are **500 tests** with all true null hypotheses, then
+ $$500 \times 0.05 = 25$$ 
+- On average, **25 false positives are expected**.
+
+## Simulating 500 Hypothesis Tests
+
+```{python}
+#| echo: true
+import numpy as np
+
+# Simulate 500 tests with all null hypotheses true
+rng = np.random.default_rng(2026)
+p_values = rng.uniform(0, 1, 500)
+
+# Use a 5% significance level
+alpha = 0.05
+
+# Count false positives
+false_positives = np.sum(p_values < alpha)
+
+print("Total tests:", len(p_values))
+print("False positives:", false_positives)
+print("Expected false positives:", 500 * alpha)
+```
+
+## Interpreting the Simulation
+
+- The observed number was **close to the expected one**. 
+- When all null hypotheses are true, some tests still appear **statistically**
+  **significant by chance**.  
+- The number of false positives **changes between simulations**.  
+
+## Defining False Discovery Rate
+
+- **FDR:** Measures the expected proportion of false discoveries among all
+  rejected hypotheses across repeated experiments. 
+
+  The False Discovery Rate is defined as:
+
+  $$ 
+  \mathrm{FDR} = \mathbb{E}\left[\frac{V}{\max(R,1)}\right] 
+  $$ 
+
+- **$V$:** Number of false discoveries (false positives). 
+- **$R$:** Total number of hypotheses that are rejected. 
+- **$E$:** Expected value (average across repeated experiments). 
+
+- The proportion is 0 when no hypotheses are rejected. 
+
+## The Benjamini-Hochberg Procedure
+
+The Benjamini–Hochberg procedure controls the false discovery
+rate under appropriate assumptions [@benjamini1995controlling].
+
+- Choose a target FDR level, typically **$q = 0.05$**.
+- Let **$m$** be the total number of hypothesis tests.
+- Sort the p-values from smallest to largest. 
+- Let $i$ represent the rank of each ordered p-value.
+- Let $p_{(i)}$ be the p-value at rank $i$. 
+
+## BH Procedure: Decision Rule
+
+Compare each ordered p-value with its BH threshold:
+
+$$ 
+p_{(i)} \leq \frac{i}{m}q 
+$$ 
+
+- Find the **largest rank $i$** that satisfies the inequality.  
+- **Reject all hypotheses** through the largest qualifying rank.  
+- If no ordered p-value satisfies the threshold, **reject none**. 
+
+## FDR vs. Significance Level 
+
+- $\alpha= 0.05$: A valid **individual test** has at most 5% false-positive 
+  probability when its null hypothesis is true. 
+- $q =0.05$: The target **expected proportion of false discoveries** among 
+  rejected hypotheses.
+- Controlling FDR at 5% **does not mean** each significant result has a 
+  5% probability of being false.
+- In our continuous-uniform null simulation, the false-positive 
+  probability equals $\alpha$.
+ 
+
+## Worked Example
+
+Example: 5 ordered p-values with $q = 0.05$.
+
+| Rank ($i$) | P-value | BH threshold |
+|---|---|---|
+| 1 | 0.001 | 0.010 |
+| 2 | 0.012 | 0.020 |
+| 3 | 0.028 | 0.030 |
+| 4 | 0.041 | 0.040 |
+| 5 | 0.080 | 0.050 |
+
+- **Largest rank:** $i = 3$.
+- **Reject the first 3 null hypotheses.**
+
+## Applying BH in Python
+
+SciPy's `false_discovery_control` function is used to apply
+the BH procedure [@scipy2026falsediscovery].
+
+```{python} 
+#| echo: true 
+ 
+from scipy.stats import false_discovery_control 
+ 
+# P-values (the worked example) 
+p_values_bh = [0.001, 0.012, 0.028, 0.041, 0.080] 
+ 
+# Applying Benjamini-Hochberg  
+adjusted = false_discovery_control(p_values_bh, method="bh") 
+ 
+# Identifying significant results at q = 0.05 
+significant = adjusted <= 0.05 
+ 
+print("Adjusted p-values:", adjusted.round(3)) 
+print("Significant:", significant) 
+print("Number of rejections:", significant.sum()) 
+``` 
+
+## Simulating 10,000 Hypothesis Tests
+
+```{python} 
+#| echo: true 
+ 
+# Simulating 10,000 independent tests (with true nulls) 
+rng = np.random.default_rng(123) 
+p_large = rng.uniform(0, 1, 10000) 
+ 
+# Comparing ordinary testing with BH correction 
+raw_rejections = np.sum(p_large < 0.05) 
+adjusted_large = false_discovery_control(p_large, method="bh") 
+bh_rejections = np.sum(adjusted_large <= 0.05) 
+ 
+print("Uncorrected rejections:", raw_rejections) 
+print("BH rejections:", bh_rejections) 
+print("Expected uncorrected false positives:", 500) 
+``` 
+
+## When Tests Are Dependent
+
+- Previous simulations assumed **independent hypothesis tests**. 
+- **Real datasets may contain dependent tests** because
+  they share observations or variables.
+- BH controls FDR under independence and **certain conditions of positive**
+  **dependence** but not arbitrary dependence.
+- Positive correlation alone **doesn't guarantee these conditions**, especially
+  for 2-sided tests.  
+- Benjamini-Yekutieli (BY) controls FDR under arbitrary dependence, but
+  BY is not simulated here [@benjamini2001control]. 
+
+
+## Independent vs. Correlated Tests
+
+```{python} 
+#| echo: true 
+#| code-overflow: wrap
+ 
+from scipy.stats import norm 
+ 
+rng = np.random.default_rng(2026) 
+m = 10000 
+rho = 0.5 
+ 
+# Generating independent and positively correlated test stats 
+independent = rng.standard_normal(m) 
+shared = rng.standard_normal() 
+correlated = (np.sqrt(rho) * shared
+              + np.sqrt(1 - rho) * rng.standard_normal(m))
+ 
+# Calculating two-sided p-values 
+p_ind = 2 * norm.sf(np.abs(independent)) 
+p_corr = 2 * norm.sf(np.abs(correlated)) 
+``` 
+- Correlated tests share a random component, creating dependence between their
+  test statistics.
+- Use $\rho = 0.5$, giving the test statistics a
+  pairwise correlation of 0.5 in this simulation.
+
+## Applying BH to Dependent Tests
+```{python} 
+#| echo: true 
+ 
+# Compare BH rejections 
+for name, p in [("Independent", p_ind), 
+                ("Correlated", p_corr)]: 
+    adjusted = false_discovery_control(p, method="bh") 
+    print(name, "BH rejections:", np.sum(adjusted <= 0.05)) 
+``` 
+
+## Estimating FDR Through Simulation 
+
+```{python} 
+#| echo: false
+#| output: false
+ 
+rng = np.random.default_rng(123) 
+repetitions = 1000 
+m = 1000 
+rho = 0.5 
+ 
+ind_false = 0 
+corr_false = 0 
+ 
+# Repeate the experiment (1,000 times) 
+for _ in range(repetitions): 
+    z = rng.standard_normal(m) 
+    shared = rng.standard_normal() 
+    z_corr = (np.sqrt(rho) * shared 
+              + np.sqrt(1 - rho) * rng.standard_normal(m)) 
+ 
+    # Calculate p-values 
+    p1 = 2 * norm.sf(np.abs(z)) 
+    p2 = 2 * norm.sf(np.abs(z_corr))
+
+  # Count simulations with at least one false discovery
+    ind_false += np.any(false_discovery_control(p1) <= 0.05)
+    corr_false += np.any(false_discovery_control(p2) <= 0.05) 
+
+``` 
+
+- Repeating **1,000 simulations** with **1,000 hypothesis tests** each.
+- All **null hypotheses** are assumed to be **true**.
+- Comparing independent tests with positively correlated tests with a 
+  correlation of 0.5.
+- Applying the Benjamini-Hochberg procedure at $q = 0.05$. 
+- Estimating FDR by measuring how often **at least one false discovery** 
+  occurs.
+
+## Why the Simulation Estimates FDR 
+
+Because **all null hypotheses are true**, every
+rejection is a false discovery, so **$V = R$**.
+
+- When there are **no rejections**, the false discovery proportion is **0**. 
+- When there is **at least one rejection**, the proportion is **1**. 
+- FDR is therefore **equal to the probability of at least one rejection**. 
+
+This counting method doesn't apply directly when **true and false null**
+**hypotheses are mixed**. 
+
+## Generating P-Values
+
+```python
+# Generate independent and correlated test statistics
+z = rng.standard_normal(m)
+shared = rng.standard_normal()
+z_corr = (np.sqrt(rho) * shared
+          + np.sqrt(1 - rho) * rng.standard_normal(m))
+
+# Convert test statistics to p-values
+p1 = 2 * norm.sf(np.abs(z))
+p2 = 2 * norm.sf(np.abs(z_corr))
+
+# Count experiments with BH false discoveries
+ind_false += np.any(false_discovery_control(p1) <= 0.05)
+corr_false += np.any(false_discovery_control(p2) <= 0.05)
+```
+Key steps within each 1,000 simulation repetition.
+
+## Estimated FDR Results 
+
+```{python}
+#| echo: false
+
+# Comparing estimated FDR across 1,000 simulations
+ind_fdr = ind_false / repetitions
+corr_fdr = corr_false / repetitions
+
+print("Independent FDR:", round(ind_fdr, 3))
+print("Correlated FDR:", round(corr_fdr, 3))
+print("Target FDR:", 0.05)
+```
+- Estimated standard errors: 0.0067 (independent) and 0.0041 (correlated).
+- These estimates describe this specific simulation setup, not a general
+  guarantee of FDR control. 
+
+## Comparing Estimated FDR
+```{python}
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+#| fig-format: svg
+#| fig-alt: "Bar chart comparing estimated FDR: 0.047 for independent tests and 0.017 for correlated tests, with a target of 0.05."
+import matplotlib.pyplot as plt
+plt.bar(
+    ["Independent", "Correlated"],
+    [ind_fdr, corr_fdr],
+    yerr=[0.0067, 0.0041],
+    capsize=5
+)
+plt.axhline(0.05, color="red", linestyle="--",
+            label="Target FDR = 0.05")
+plt.ylabel("Estimated FDR")
+plt.title("FDR Across 1,000 Simulations")
+plt.legend()
+plt.show()
+```
+
+Both of the estimated FDR values are below the 0.05 target.
+
+## Limitations & Common Mistakes 
+
+- **FDR control does not guarantee** that every
+  discovery is true.
+- BH controls the **expected proportion** of false
+  discoveries, not the exact proportion in every experiment.
+- BH controls FDR under **independence and certain
+  positive dependence conditions**, but not arbitrary
+  dependence.
+- **Statistical significance** does not necessarily
+  imply practical importance.
+- Repeated simulations provide **estimates, not proofs**
+  of FDR control. 
+
+## Key Takeaways
+
+- The risk of **false positives** increases with multiple hypothesis testing. 
+- **Benjamini-Hochberg** lets us control the **expected proportion of false**
+  **discoveries** under appropriate assumptions.  
+- Python simulations show the difference between uncorrected
+  testing and BH correction. 
+- The **dependence** between tests may affect **FDR control**.  
+
+## References
+
+::: {#refs}
+:::
+
+## AI Use Disclosure 
+
+ChatGPT assisted with organizing slides, Python development,
+and general revisions. 
